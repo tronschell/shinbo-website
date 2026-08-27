@@ -1,549 +1,1341 @@
-const features = [
+const clis = [
   {
-    id: "01",
-    title: "The composer is the agent",
-    copy: "Emma reads and writes the folders you attach, searches them with the bundled ripgrep, runs shell commands, keeps long ones alive in the background, calls connected MCP tools, runs your other coding CLIs, and spawns subagents. Type / to name a capability, @ to name a file.",
-    label: "EVERY TURN IS AN AGENT TURN",
+    brand: "claude",
+    name: "Claude Code",
+    binary: "claude",
+    resume: "--resume <uuid>",
+    unattended: "--dangerously-skip-permissions",
+    owns: true,
   },
   {
-    id: "02",
-    title: "Knowledge, only on purpose",
-    copy: "A turn is not a memory. Save & analyze writes one page into the named knowledge base the thread points at, with its category, source thread, model, and token counts. Editing that page is a separate, explicit action.",
-    label: "EXPLICIT CAPTURE",
+    brand: "openai",
+    name: "Codex",
+    binary: "codex",
+    resume: "exec resume --last",
+    unattended: "--dangerously-bypass-approvals-and-sandbox",
+    owns: false,
   },
   {
-    id: "03",
-    title: "Every run leaves a record",
-    copy: "Threads are durable Markdown you can close and come back to. The inspector carries the turn as a span waterfall, a ledger of what the prompt actually carried, a Git tab for the connected folder, and a +N −M diff of Emma’s own writes with a revert per file.",
-    label: "INSPECTABLE RUNS",
+    brand: "pi",
+    name: "Pi",
+    binary: "pi",
+    resume: "--session-id <uuid>",
+    unattended: "none",
+    owns: true,
   },
+  {
+    brand: "opencode",
+    name: "OpenCode",
+    binary: "opencode",
+    resume: "run --continue",
+    unattended: "--auto",
+    owns: false,
+  },
+  {
+    brand: "cursor",
+    name: "Cursor CLI",
+    binary: "cursor-agent",
+    resume: "--print --resume",
+    unattended: "--force",
+    owns: false,
+  },
+];
+
+const imports = [
+  ["claude", "Claude"],
+  ["openai", "Codex"],
+  ["antigravity", "Antigravity"],
+  ["pi", "Pi"],
+  ["opencode", "OpenCode"],
+  ["cursor", "Cursor"],
+  ["windsurf", "Windsurf"],
+];
+
+const brands: Record<string, [string | null, string]> = {
+  openai: ["openai.svg", "OpenAI"],
+  anthropic: ["anthropic.svg", "Anthropic"],
+  google: ["gemini.png", "Gemini"],
+  "x-ai": ["xai.svg", "xAI"],
+  "meta-llama": ["meta.svg", "Meta"],
+  deepseek: ["deepseek.svg", "DeepSeek"],
+  qwen: ["qwen.svg", "Qwen"],
+  mistralai: ["mistralai.svg", "Mistral"],
+  moonshotai: ["kimi.svg", "Kimi"],
+  "z-ai": ["zai.svg", "Z.ai / GLM"],
+  thinkingmachines: [null, "Thinking Machines"],
+  nvidia: ["nvidia.svg", "NVIDIA"],
+  cohere: ["cohere.svg", "Cohere"],
+  minimax: ["minimax.svg", "MiniMax"],
+  bytedance: ["bytedance.svg", "ByteDance Seed"],
+  poolside: ["poolside.svg", "Poolside"],
+  liquid: ["liquid.svg", "Liquid AI"],
+  baidu: [null, "ERNIE"],
+  tencent: [null, "Hunyuan"],
+  xiaomi: ["xiaomi.svg", "Xiaomi"],
+  naver: ["naver.svg", "HyperCLOVA"],
+  sakana: [null, "Sakana AI"],
+  openrouter: ["openrouter.svg", "OpenRouter"],
+};
+
+const chain = [
+  "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "thinkingmachines/inkling:free",
+  "z-ai/glm-5.2:free",
+  "poolside/laguna-s-2.1:free",
+  "nvidia/nemotron-3-super-120b-a12b:free",
+  "thinkingmachines/inkling-small:free",
+  "dots-studio/dots-3-note-preview:free",
+  "poolside/laguna-xs-2.1:free",
+  "cohere/north-mini-code:free",
+  "nvidia/nemotron-3.5-lightning:free",
 ];
 
 const modes = [
-  ["PLAN", "Only tools that cannot change this Mac are advertised."],
-  ["ASK", "Every write, command, and click asks first. This is the default."],
+  ["◈", "Ask", "Every write, command and click asks first. The default."],
   [
-    "ACCEPT EDITS",
-    "Files are written and searched without asking. Commands and the pointer still ask.",
+    "◆",
+    "Accept edits",
+    "File writes and searches go through. Commands, the browser and the pointer still ask.",
   ],
   [
-    "AUTO",
-    "A separate verifier model reads each gated call. Anything it will not clear comes back to you.",
-  ],
-  ["FULL", "Nothing asks. Escape still stops a run."],
-];
-
-const capabilities = [
-  [
-    "The notch surfaces",
-    "Quick Ask is one island centered on the real camera housing, opened by a double-tap of the left Option key. While Emma is idle a click-through sliver sits over the housing and reveals a sparkle wave on hover.",
+    "⬗",
+    "Auto",
+    "A verifier model reads each gated call against rules you wrote. Anything it will not clear comes back to you.",
   ],
   [
-    "Quick actions, three ways",
-    "Three saved actions hang under the island as orbs, orbit the cursor in a ring of up to eight, and run from Command-1, 2, and 3 at any time. Every ring command is validated in the main process against a fixed catalog.",
-  ],
-  [
-    "Save the front page",
-    "Emma reads the page out of whichever whitelisted browser is in front, keeps its favicon and lead pictures, and writes it up as a document. It files that page into a category by itself once one of your categories has five examples to learn from.",
-  ],
-  [
-    "Subagents and sub threads",
-    "A live subagent gets its own color in the sidebar and its own tab, where you can steer it, stop it, and read its model, rate, tokens, and tool calls. A new thread instead starts a full agent nested under its parent.",
-  ],
-  [
-    "Skills and MCP, imported",
-    "Register the skill and MCP locations you already have in Codex, Claude, Cursor, Windsurf, and others, without copying their config. Emma can install a skill or an MCP server for herself mid-turn and use it in that same turn.",
-  ],
-  [
-    "Dictation that stays here",
-    "Off until you turn it on. Recording happens locally, a local transcription endpoint does the words, and an optional local model rewrites them as written English. Emma enforces that both endpoints are local.",
+    "⬥",
+    "Full access",
+    "Nothing asks. Escape still stops a run, and the computer-use rails still hold.",
   ],
 ];
 
-function Mark({ small = false }: { small?: boolean }) {
+const secondModels = [
+  {
+    name: "Verifier",
+    role: "Clears or refuses each gated call in Auto mode",
+    model: "liquid/lfm-2.5-2.6b:free",
+    budget: "20 s · 700 tokens",
+  },
+  {
+    name: "Advisor",
+    role: "A stronger model the agent consults mid-turn with the transcript so far",
+    model: "off until you pick one",
+    budget: "120 s · 1024 tokens",
+  },
+  {
+    name: "Vision",
+    role: "Answers one question about one image for a model that cannot see",
+    model: "nvidia/nemotron-nano-12b-v2-vl:free",
+    budget: "60 s · 1024 tokens",
+  },
+  {
+    name: "Note tagger",
+    role: "Titles and tags a note a moment after it lands in your vault",
+    model: "liquid/lfm-2.5-2.6b:free",
+    budget: "20 s · 256 tokens",
+  },
+];
+
+const tools: [string, "ask" | "auto"][] = [
+  ["browser", "ask"],
+  ["cli", "ask"],
+  ["cli_runs", "auto"],
+  ["computer", "ask"],
+  ["write_skill", "auto"],
+  ["write_tool", "auto"],
+  ["write_plugin", "auto"],
+  ["run_tool", "ask"],
+  ["memory", "auto"],
+  ["advisor", "auto"],
+  ["vision", "auto"],
+  ["web_search", "auto"],
+  ["plan", "auto"],
+  ["goal", "auto"],
+  ["threads", "auto"],
+  ["read_trace", "auto"],
+  ["context", "auto"],
+  ["keep", "auto"],
+  ["agents", "auto"],
+  ["install_mcp", "ask"],
+  ["workflow", "ask"],
+  ["autoresearch", "ask"],
+  ["artifact", "auto"],
+  ["visualize", "auto"],
+];
+
+const widgets = [
+  ["▦", "Thread stats", "Any of eighteen metrics, as tiles or rows"],
+  [
+    "▤",
+    "Context window",
+    "What the last turn carried, by kind, against the window",
+  ],
+  [
+    "⌇",
+    "Timeline",
+    "Every turn as a waterfall of requests, tools and children",
+  ],
+  ["◰", "Plan", "The plan as a graph; pressing a node lights its wave"],
+  [
+    "⌸",
+    "Subagents",
+    "One row per live child, into the transcript it is writing",
+  ],
+  ["⑃", "Sub threads", "Threads this one started, working or idle"],
+  ["⑂", "Git", "Branch, working tree, and the diff behind it"],
+  ["◫", "Machine", "CPU, memory, GPU and network as numbers"],
+  ["∿", "Machine graph", "The same four as sparklines over the last minute"],
+  ["▥", "Machine meters", "The same four as 16-cell segmented gauges"],
+];
+
+const surfaces = [
+  {
+    label: "Terminal",
+    title: "A real login shell under the thread",
+    copy: "A real login shell in the thread's folder, through Emma's pty helper and xterm.js. Select output and it becomes a context chip; ⌘-click a URL and Emma asks which browser takes it.",
+  },
+  {
+    label: "Browser",
+    title: "One Chromium session per thread",
+    copy: "Its own cookies and its own place, and the agent drives the page you are looking at. Dock it in the column or float it as a PIP — same session either way.",
+  },
+  {
+    label: "Voice",
+    title: "Dictation that never leaves the Mac",
+    copy: "Off until you turn it on. Recording is local; transcription is Speech.framework or llama.cpp on loopback. A non-local endpoint is refused when saved and again before use.",
+  },
+  {
+    label: "Artifacts",
+    title: "Files that outlive the conversation",
+    copy: "Seven kinds — markdown, code, html, app, svg, mermaid, react. Pages get their own CSP, code is never executed, and one can become a region of Emma's interface.",
+  },
+  {
+    label: "Goals",
+    title: "One objective a thread keeps working at",
+    copy: "Emma re-drives the thread without being asked again, and stops on evidence, on the same blocker three turns running, or at 200,000 tokens and 40 turns. The invariants live in Rust.",
+  },
+  {
+    label: "Knowledge",
+    title: "Markdown in a folder you already own",
+    copy: "An Obsidian vault or any plain directory. One note per save, YAML front matter under <vault>/knowledge-base, attachments beside it. No mirror, no database.",
+  },
+];
+
+function Mark({ size = 24 }: { size?: number }) {
+  return <img src="/emma.webp" alt="" width={size} aria-hidden="true" />;
+}
+
+function Brand({ id }: { id: string }) {
+  const namespace = id.split("/")[0];
+  const brand = brands[namespace];
+  if (!brand)
+    return (
+      <i className="mark fallback">{namespace.slice(0, 1).toUpperCase()}</i>
+    );
+  const [file, label] = brand;
+  if (!file) return <i className="mark fallback">{label.slice(0, 1)}</i>;
+  return <img className="mark" src={`/brands/${file}`} alt="" title={label} />;
+}
+
+function Ticker() {
   return (
-    <span className={small ? "mark mark-small" : "mark"} aria-hidden="true">
-      <svg viewBox="0 0 36 36" fill="none">
-        <path d="M7 19.5 18 7l11 12.5L18 29 7 19.5Z" />
-        <path d="m7 16.5 11 9.5 11-9.5M18 7v19" />
-      </svg>
-    </span>
+    <section className="ticker" aria-label="Model providers Emma routes to">
+      <p className="shell label">
+        Providers <i>·</i> and any OpenAI-compatible endpoint
+      </p>
+      <div className="track">
+        <div className="lanes">
+          {[false, true].map((clone) => (
+            <ul key={String(clone)} aria-hidden={clone || undefined}>
+              {Object.entries(brands).map(([namespace, [, label]]) => (
+                <li key={namespace}>
+                  <Brand id={namespace} />
+                  {label}
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
-function AppMockup() {
+function Shot({
+  src,
+  alt,
+  caption,
+  title,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  title: string;
+}) {
   return (
-    <div
-      className="mock-wrap"
-      aria-label="Illustrative Emma desktop interface preview"
-    >
-      <div className="notch-card">
-        <span className="live-dot" />
-        <span>QUICK ASK</span>
-        <span className="keys">⌥ ⌥</span>
+    <figure className="shot">
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+      <figcaption>
+        <b>{title}</b> — {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+function PlanGraph() {
+  const nodes = [
+    { id: 1, x: 40, y: 26, state: "done" },
+    { id: 2, x: 210, y: 26, state: "done" },
+    { id: 3, x: 40, y: 78, state: "run" },
+    { id: 4, x: 210, y: 78, state: "run" },
+    { id: 5, x: 125, y: 130, state: "wait" },
+    { id: 6, x: 125, y: 182, state: "wait" },
+  ];
+  const edges = [
+    [1, 3],
+    [1, 4],
+    [2, 3],
+    [2, 4],
+    [3, 5],
+    [4, 5],
+    [5, 6],
+  ];
+  const fill = { done: "var(--lime)", run: "var(--orange)", wait: "none" };
+  const at = (id: number) => nodes.find((n) => n.id === id)!;
+  return (
+    <figure className="diagram">
+      <figcaption>Plan · dependency graph, one wave at a time</figcaption>
+      <svg
+        viewBox="0 0 290 212"
+        role="img"
+        aria-label="A six-step plan graph: two done steps feed two running steps, which feed two waiting steps"
+      >
+        {edges.map(([a, b]) => (
+          <line
+            key={`${a}-${b}`}
+            x1={at(a).x + 11}
+            y1={at(a).y + 11}
+            x2={at(b).x + 11}
+            y2={at(b).y + 11}
+            stroke="var(--border-strong)"
+          />
+        ))}
+        {nodes.map((n) => (
+          <g key={n.id}>
+            <rect
+              x={n.x}
+              y={n.y}
+              width="22"
+              height="22"
+              fill={fill[n.state as keyof typeof fill]}
+              stroke={n.state === "wait" ? "var(--border-strong)" : "none"}
+              strokeDasharray={n.state === "wait" ? "3 2" : undefined}
+            />
+            <text
+              x={n.x + 11}
+              y={n.y + 15}
+              textAnchor="middle"
+              fill={n.state === "wait" ? "var(--text-3)" : "var(--fg-invert)"}
+            >
+              {n.id}
+            </text>
+          </g>
+        ))}
+      </svg>
+      <div className="legend">
+        <span>
+          <i style={{ background: "var(--orange)" }} /> running
+        </span>
+        <span>
+          <i style={{ background: "var(--lime)" }} /> done
+        </span>
+        <span>
+          <i style={{ border: "1px dashed var(--border-strong)" }} /> waiting
+        </span>
       </div>
-      <div className="window">
-        <div className="window-bar">
-          <div className="traffic" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </div>
-          <span>EMMA / WORKSPACE</span>
-          <span className="run-state">
-            <i /> DEMO
-          </span>
-        </div>
-        <div className="window-grid">
-          <aside className="thread-list">
-            <p className="pane-label">THREADS</p>
-            <div className="new-thread">+ NEW THREAD</div>
-            <div className="thread active">
-              <span>Launch research</span>
-              <small>NOW</small>
-            </div>
-            <div className="thread sub">
-              <span>
-                <i /> Read the pricing pages
-              </span>
-              <small>SUBAGENT</small>
-            </div>
-            <div className="thread">
-              <span>Q3 planning</span>
-              <small>2H</small>
-            </div>
-            <div className="thread">
-              <span>Tokenizer sweep</span>
-              <small>MON</small>
-            </div>
-          </aside>
-          <section className="conversation" aria-label="Thread preview">
-            <header>
-              <div>
-                <small>THREAD 084 / RESEARCH</small>
-                <h3>Launch research</h3>
-              </div>
-              <span className="model-pill">OPENROUTER</span>
-            </header>
-            <div className="message user-message">
-              Compare the launch notes in ~/work/launch with our saved
-              positioning and flag contradictions.
-            </div>
-            <div className="agent-line">
-              <Mark small />
-              <div>
-                <p>
-                  I found two meaningful tensions. The strongest is between the
-                  “ambient memory” claim and your explicit-capture principle.
-                </p>
-                <div className="tool-call">
-                  <span>↳</span>
-                  <div>
-                    <small>RIPGREP</small>
-                    <p>~/work/launch · 34 matches</p>
-                  </div>
-                  <b>0.4s</b>
-                </div>
-                <div className="tool-call">
-                  <span>↳</span>
-                  <div>
-                    <small>TASK / SUBAGENT</small>
-                    <p>Read the pricing pages · running</p>
-                  </div>
-                  <b>0.8s</b>
-                </div>
-              </div>
-            </div>
-            <div className="composer">
-              <span>Ask Emma to continue…</span>
-              <span className="composer-controls">
-                <b className="mode-chip">◈ ASK</b>
-                <kbd>⌘ ↵</kbd>
-              </span>
-            </div>
-          </section>
-          <aside className="knowledge-pane">
-            <p className="pane-label">KNOWLEDGE / RESEARCH</p>
-            <div className="kb-search">⌕ Search saved pages</div>
-            <p className="mini-label">USED IN THIS THREAD</p>
-            <article>
-              <span className="file-icon">◇</span>
-              <div>
-                <h4>Positioning principles</h4>
-                <p>ANALYZED PAGE · 8 SOURCES</p>
-              </div>
-            </article>
-            <article>
-              <span className="file-icon">□</span>
-              <div>
-                <h4>Launch notes v4</h4>
-                <p>SAVED PAGE · TODAY</p>
-              </div>
-            </article>
-            <div className="capture-note">
-              <span>◎</span>
-              <p>
-                <b>Nothing saves silently.</b>
-                <br />
-                Each save writes one Markdown note into your vault.
-              </p>
-            </div>
-          </aside>
-        </div>
-        <div className="telemetry">
-          <span>
-            <i /> EXAMPLE RUN
-          </span>
-          <span>5 TOOL CALLS</span>
-          <span>1 SUBAGENT</span>
-          <span>SPAN TRACE</span>
-        </div>
+    </figure>
+  );
+}
+
+function WorkflowGraph() {
+  return (
+    <figure className="diagram">
+      <figcaption>Workflow · agent, set and if nodes</figcaption>
+      <svg
+        viewBox="0 0 290 212"
+        role="img"
+        aria-label="A workflow graph: an agent node feeds an if node, whose true branch runs a second agent and whose false branch ends"
+      >
+        <g stroke="var(--border-strong)" fill="none">
+          <path d="M60 46v20" />
+          <path d="M60 96v12" />
+          <path d="M60 138v24" />
+          <path d="M104 123h84v39" />
+        </g>
+        <g fill="none" stroke="var(--orange)">
+          <rect x="16" y="16" width="88" height="30" />
+        </g>
+        <text x="26" y="35" fill="var(--orange)">
+          AGENT digest
+        </text>
+        <g fill="none" stroke="var(--border-strong)">
+          <rect x="16" y="66" width="88" height="30" />
+        </g>
+        <text x="26" y="85">
+          SET window
+        </text>
+        <g fill="none" stroke="var(--violet)">
+          <rect x="16" y="108" width="88" height="30" />
+        </g>
+        <text x="26" y="127" fill="var(--violet)">
+          IF errors
+        </text>
+        <g fill="none" stroke="var(--orange)">
+          <rect x="16" y="162" width="88" height="30" />
+        </g>
+        <text x="26" y="181" fill="var(--orange)">
+          AGENT triage
+        </text>
+        <g fill="none" stroke="var(--border-strong)">
+          <rect x="162" y="162" width="52" height="30" />
+        </g>
+        <text x="172" y="181">
+          END
+        </text>
+        <text x="112" y="119" fill="var(--text-3)">
+          false
+        </text>
+        <text x="66" y="158" fill="var(--text-3)">
+          true
+        </text>
+      </svg>
+      <div className="legend">
+        <span>{"{{last}}"} carries the previous answer</span>
+        <span>24 nodes max</span>
       </div>
-    </div>
+    </figure>
+  );
+}
+
+function Waterfall() {
+  const spans: [string, number, number, string][] = [
+    ["model request", 0, 34, "var(--blue)"],
+    ["grep_files", 34, 8, "var(--text-3)"],
+    ["read_file", 42, 6, "var(--text-3)"],
+    ["model request", 48, 22, "var(--blue)"],
+    ["subagent · survey", 70, 46, "var(--teal)"],
+    ["subagent · rewrite", 74, 60, "var(--teal)"],
+    ["cli · codex", 96, 52, "var(--orange)"],
+    ["model request", 150, 26, "var(--blue)"],
+  ];
+  return (
+    <figure className="diagram">
+      <figcaption>Timeline · every turn as a waterfall</figcaption>
+      <svg
+        viewBox="0 0 290 212"
+        role="img"
+        aria-label="A span waterfall: model requests, tool calls, two subagents and one CLI run laid out across a turn"
+      >
+        {spans.map(([name, start, width, color], i) => (
+          <g key={name + i}>
+            <rect
+              x={start + 8}
+              y={16 + i * 24}
+              width={width}
+              height="9"
+              fill={color}
+            />
+            <text x={start + 8 + width + 6} y={24 + i * 24}>
+              {name}
+            </text>
+          </g>
+        ))}
+        <line x1="8" y1="206" x2="282" y2="206" stroke="var(--border-strong)" />
+      </svg>
+      <div className="legend">
+        <span>
+          <i style={{ background: "var(--blue)" }} /> model
+        </span>
+        <span>
+          <i style={{ background: "var(--teal)" }} /> subagent
+        </span>
+        <span>
+          <i style={{ background: "var(--orange)" }} /> cli
+        </span>
+      </div>
+    </figure>
+  );
+}
+
+function Ledger() {
+  const parts: [string, number, string][] = [
+    ["4 messages", 15, "var(--blue)"],
+    ["file list", 3.7, "var(--teal)"],
+    ["skills", 2.4, "var(--rose)"],
+    ["system tools", 1.7, "var(--orange)"],
+    ["system prompt", 1.4, "var(--lime)"],
+    ["memory files", 0.7, "var(--violet)"],
+  ];
+  const total = parts.reduce((sum, [, k]) => sum + k, 0);
+  let x = 8;
+  return (
+    <figure className="diagram">
+      <figcaption>Context window · what the turn actually carried</figcaption>
+      <svg
+        viewBox="0 0 290 212"
+        role="img"
+        aria-label="A stacked bar of the context ledger with one row per segment and the tokens it carried"
+      >
+        <text x="8" y="18" fill="var(--text-2)">
+          25k of 1049k carried · 2.4%
+        </text>
+        <rect x="8" y="26" width="274" height="10" fill="var(--surface-4)" />
+        {parts.map(([name, k, color]) => {
+          const w = (k / total) * 274;
+          const rect = (
+            <rect key={name} x={x} y="26" width={w} height="10" fill={color} />
+          );
+          x += w;
+          return rect;
+        })}
+        {parts.map(([name, k, color], i) => (
+          <g key={name}>
+            <rect x="8" y={54 + i * 22} width="8" height="8" fill={color} />
+            <text x="24" y={62 + i * 22}>
+              {name}
+            </text>
+            <text x="240" y={62 + i * 22} fill="var(--text-3)">
+              {k}k
+            </text>
+          </g>
+        ))}
+      </svg>
+      <div className="legend">
+        <span>counted here, not billed here</span>
+        <span>⤢ opens the full table</span>
+      </div>
+    </figure>
   );
 }
 
 function App() {
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a className="skip" href="#main">
         Skip to content
       </a>
-      <header className="topbar">
-        <nav className="nav shell" aria-label="Primary navigation">
-          <a className="brand" href="#top" aria-label="Emma home">
-            <Mark small />
-            <span>EMMA</span>
+
+      <header className="rail">
+        <div className="shell rail-in">
+          <a className="brand" href="#top">
+            <Mark />
+            <span>Emma</span>
           </a>
-          <div className="nav-links">
-            <a href="#product">PRODUCT</a>
-            <a href="#control">CONTROL</a>
-            <a href="#capabilities">CAPABILITIES</a>
-          </div>
-          <a className="nav-cta" href="#preview">
-            EXPLORE EMMA <span>↗</span>
-          </a>
-        </nav>
+          <nav aria-label="Primary">
+            <a href="#harness">Harness</a>
+            <a href="#delegation">Delegation</a>
+            <a href="#plan">Plan</a>
+            <a href="#models">Models</a>
+            <a href="#control">Control</a>
+            <a href="#surfaces">Surfaces</a>
+            <a href="#knowledge">Knowledge</a>
+            <a href="#jobs">Jobs</a>
+            <a href="#tools">Tools</a>
+          </nav>
+        </div>
       </header>
 
       <main id="main">
-        <section className="hero" id="top">
-          <div className="blueprint" aria-hidden="true">
-            <span />
-            <span />
-            <span />
+        <section className="hero shell" id="top">
+          <p className="eyebrow">
+            <span className="dot" /> macOS · one loop, every surface
+          </p>
+          <h1>
+            A harness for
+            <br />
+            every <em>harness</em>.
+          </h1>
+          <p className="lede">
+            Emma runs her own agent — <b>emma-cli</b>, a Zig harness over the
+            Agent Client Protocol — and everyone else's. Claude Code, Codex, Pi,
+            OpenCode and Cursor take turns in one Markdown thread.
+          </p>
+          <div className="actions">
+            <a className="btn btn-solid" href="#harness">
+              See the meta-harness ↓
+            </a>
+            <a className="btn" href="#plan">
+              Plans, graphs and delegation
+            </a>
           </div>
-          <div className="shell hero-content">
-            <p className="eyebrow">
-              <span className="live-dot" /> MACOS-FIRST / ONE LOOP, EVERY
-              SURFACE
+        </section>
+
+        <Ticker />
+
+        <section className="section shell" id="workspace">
+          <Shot
+            src="/shots/workspace-thread.png"
+            alt="Emma's workspace: threads and projects down the left, a running conversation in the middle, and the context bar on the right showing thread stats, the context window ledger, the plan graph and the sub threads this turn started"
+            title="The workspace"
+            caption="Threads and projects left · the turn in the middle · the inspector you arranged on the right"
+          />
+        </section>
+
+        <section className="section shell" id="harness">
+          <div className="head head-split">
+            <div>
+              <p className="eyebrow">The meta-harness</p>
+              <h2>Emma does not reimplement your agent. She runs it.</h2>
+            </div>
+            <p className="lede">
+              A <b>cli</b> call spawns the binary you already have, in the
+              thread's folder, and streams it live. A run is a conversation: the
+              child exits at the end of a turn and waits, holding its session
+              id.
             </p>
-            <h1>
-              Your everything agent.
-              <br />
-              <span>Nothing you didn’t ask for.</span>
-            </h1>
-            <p className="hero-copy">
-              Emma is a macOS agent workspace and an exportable knowledge base.
-              The composer, the notch, a quick action, and a scheduled job all
-              run the same agent loop, under a permission mode you choose.
-            </p>
-            <div className="actions">
-              <a className="primary" href="#preview">
-                EXPLORE THE WORKSPACE <span>↗</span>
-              </a>
-              <a className="secondary" href="#product">
-                SEE HOW EMMA THINKS <span>↓</span>
-              </a>
+          </div>
+
+          <div className="tbl-wrap">
+            <table className="tbl">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>Binary</th>
+                  <th>Resumes with</th>
+                  <th>Unattended flag</th>
+                  <th>Owns its session</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clis.map((c) => (
+                  <tr key={c.name}>
+                    <td>
+                      <span className="brandcell">
+                        <img
+                          className="mark"
+                          src={`/brands/${c.brand}.svg`}
+                          alt=""
+                        />
+                        {c.name}
+                      </span>
+                    </td>
+                    <td>
+                      <b>{c.binary}</b>
+                    </td>
+                    <td>{c.resume}</td>
+                    <td className={c.unattended === "none" ? "muted" : ""}>
+                      {c.unattended}
+                    </td>
+                    <td>{c.owns ? "yes" : "no — one at a time per folder"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="cols" style={{ marginTop: 32 }}>
+            <div>
+              <h3>Runs float, they don't scroll away</h3>
+              <p className="copy">
+                Each run gets a window over the conversation — logo, live state,
+                output, its own composer. Drop one anywhere and it swoops to the
+                anchor covering the least text.
+              </p>
+            </div>
+            <div>
+              <h3>Emma's own loop is a fork</h3>
+              <p className="copy">
+                <b>emma-cli</b> forks{" "}
+                <a href="https://github.com/vercel-labs/fx">vercel-labs/fx</a>{" "}
+                (Apache-2.0) in Zig. It owns the loop, tools, hooks, skills,
+                subagents and MCP. Emma owns the window, the thread and every
+                permission answer. No second loop.
+              </p>
+            </div>
+            <div>
+              <h3>Your existing setup, by reference</h3>
+              <p className="copy">
+                Emma finds skills and MCP configs already set up for another
+                agent and records their <b>paths</b>. Nothing is copied, no
+                secret is read, stdio only.
+              </p>
             </div>
           </div>
-          <div className="shell status-strip" aria-label="Product principles">
-            <span>01 / PERMISSION MODES</span>
-            <span>02 / EXPLICIT KNOWLEDGE</span>
-            <span>03 / PLAIN MARKDOWN</span>
+
+          <div className="marks" style={{ marginTop: 24 }}>
+            <span>Imports from</span>
+            {imports.map(([file, name]) => (
+              <img
+                key={name}
+                src={`/brands/${file}.${file === "antigravity" ? "png" : "svg"}`}
+                alt={name}
+                title={name}
+              />
+            ))}
+            <span>Devin · and their MCP configs</span>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <Shot
+              src="/shots/agent-import.png"
+              alt="Settings, imports: each agent Emma found on this Mac with the skills and MCP config it has, and the paths they live at"
+              title="What she found"
+              caption="Counted and pathed · nothing copied, nothing read · tick what you want referenced"
+            />
           </div>
         </section>
 
-        <section className="preview section shell" id="preview">
-          <div className="section-intro">
-            <p className="eyebrow">THE WORKSPACE</p>
-            <h2>
-              Quick at the notch.
-              <br />
-              Deep on the desktop.
-            </h2>
-            <p>
-              Double-tap the left Option key and Quick Ask opens on the real
-              notch. Open the full workspace when the job needs folders, tools,
-              subagents, and a durable record.
+        <section className="section shell" id="delegation">
+          <div className="head head-split">
+            <div>
+              <p className="eyebrow">Threads and delegation</p>
+              <h2>A thread outlives every run inside it.</h2>
+            </div>
+            <p className="lede">
+              A thread is a Markdown file. A run is one agent loop
+              inside it, and dissolves when the job is done. Everything that
+              starts a run — composer, Quick Ask, a due job — enters through one
+              interception.
             </p>
           </div>
-          <AppMockup />
+
+          <div className="cards">
+            <article>
+              <span className="label">Subagent</span>
+              <h3>A worker that dissolves</h3>
+              <p>
+                The harness's own tool, so a child runs in the same process and
+                never queues behind its parent. Real transcript, a colour in the
+                sidebar, a tab you can steer or stop. Inherits the parent's mode
+                and cannot exceed it.
+              </p>
+            </article>
+            <article>
+              <span className="label">Sub thread</span>
+              <h3>A conversation that stays</h3>
+              <p>
+                <b>threads spawn</b> starts an ordinary thread owned by the
+                caller and nested under it. It works beside the calling turn
+                rather than inside it, and it is still there tomorrow. Eight at
+                once.
+              </p>
+            </article>
+            <article>
+              <span className="label">Queue · steer · stop</span>
+              <h3>Three doors into a running turn</h3>
+              <p>
+                Enter queues; the queue drains one turn at a time. ⤳ steers —
+                the text lands at the next model step. Escape stops, writes the
+                partial answer to history, and <i>holds</i> what was queued.
+              </p>
+            </article>
+          </div>
+
+          <div style={{ marginTop: 24 }}>
+            <Shot
+              src="/shots/plan-subagents.png"
+              alt="A plan open full screen: a twenty-four step dependency graph over seven waves with the running wave lit, beside the step cards — each one a subagent brief, what it waits on, and its task list"
+              title="A plan, mid-flight"
+              caption="24 steps · seven waves · every node a subagent brief, every edge something it waits on"
+            />
+          </div>
         </section>
 
-        <section className="feature-section section shell" id="product">
-          <div className="section-heading-row">
-            <p className="eyebrow">WHAT A TURN CAN DO</p>
-            <p>ONE SYSTEM / THREE CLEAR BOUNDARIES</p>
-          </div>
-          <div className="feature-grid">
-            {features.map((feature) => (
-              <article className="feature-card" key={feature.id}>
-                <div className="card-top">
-                  <span>{feature.id}</span>
-                  <Mark small />
-                </div>
-                <div>
-                  <p className="mini-label">{feature.label}</p>
-                  <h3>{feature.title}</h3>
-                  <p>{feature.copy}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section" id="control">
-          <div className="shell split">
+        <section className="section shell" id="plan">
+          <div className="head head-split">
             <div>
-              <p className="eyebrow">PERMISSION MODES</p>
-              <h2>
-                You decide how much
-                <br />
-                Emma does alone.
-              </h2>
-              <div className="mode-list">
-                {modes.map(([name, copy]) => (
-                  <div className="mode-row" key={name}>
-                    <span>{name}</span>
-                    <p>{copy}</p>
+              <p className="eyebrow">Plan</p>
+              <h2>Plan is a tool, not a mode.</h2>
+            </div>
+            <p className="lede">
+              <b>plan</b> writes steps to Markdown, each a subagent brief wired
+              to what it waits on. Steps whose dependencies are done form a{" "}
+              <b>wave</b> — up to eight live subagents. Markdown is the store,
+              so a hand-edited plan still parses.
+            </p>
+          </div>
+
+          <div className="cols-2">
+            <PlanGraph />
+            <WorkflowGraph />
+            <Waterfall />
+            <Ledger />
+          </div>
+
+          <div className="note">
+            Three of these are inspector components — plan, timeline and the
+            context ledger — and all read the same ledger the numbers do. The
+            workflow graph belongs to Scheduled.
+          </div>
+
+          <div className="cols-2" style={{ marginTop: 40 }}>
+            <div>
+              <h3>The inspector is components you arrange</h3>
+              <p className="copy" style={{ marginTop: 12 }}>
+                Ten ship. Drag them in or out, flip the orientable ones, keep
+                four named pages. Validated on the way in, so a hand-edited
+                settings file cannot break the bar.
+              </p>
+              <div className="rows" style={{ marginTop: 20 }}>
+                {widgets.map(([glyph, name, what]) => (
+                  <div key={name}>
+                    <span>
+                      <i
+                        className="glyph"
+                        style={{ fontStyle: "normal" }}
+                        aria-hidden="true"
+                      >
+                        {glyph}
+                      </i>
+                      {name}
+                    </span>
+                    <p>{what}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="model-copy">
-              <p>
-                One table decides what each mode advertises and what it stops to
-                ask about, so the picker beside ＋ and the check that enforces
-                it cannot drift. A scheduled job fires under the mode it was
-                saved with. The terminal command reads the same names.
-              </p>
-              <div className="schedule-card">
-                <div className="schedule-head">
-                  <span>CONTROL THIS MAC</span>
-                  <b>＋ MENU</b>
+            <Shot
+              src="/shots/settings-context-bar.png"
+              alt="Settings, context bar: page tabs, a list of components to drag in and out of the column, and a live preview of the bar at its default 288 pixel width"
+              title="Arranging the inspector"
+              caption="Palette left · a live 288px preview right · up to four pages, each named"
+            />
+          </div>
+        </section>
+
+        <section className="section shell" id="models">
+          <div className="head head-split">
+            <div>
+              <p className="eyebrow">Models</p>
+              <h2>A free chain first. A fallback behind every link.</h2>
+            </div>
+            <p className="lede">
+              Any OpenAI-compatible endpoint; ships pointed at OpenRouter. The{" "}
+              <b>Emma Free Router</b> expands into one fallback array, best
+              first, so a rate-limited or retired link is just the one that did
+              not answer. Dead ids are filtered against the catalog, not sent.
+            </p>
+          </div>
+
+          <div className="cols-2">
+            <div>
+              <div className="region">
+                <div className="band band-head">
+                  <span className="label">
+                    Emma Free Router — default chain
+                  </span>
+                  <span className="tag tag-accent">editable · up to 24</span>
                 </div>
-                <dl>
-                  <div>
-                    <dt>APPROVAL</dt>
-                    <dd>Per run, before it starts</dd>
-                  </div>
-                  <div>
-                    <dt>CEILINGS</dt>
-                    <dd>20 steps / 10 minutes</dd>
-                  </div>
-                  <div>
-                    <dt>STOP</dt>
-                    <dd>Escape, from anywhere</dd>
-                  </div>
-                  <div>
-                    <dt>BANNER</dt>
-                    <dd>
-                      <i /> Above every app
-                    </dd>
-                  </div>
+                <ol className="band chain">
+                  {chain.map((id) => (
+                    <li key={id}>
+                      <Brand id={id} />
+                      {id}
+                    </li>
+                  ))}
+                </ol>
+                <div className="band">
+                  <p className="copy">
+                    Drag to reorder, ✕ to drop a link, add any model the catalog
+                    prices at zero. Validated in the renderer and again in the
+                    trusted process.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <dl className="kv region" style={{ padding: 16 }}>
+                <dt>Catalog</dt>
+                <dd>tool-capable models only</dd>
+                <dt>Browsing</dt>
+                <dd>needs no key</dd>
+                <dt>Offline</dt>
+                <dd>cached, plus a 334-row seed</dd>
+                <dt>Local endpoints</dt>
+                <dd>loopback http only</dd>
+                <dt>Keys</dt>
+                <dd>keychain · env var · masked back</dd>
+                <dt>Private routing</dt>
+                <dd>fail closed, never fall back</dd>
+              </dl>
+              <p className="copy" style={{ marginTop: 16 }}>
+                A credential setting <i>names</i> an environment variable, never
+                the key. What you paste is keychain-encrypted and reaches the
+                agent only in its spawn environment. Private routing fails a
+                turn rather than route where the prompt might be kept.
+              </p>
+              <div className="region" style={{ marginTop: 20 }}>
+                <div className="band band-head">
+                  <span className="label">When a model goes quiet</span>
+                </div>
+                <div className="band">
+                  <p className="copy">
+                    A minute with no delta and no tool call — three if a tool is
+                    running — draws a stall notice and <b>Try another model</b>.
+                    Picking one swaps <i>this</i> turn: the run stops, the same
+                    prompt requeues, nothing typed.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <Shot
+              src="/shots/model-picker.png"
+              alt="The model picker open over a new thread: a searchable list of the live OpenRouter catalog with free models marked, provider filters down the side, a thinking slider, and the selected model pinned at the top"
+              title="The picker"
+              caption="Live catalog · free filter · thinking effort · per-thread, recorded per turn"
+            />
+          </div>
+
+          <div className="head" style={{ marginTop: 56, marginBottom: 20 }}>
+            <h2>The second models are yours to point.</h2>
+            <p className="lede">
+              Four subsystems, each on its own small model. All four take a
+              model, an endpoint, a credential variable and a system prompt you
+              write — free hosted, LM Studio on loopback, or off.
+            </p>
+          </div>
+
+          <div className="tbl-wrap">
+            <table className="tbl">
+              <thead>
+                <tr>
+                  <th>Subsystem</th>
+                  <th>What it decides</th>
+                  <th>Ships with</th>
+                  <th>Budget</th>
+                </tr>
+              </thead>
+              <tbody>
+                {secondModels.map((m) => (
+                  <tr key={m.name}>
+                    <td>{m.name}</td>
+                    <td>{m.role}</td>
+                    <td>
+                      {m.model.includes("/") ? (
+                        <span className="brandcell">
+                          <Brand id={m.model} />
+                          <b>{m.model}</b>
+                        </span>
+                      ) : (
+                        <span className="muted">{m.model}</span>
+                      )}
+                    </td>
+                    <td className="muted">{m.budget}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="section shell" id="control">
+          <div className="head head-split">
+            <div>
+              <p className="eyebrow">Control</p>
+              <h2>You set how much a turn may do alone.</h2>
+            </div>
+            <p className="lede">
+              One table decides what each mode advertises and what it stops to
+              ask about, so the picker and the check enforcing it cannot drift.
+              A subagent inherits the mode and cannot exceed it. Of Emma's 24
+              tools, seven ever ask.
+            </p>
+          </div>
+
+          <div className="rows">
+            {modes.map(([glyph, name, copy]) => (
+              <div key={name}>
+                <span>
+                  <i
+                    className="glyph"
+                    style={{ fontStyle: "normal" }}
+                    aria-hidden="true"
+                  >
+                    {glyph}
+                  </i>
+                  {name}
+                </span>
+                <p>{copy}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="cols-2" style={{ marginTop: 40 }}>
+            <div>
+              <h3>Auto mode is a model reading a call</h3>
+              <p className="copy" style={{ marginTop: 12 }}>
+                Auto reads the same column Ask does, but the question goes to
+                your verifier model — arguments clamped, your standing rules on
+                top. Three attempts, then it asks you anyway. No verifier model,
+                no clearances: the mode fails toward the dialog.
+              </p>
+              <div className="chips" style={{ marginTop: 16 }}>
+                {[
+                  "browser",
+                  "cli",
+                  "computer",
+                  "run_tool",
+                  "install_mcp",
+                  "workflow",
+                  "autoresearch",
+                ].map((t) => (
+                  <span className="tag tag-accent" key={t}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="region">
+              <div className="band band-head">
+                <span className="label">Controlling this Mac</span>
+                <span className="tag">no mode switches these off</span>
+              </div>
+              <div className="band">
+                <dl className="kv">
+                  <dt>Model steps per run</dt>
+                  <dd>20</dd>
+                  <dt>Actions per run</dt>
+                  <dd>400</dd>
+                  <dt>Wall clock</dt>
+                  <dd>10 minutes</dd>
+                  <dt>Gap between actions</dt>
+                  <dd>40 ms</dd>
+                  <dt>Characters in one type</dt>
+                  <dd>4096</dd>
+                  <dt>Banner</dt>
+                  <dd>above every app</dd>
+                  <dt>Escape</dt>
+                  <dd>global, for the life of the run</dd>
                 </dl>
               </div>
+              <div className="band">
+                <p className="copy">
+                  <b>computer</b> is an ordinary tool, so the mode picker
+                  decides it — no separate "control this Mac" flow. Screenshots
+                  stay in Emma's process; every action is a line in the log and
+                  a span in the trace.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="model-section section" id="models">
-          <div className="shell split">
+        <section className="section shell" id="surfaces">
+          <div className="head head-split">
             <div>
-              <p className="eyebrow">MODEL FREEDOM</p>
-              <h2>
-                Local when you want it.
-                <br />
-                Cloud when you need it.
-              </h2>
+              <p className="eyebrow">The notch</p>
+              <h2>Emma, anywhere, without leaving the app you are in.</h2>
             </div>
-            <div className="model-copy">
-              <p>
-                Emma speaks the OpenAI-compatible protocol, so the workspace is
-                not fused to one inference path. A pasted key is encrypted with
-                the OS keychain and reaches the agent through its spawn
-                environment; the interface only ever gets a mask back.
-              </p>
-              <div className="endpoint">
-                <span>
-                  <i /> LOCAL
-                </span>
-                <b>http://127.0.0.1:1234/v1</b>
-                <em>BASE URL / MODEL / KEY NAME</em>
-              </div>
-              <div className="endpoint">
-                <span>☁ OPENROUTER</span>
-                <b>Live tool-capable catalog</b>
-                <em>BROWSING NEEDS NO KEY</em>
-              </div>
-              <div className="endpoint">
-                <span>◈ ZERO RETENTION</span>
-                <b>Fail closed, never fall back</b>
-                <em>OFF BY DEFAULT</em>
-              </div>
-            </div>
+            <p className="lede">
+              Double-tap <b>left Option</b> and Quick Ask opens on the real
+              camera housing — measured per display, with a calibrated virtual
+              notch for monitors without one. Transcript, composer, both pickers
+              and live tok/s, over whatever you were doing.
+            </p>
           </div>
-        </section>
 
-        <section className="capability-section section shell" id="capabilities">
-          <div className="section-intro compact">
-            <p className="eyebrow">CAPABILITIES</p>
-            <h2>
-              Power that appears
-              <br />
-              when the work calls for it.
-            </h2>
+          <Shot
+            src="/shots/notch-island.png"
+            alt="Quick Ask open at the notch, wrapping the camera housing: a draft in the composer, the mode and model chips along the foot"
+            title="Quick Ask"
+            caption="One island, not a stack of panels · Escape leaves · an unsent draft survives"
+          />
+
+          <div className="cols-2" style={{ marginTop: 28 }}>
+            <Shot
+              src="/shots/notch-radial.png"
+              alt="The radial command ring orbiting the cursor with six labelled orbs"
+              title="The ring"
+              caption="Up to eight orbs at the cursor · main validates every command against a fixed catalog"
+            />
+            <div className="stack">
+              <h3>The idle sliver</h3>
+              <p className="copy">
+                Closed, a transparent hotspot builds itself over the housing as
+                the cursor nears — click-through until the cursor is inside, so
+                the menu bar keeps working.
+              </p>
+              <h3>Quick actions and orbs</h3>
+              <p className="copy">
+                Three saved actions on ⌘1–⌘3, hung under the island as orbs when
+                you sweep down through the notch. Capture the screen, draw on
+                the wallpaper, keep the page, open the workspace — from a ring
+                the renderer cannot add to.
+              </p>
+              <h3>Tear it off</h3>
+              <p className="copy">
+                Dragged off the housing, Quick Ask becomes a 44px chip parked
+                where you left it — always whole and inside the work area. Click
+                it and the same island opens beside it.
+              </p>
+            </div>
           </div>
-          <div className="capability-grid">
-            {capabilities.map(([title, copy], index) => (
-              <article key={title}>
-                <div className="cap-icon" aria-hidden="true">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <svg viewBox="0 0 48 48" fill="none">
-                    <circle cx="24" cy="24" r="15" />
-                    <path d="M12 24h24M24 12v24" />
-                  </svg>
-                </div>
-                <h3>{title}</h3>
-                <p>{copy}</p>
+
+          <div style={{ marginTop: 28 }}>
+            <Shot
+              src="/shots/settings-quick-actions.png"
+              alt="Settings, quick actions: three labelled prompts bound to Command-1, 2 and 3, with the cursor orb catalog beneath"
+              title="Quick actions"
+              caption="A label and a prompt each · run as one turn in a fresh thread"
+            />
+          </div>
+
+          <div className="cards" style={{ marginTop: 40 }}>
+            {surfaces.map((s) => (
+              <article key={s.label}>
+                <span className="label">{s.label}</span>
+                <h3>{s.title}</h3>
+                <p>{s.copy}</p>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="synthesis section" id="jobs">
-          <div className="shell synthesis-grid">
+        <section className="section shell" id="knowledge">
+          <div className="cols-2">
             <div>
-              <p className="eyebrow">
-                <span className="live-dot" /> JOBS THAT RUN WITHOUT YOU
+              <p className="eyebrow">Knowledge</p>
+              <h2 style={{ marginTop: 16 }}>Notes you can walk away with.</h2>
+              <p className="lede" style={{ marginTop: 20 }}>
+                A turn is not a memory. <b>keep</b> is the one way anything
+                reaches your vault: one Markdown note — title, kind, date,
+                source, application, tags — in the folder you picked. The folder{" "}
+                <i>is</i> the store. No mirror, no database.
               </p>
-              <h2>
-                Schedule a workflow.
-                <br />
-                Or run an experiment.
-              </h2>
-              <p>
-                A scheduled job is a workflow: one trigger — UTC cron, manual,
-                after another job, or an app event — and a graph of agent, set,
-                and branch nodes. It opens a normal thread under the mode it was
-                saved with, and never saves knowledge or writes a skill
-                silently. An autoresearch job points at a git project instead:
-                Emma proposes one change, runs your eval command, reads the
-                metric, and keeps or reverts the commit until a budget stops it.
-                The metric cannot be edited while the job lives.
-              </p>
-            </div>
-            <div className="schedule-card">
-              <div className="schedule-head">
-                <span>AUTORESEARCH</span>
-                <b>ITERATION 24</b>
-              </div>
-              <div className="orbit" aria-hidden="true">
-                <span>
-                  METRIC
-                  <br />
-                  LOCKED
-                </span>
-              </div>
-              <dl>
-                <div>
-                  <dt>EVAL</dt>
-                  <dd>uv run train.py</dd>
-                </div>
-                <div>
-                  <dt>BUDGET</dt>
-                  <dd>Time / tokens / spend</dd>
-                </div>
-                <div>
-                  <dt>LAST</dt>
-                  <dd>
-                    <i /> Kept the commit
-                  </dd>
-                </div>
+              <dl className="kv region" style={{ padding: 16, marginTop: 24 }}>
+                <dt>Store</dt>
+                <dd>
+                  <span className="brandcell">
+                    <img className="mark" src="/brands/obsidian.svg" alt="" />
+                    Obsidian vault or plain folder
+                  </span>
+                </dd>
+                <dt>Kinds</dt>
+                <dd>page · note · selection · screenshot</dd>
+                <dt>Note ceiling</dt>
+                <dd>256 KiB</dd>
+                <dt>Attachment ceiling</dt>
+                <dd>8 MiB</dd>
+                <dt>Path check</dt>
+                <dd>inside the folder, before any write</dd>
               </dl>
             </div>
+            <Shot
+              src="/shots/knowledge-base.png"
+              alt="The knowledge base: saved notes as rows, each with its kind, when it was saved, its tags, where it came from and the Markdown file it became"
+              title="The knowledge base"
+              caption="Every row is one Markdown file in your own vault"
+            />
           </div>
         </section>
 
-        <section className="section shell" id="knowledge">
-          <div className="split">
+        <section className="section shell" id="jobs">
+          <div className="head head-split">
             <div>
-              <p className="eyebrow">PLAIN MARKDOWN</p>
-              <h2>
-                A knowledge base you
-                <br />
-                can read without Emma.
-              </h2>
+              <p className="eyebrow">Work the clock runs</p>
+              <h2>Scheduled graphs, and experiments that judge themselves.</h2>
             </div>
-            <div className="model-copy">
-              <p>
-                Point Emma at an Obsidian vault or any plain folder you already
-                own. Each save writes one Markdown note — YAML front matter and
-                the document Emma built — into <b>knowledge-base</b>,
-                attachments alongside it. There is no second copy: the vault is
-                the store, readable and editable by anything without knowing
-                Emma.
+            <p className="lede">
+              One validated trigger — five-field UTC cron, manual, after another
+              job, or an app event — and a graph of three node kinds passing{" "}
+              <b>{"{{name}}"}</b> variables. It opens a normal thread under the
+              mode it was saved with.
+            </p>
+          </div>
+
+          <div className="cols-2">
+            <Shot
+              src="/shots/scheduled-jobs.png"
+              alt="The scheduled view: five live tasks down the left, one open as a graph — an agent step, a branch, two alternative agents, and a step that files the result — with its daily trigger in the corner"
+              title="Scheduled tasks"
+              caption="Trigger · graph · variables passed between steps · every run opens its own thread"
+            />
+            <div>
+              <div className="region">
+                <div className="band band-head">
+                  <span className="label">Autoresearch</span>
+                  <span className="tag tag-accent">metric locked for life</span>
+                </div>
+                <div className="band">
+                  <p className="copy">
+                    A long loop against a git project: the agent proposes a
+                    change, Emma runs your eval, reads the metric, keeps or
+                    reverts the commit — until a budget stops it.
+                  </p>
+                </div>
+                <div className="band">
+                  <dl className="kv">
+                    <dt>Metric name · kind · direction</dt>
+                    <dd>immutable</dd>
+                    <dt>Eval ceiling</dt>
+                    <dd>15 minutes</dd>
+                    <dt>Budgets</dt>
+                    <dd>time · tokens · spend</dd>
+                    <dt>Every iteration</dt>
+                    <dd>appended to results.tsv</dd>
+                  </dl>
+                </div>
+              </div>
+              <p className="copy" style={{ marginTop: 20 }}>
+                The record is a TSV in the project itself. Emma's Rust core
+                stores the job and never runs one — the loop is in the app
+                process, where the budget is checked against real token counts.
               </p>
-              <div className="endpoint">
-                <span>◇ VAULT</span>
-                <b>a folder you already own</b>
-                <em>OBSIDIAN OR PLAIN</em>
-              </div>
-              <div className="endpoint">
-                <span>▸ TERMINAL</span>
-                <b>emma-cli ask “your prompt”</b>
-                <em>SAME AGENT, HEADLESS</em>
-              </div>
-              <div className="endpoint">
-                <span>◈ MODE</span>
-                <b>every call gated on the tty</b>
-                <em>SAME GATES, NO WINDOW</em>
-              </div>
             </div>
           </div>
         </section>
 
-        <section className="final-cta section shell">
-          <p className="eyebrow">A QUIETER KIND OF POWER</p>
-          <h2>
-            Do the work.
-            <br />
-            <span>Keep what matters.</span>
-          </h2>
-          <p>
-            Emma is an everything agent built around boundaries you can see.
+        <section className="section shell" id="agent">
+          <div className="cols-2">
+            <div>
+              <p className="eyebrow">Self-improvement</p>
+              <h2 style={{ marginTop: 16 }}>Emma's page about Emma.</h2>
+              <p className="lede" style={{ marginTop: 20 }}>
+                She reads the traces her finished turns left, names the friction
+                that repeats, and drafts one change. Then she tries to prove it
+                helped — a replay bench of your saved cases, both arms back to
+                back, at a case count declared before the run.
+              </p>
+              <div className="rows" style={{ marginTop: 24 }}>
+                <div>
+                  <span>Levers</span>
+                  <p>
+                    Two, and only two: the standing instructions every turn
+                    carries, and the rules the auto verifier reviews a call
+                    against.
+                  </p>
+                </div>
+                <div>
+                  <span>Evidence</span>
+                  <p>
+                    Four numbers off each stored trace, the same ones the
+                    timeline draws. A change that cannot show a difference is
+                    not kept.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Shot
+              src="/shots/agent-dashboard.png"
+              alt="The agent page: repeating patterns read out of real runs — a tool that keeps failing, a command the verifier keeps blocking — each with dated evidence, above the changes Emma kept or reverted"
+              title="Where runs get stuck"
+              caption="Friction named from your own runs, not from a benchmark"
+            />
+          </div>
+        </section>
+
+        <section className="section shell" id="tools">
+          <div className="head head-split">
+            <div>
+              <p className="eyebrow">The catalog</p>
+              <h2>Twenty-four of Emma's own. The shell is the harness's.</h2>
+            </div>
+            <p className="lede">
+              Emma ships no <b>bash</b> of her own. Files, search, shell,
+              language-server queries, skills, MCP and subagents belong to the
+              harness, gated over one permission channel. Emma's tools are
+              appended to that registry natively.
+            </p>
+          </div>
+
+          <div className="tools">
+            {tools.map(([name, gate]) => (
+              <div key={name} data-gate={gate}>
+                <span>{name}</span>
+                <i>{gate}</i>
+              </div>
+            ))}
+          </div>
+
+          <div className="cols" style={{ marginTop: 32 }}>
+            <div>
+              <h3>Emma writes her own</h3>
+              <p className="copy">
+                <b>write_skill</b> records a lesson, <b>write_tool</b> writes a
+                script callable by name, <b>install_mcp</b> adds a server, and{" "}
+                <b>write_plugin</b> packages skills in the Codex format.
+                Anything installed mid-turn is live on the next turn.
+              </p>
+            </div>
+            <div>
+              <h3>Artifacts can become the app</h3>
+              <p className="copy">
+                A code artifact exporting <b>(api) ={">"} Component</b> and
+                claiming <b>navbar</b>, <b>chat</b>, <b>notch</b> or{" "}
+                <b>context</b> replaces that region live, on the built-in's own
+                props. The built-in returns the moment it throws.
+              </p>
+            </div>
+            <div>
+              <h3>Everything leaves a record</h3>
+              <p className="copy">
+                Every call is a span in the thread's durable trace — readable in
+                the inspector, or by the agent with <b>read_trace</b>. The whole
+                thread exports as a folder of CSVs.
+              </p>
+            </div>
+          </div>
+
+          <div className="region" style={{ marginTop: 32 }}>
+            <div className="band band-head">
+              <span className="label">The same agent, headless</span>
+              <span className="tag">gated on the tty</span>
+            </div>
+            <div className="band code">
+              {`$ `}
+              <b>emma-cli ask "explain this repository"</b>
+              {`
+$ `}
+              <b>emma-cli</b>
+              {`                      a REPL in the current directory
+$ `}
+              <b>emma-cli session resume last</b>
+            </div>
+          </div>
+        </section>
+
+        <section className="section shell cta">
+          <p className="eyebrow">
+            <span className="dot" /> a quieter kind of power
           </p>
-          <a className="primary" href="#preview">
-            EXPLORE EMMA <span>↗</span>
-          </a>
+          <h2>Do the work. Keep what mattered.</h2>
+          <p className="lede">
+            One loop, every surface. Four modes you can see. Markdown you own,
+            in a folder you picked, readable long after Emma is closed.
+          </p>
+          <div className="actions">
+            <a className="btn btn-solid" href="#harness">
+              Start at the harness ↑
+            </a>
+            <a className="btn" href="#tools">
+              Read the catalog
+            </a>
+          </div>
         </section>
       </main>
 
       <footer>
-        <div className="shell footer-grid">
+        <div className="shell foot">
           <a className="brand" href="#top">
-            <Mark small />
-            <span>EMMA</span>
+            <Mark size={20} />
+            <span>Emma</span>
           </a>
-          <p>A macOS-first everything agent.</p>
-          <nav aria-label="Footer navigation">
-            <a href="#product">PRODUCT</a>
-            <a href="#control">CONTROL</a>
-            <a href="#capabilities">CAPABILITIES</a>
-            <a href="#knowledge">KNOWLEDGE</a>
+          <nav aria-label="Footer">
+            <a href="#harness">Harness</a>
+            <a href="#delegation">Delegation</a>
+            <a href="#plan">Plan</a>
+            <a href="#models">Models</a>
+            <a href="#control">Control</a>
+            <a href="#surfaces">Surfaces</a>
+            <a href="#knowledge">Knowledge</a>
+            <a href="#jobs">Jobs</a>
+            <a href="#tools">Tools</a>
           </nav>
-          <p className="copyright">© {new Date().getFullYear()} EMMA</p>
+          <p>© {new Date().getFullYear()} Emma · macOS · Apple silicon</p>
         </div>
       </footer>
     </>

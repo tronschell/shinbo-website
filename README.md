@@ -5,8 +5,35 @@ has its own `package-lock.json` and is not part of any root workspace, so run
 every command from `website/`.
 
 React 19, Tailwind 4, and TypeScript on Vite 8. It is a single page:
-`src/main.tsx` mounts `src/App.tsx` into `index.html`, and `src/index.css`
-holds the Tailwind import and global styles.
+`src/main.tsx` mounts `src/App.tsx` into `index.html`. `src/index.css` holds the
+Tailwind import — used for its reset only, there are no utility classes — and
+the whole stylesheet.
+
+## Design
+
+The page is drawn from the app's own tokens, copied from
+[`desktop/src/styles/tokens.css`](../desktop/src/styles/tokens.css): the same
+paper and ink steps, the same six categorical hues with orange leading, square
+corners, 1px rules instead of filled cards, Departure Mono for anything on the
+grid and Inter for prose. See [`docs/design-system.md`](../docs/design-system.md).
+
+Copy is checked against `docs/` and the source it cites; the numbers on the page
+(tool counts, ceilings, model ids, CLI flags) come from there rather than from
+marketing.
+
+## Assets
+
+`public/` is copied verbatim into the build.
+
+|                    |                                                                                                                                                                                               |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `public/shots/`    | Real app screenshots, taken from [`desktop/screenshots/`](../desktop/screenshots)                                                                                                             |
+| `public/brands/`   | Vendor marks for the CLIs Emma drives and the agents she imports from, from [`desktop/assets/brands/`](../desktop/assets/brands) — terms in [`docs/icon-sources.md`](../docs/icon-sources.md) |
+| `public/fonts/`    | Departure Mono, OFL 1.1 — see [`docs/credits.md`](../docs/credits.md)                                                                                                                         |
+| `public/emma.webp` | The mark                                                                                                                                                                                      |
+
+Re-take a screenshot in the app, drop it into `desktop/screenshots/`, then copy
+it over the one in `public/shots/`. Nothing generates them.
 
 ## Development
 
