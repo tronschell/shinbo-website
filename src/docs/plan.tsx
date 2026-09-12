@@ -59,6 +59,21 @@ const doc: Doc = {
         </div>
       </div>
 
+      <h3>Keep a nested task list</h3>
+      <p className="copy">
+        The <code>task_list</code> tool keeps a durable checklist for work the
+        agent handles itself. Expand Tasks above the composer to see the nested
+        tree, or add the Tasks component to Context and open its full view.
+        Parent and child rows keep their own status; select a task to follow it
+        in the tree.
+      </p>
+      <Shot
+        src="/shots/task-plan.png"
+        alt="Shinbo task-list view with five example tasks nested across three levels"
+        title="Nested task list"
+        caption="Real app · example checklist, no model run"
+      />
+
       <div className="cols-2">
         <PlanGraph />
         <div>

@@ -91,6 +91,16 @@
       "width": 1240,
       "height": 512,
       "sha256": "1e735a2919926c186cc29405d30df6e69284aa9d4486240f6e6a1de87ce0e744"
+    },
+    "document-minimap.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "ba4f9fb5163a03722416ea7ab5d25fcb66e5725af8f23c070901a5e9dc2ccd75"
+    },
+    "task-plan.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "737b78a59b68345424eae365668389e51e8588da4ad86b5e1c4370d86d3297c1"
     }
   }
 }

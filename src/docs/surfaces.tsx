@@ -151,6 +151,13 @@ const doc: Doc = {
         </div>
       </div>
 
+      <Shot
+        src="/shots/document-minimap.png"
+        alt="Shinbo Markdown preview with the development guide and a left-side document minimap"
+        title="Document minimap"
+        caption="Real app · local development guide preview"
+      />
+
       <div className="region">
         <div className="band band-head">
           <span className="label">Limits</span>
