@@ -4,6 +4,24 @@ import { loadPage } from "./App";
 import "./index.css";
 
 const root = document.getElementById("root")!;
+
+// Report installer clicks to GA4 as its built-in file_download event (enhanced
+// measurement misses .dmg, so it is disabled in the property and done here).
+document.addEventListener("click", (e) => {
+  const a = (e.target as Element).closest("a");
+  if (!a?.href.includes("/releases/download/")) return;
+  const file = a.href.split("/").pop()!;
+  (window as { gtag?: (...args: unknown[]) => void }).gtag?.(
+    "event",
+    "file_download",
+    {
+      file_name: file,
+      file_extension: file.split(".").pop(),
+      link_url: a.href,
+      transport_type: "beacon",
+    },
+  );
+});
 function Page({ children }: { children: ReactNode }) {
   useEffect(() => {
     const target =

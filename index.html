@@ -22,6 +22,20 @@
     <meta name="theme-color" content="#202023" />
     <meta name="color-scheme" content="dark" />
 
+    <!-- Google Analytics 4. Download clicks are reported from src/main.tsx. -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-18F548ZLEC"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-18F548ZLEC");
+    </script>
+
     <link rel="icon" href="/shinbo.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
