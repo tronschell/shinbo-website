@@ -58,6 +58,14 @@ const doc: Doc = {
         </div>
       </div>
 
+      <p className="copy">
+        By default, Shinbo handles bounded searches and cleanup directly. It
+        delegates substantial independent work when the parent can make useful
+        progress on separate work, or when you or the repository instructions
+        require delegation. Related discoveries stay outside the requested scope
+        unless they are necessary to complete it.
+      </p>
+
       <h3>Two ways to delegate</h3>
       <div className="cols-2">
         <div className="region">

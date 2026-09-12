@@ -112,6 +112,15 @@ const doc: Doc = {
             as a real module inside Shinbo's interface.
           </p>
           <p className="copy">
+            Long Markdown and source-code previews have a minimap on the left
+            showing a scaled copy of the rendered content and your visible
+            position. The miniature pans as you scroll through long documents.
+            Click to jump or drag to scroll. With the minimap focused, use the
+            arrow, Page Up, Page Down, Home and End keys to navigate. It appears
+            in file previews and artifact viewers only when the content
+            overflows.
+          </p>
+          <p className="copy">
             A code artifact can also replace one of four interface regions —{" "}
             <code>navbar</code>, <code>chat</code>, <code>notch</code> or{" "}
             <code>context</code> — by exporting{" "}
@@ -121,6 +130,14 @@ const doc: Doc = {
           </p>
         </div>
         <div className="stack">
+          <h3>Review changes</h3>
+          <p className="copy">
+            Changes and Git open in a resizable pane beside the conversation.
+            Opening either collapses Context; closing it restores the previous
+            Context state. In Changes, unchanged lines collapse into expandable
+            rows so edits are visible first. Click a row, or focus it and press
+            Enter or Space, to show or hide its context.
+          </p>
           <h3>Terminal, browser, voice</h3>
           <p className="copy">
             The terminal opens up to <b>eight</b> login shells in the thread's

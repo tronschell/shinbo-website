@@ -144,7 +144,7 @@ export const modes = [
   [
     "⬥",
     "Full access",
-    "Every tool runs on its own except computer use, which always asks. Other apps still ask, and Escape still stops a run.",
+    "Every tool runs on its own except computer use, which always asks. Other apps still ask. During computer use, global Escape stops computer access while the agent continues.",
   ],
 ];
 

@@ -93,8 +93,8 @@ const doc: Doc = {
         Ask and Accept edits behave the same for all 27 of Shinbo's own tools;
         the difference is file edits made by the harness. Auto uses a small{" "}
         <b>verifier</b> model to clear ordinary gated calls. If the verifier
-        breaks, Auto degrades to Ask, never to Full access. Escape stops a run
-        in every mode.
+        breaks, Auto degrades to Ask, never to Full access. During computer use,
+        global Escape stops computer access while the agent keeps running.
       </p>
 
       <div className="cols-2">
@@ -140,11 +140,7 @@ const doc: Doc = {
             </div>
             <div className="band">
               <dl className="kv">
-                <dt>Model steps per run</dt>
-                <dd>20</dd>
-                <dt>Actions per run</dt>
-                <dd>20</dd>
-                <dt>Wall clock</dt>
+                <dt>Computer access expires</dt>
                 <dd>10 minutes</dd>
                 <dt>Gap between actions</dt>
                 <dd>at least 40 ms</dd>
@@ -152,10 +148,12 @@ const doc: Doc = {
                 <dd>4096</dd>
                 <dt>Reaching an app</dt>
                 <dd>granted by you, once, by name</dd>
-                <dt>Banner</dt>
-                <dd>above every app</dd>
+                <dt>Computer control</dt>
+                <dd>
+                  top-right monitor icon and Stop; hover for action and app
+                </dd>
                 <dt>Escape</dt>
-                <dd>global, for the life of the run</dd>
+                <dd>global; revokes computer access for this turn</dd>
               </dl>
             </div>
             <div className="band">
@@ -164,7 +162,11 @@ const doc: Doc = {
                 only the turn that asked; an unanswered prompt lapses after ten
                 minutes. Shinbo reads what the app reports about itself through
                 accessibility, not the screen. Every action is a log line and a
-                trace span. Subagents cannot call computer; the parent does.
+                trace span. There is no computer tool-call cap. Stop, global
+                Escape, screen lock or sleep revoke computer access for the rest
+                of the turn; the agent keeps running and cannot restart computer
+                access until a new turn. Subagents cannot call computer; the
+                parent does.
               </p>
             </div>
           </div>
@@ -221,8 +223,8 @@ const doc: Doc = {
               run under the mode they were saved with.
             </li>
             <li>
-              The computer-use rails are per run; a long task spends them and
-              stops.
+              Computer access expires after ten minutes. App grants and input
+              safeguards still apply throughout the turn.
             </li>
             <li>
               The headless <code>shinbo-cli</code> gates on the terminal, not on

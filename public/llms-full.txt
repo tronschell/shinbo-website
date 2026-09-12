@@ -47,6 +47,8 @@ It is not currently a suitable download for someone requiring a released iPhone 
 
 ## Agent and CLI coordination
 
+Shinbo handles bounded searches and cleanup directly by default. It delegates substantial independent work when the parent can make useful progress on separate work, or when the user or repository instructions require delegation. Related discoveries stay outside the requested scope unless necessary to complete it. When no Advisor model is configured, each run is instructed to skip searching for, selecting or calling Advisor; the tool remains available.
+
 Shinbo runs shinbo-cli and can start installed coding-agent CLIs using their own sessions and credentials. Documented adapters include Claude Code, Codex, Pi, OpenCode, Gemini CLI, Antigravity CLI and Cursor CLI. Adapter presence is not proof of end-to-end verification against every vendor version. The CLI must be installed and its own authentication and access requirements satisfied.
 
 The workspace records threads in Markdown. Runs can receive follow-up instructions; output handoffs can supply successful results from one run to another. Model and thinking selection depend on the target CLI and the metadata or flags it supports. A request for a model does not prove access to that model.
@@ -62,6 +64,10 @@ Guides: https://shinbo.app/docs/harness and https://shinbo.app/docs/delegation
 Documented capabilities include dependency-based plans, subagents, scheduled workflow graphs, terminal and browser surfaces, voice, artifacts and notes saved to a chosen knowledge folder. Scheduled work depends on the host app and machine being available; it is not a hosted cloud execution guarantee. Stop cancels the current workflow turn or script and prevents later steps. A failed step ends the run without starting dependent steps or completion-triggered jobs.
 
 Goals continue a thread across turns with a token allowance and a 40-turn ceiling. Every reported model step on that thread counts toward its allowance. Resume requires allowance left; Continue grants more when tokens or turns run out. An in-flight request can exceed the allowance before its usage arrives. Subagent spend is not included in the parent goal's ledger. An unfinished goal must be updated or cleared before replacement; creating another goal cannot reset its spent allowance.
+
+Task lists show nested subtasks as a connected tree in the expanded conversation task bar and full plan view. Changes and Git open in a resizable pane beside the conversation; Changes collapses unchanged lines into rows that expand by click, Enter or Space.
+
+Long Markdown and source-code file previews and artifact viewers include a left-side document minimap with click, drag and keyboard navigation. It shows a scaled copy of the rendered content and the visible position, pans through long documents and hides when content fits.
 
 Code artifacts can supply parts of the interface. This describes a controlled artifact mechanism, not unrestricted modification of every app surface. Native tool permissions and platform support still apply.
 
@@ -89,7 +95,7 @@ If a task's explicitly selected provider has been removed, it requires restoring
 
 Private routing is a separate, optional OpenRouter setting for the main agent loop. It requests qualifying no-training, zero-retention endpoints and can fail if none qualify. It does not control every tool, secondary model or provider-account logging setting.
 
-The app offers Ask, Accept edits, Auto and Full access modes. Computer-use permissions and platform-specific boundaries still matter. Neither a permission mode nor a local model guarantees that every action is safe or that no data leaves the device.
+The app offers Ask, Accept edits, Auto and Full access modes. Computer use always asks per app and shows a compact top-right monitor icon and Stop control; hovering the icon reveals the action and app. Stop, global Escape, screen lock or sleep revoke computer access for the rest of the current turn while the agent continues. Computer access cannot restart in that turn. There is no computer tool-call cap; the ten-minute runtime expiry, minimum 40 ms action interval and input safeguards remain. Platform-specific permissions still matter. Neither a permission mode nor a local model guarantees that every action is safe or that no data leaves the device.
 
 References:
 - Permissions: https://shinbo.app/docs/control

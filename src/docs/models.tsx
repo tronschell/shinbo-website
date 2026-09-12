@@ -120,7 +120,10 @@ const doc: Doc = {
             <dt>Verifier</dt>
             <dd>clears gated calls in Auto mode</dd>
             <dt>Advisor</dt>
-            <dd>a stronger model consulted mid-turn</dd>
+            <dd>
+              a stronger model consulted mid-turn; when none is configured, runs
+              are instructed to skip Advisor discovery and calls
+            </dd>
             <dt>Vision</dt>
             <dd>answers about an image</dd>
             <dt>Secrets</dt>
