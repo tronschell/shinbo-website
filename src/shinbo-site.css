@@ -1063,9 +1063,30 @@
 }
 .v-shinbo .fg-footer-fine {
   grid-column: 1 / -1;
-  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 8px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--vc-line);
   font-size: 12px;
   color: var(--vc-muted);
+}
+.v-shinbo .fg-footer-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-footer-credit svg {
+  color: var(--vc-muted);
+  transition: color 0.15s;
+}
+.v-shinbo .fg-footer-credit:hover,
+.v-shinbo .fg-footer-credit:hover svg {
+  color: var(--vc-accent);
 }
 .v-shinbo .fg-skip {
   position: fixed;
