@@ -1,23 +1,27 @@
 {
-  "name": "emma-website",
+  "name": "shinbo-website",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run format:check && npm run lint && npm run build"
+    "check": "npm run format:check && npm run lint && npm run build && npm run test:site",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:site": "node scripts/check-downloads.mjs && node scripts/check-explain.mjs && node scripts/check-hero-mark.mjs && node scripts/check-site.mjs && python3 scripts/check-screenshots.py && python3 scripts/check-variations.py"
   },
   "dependencies": {
     "@tailwindcss/vite": "4.3.3",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "6.1.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "tailwindcss": "4.3.3",
+    "three": "^0.186.0",
     "vite": "8.2.2"
   },
   "devDependencies": {

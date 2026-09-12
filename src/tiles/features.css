@@ -1,0 +1,1118 @@
+/* Feature-tile animations. Class prefix ft-. Colours come from the site
+   tokens; all motion is under a reduced-motion guard and pauses with
+   [data-motion="paused"]. */
+.ft {
+  display: block;
+  width: 100%;
+  font: 13px/1.4 var(--font);
+  color: var(--vc-ink, var(--text));
+}
+svg.ft {
+  height: auto;
+  overflow: visible;
+}
+svg.ft text {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: currentColor;
+}
+
+/* ---------- cycler ---------- */
+.ft-cycle {
+  position: relative;
+  display: grid;
+}
+.ft-cycle > * {
+  grid-area: 1 / 1;
+  opacity: 0;
+}
+.ft-cycle > *:first-child {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-cycle > * {
+    animation: ft-cycle-5 var(--t) infinite;
+    animation-delay: calc(var(--i) * var(--t) / 5);
+  }
+  .ft-cycle[data-n="7"] > * {
+    animation-name: ft-cycle-7;
+    animation-delay: calc(var(--i) * var(--t) / 7);
+  }
+  .ft-cycle > *:first-child {
+    opacity: 0;
+  }
+  @keyframes ft-cycle-5 {
+    0%,
+    16% {
+      opacity: 1;
+      transform: none;
+    }
+    18%,
+    98% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes ft-cycle-7 {
+    0%,
+    11.3% {
+      opacity: 1;
+      transform: none;
+    }
+    12.3%,
+    98% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ---------- agent clis / models ---------- */
+.ft-clis,
+.ft-models {
+  display: grid;
+  gap: 18px;
+  padding: 8px 0;
+}
+.ft-clis-big > *,
+.ft-models .ft-cycle > * {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+}
+.ft-clis-big span {
+  font: 400 24px/1.1 var(--font-serif);
+}
+.ft-clis-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  opacity: 0.45;
+}
+.ft-clis img,
+.ft-models img {
+  display: block;
+}
+.ft-models b {
+  font: 500 15px/1.2 var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.ft-models span {
+  margin-top: -6px;
+  font-size: 12px;
+  color: var(--vc-muted);
+}
+
+/* ---------- subagents ---------- */
+.ft-sub rect {
+  fill: var(--vc-panel);
+  stroke: var(--vc-line);
+}
+.ft-sub-parent rect {
+  stroke: var(--vc-accent);
+}
+.ft-sub text {
+  dominant-baseline: central;
+}
+.ft-bot {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  color: var(--vc-muted);
+}
+.ft-bot circle {
+  fill: currentColor;
+  stroke: none;
+}
+.ft-bot-eye {
+  fill: currentColor;
+  stroke: none;
+}
+.ft-sub-parent .ft-bot {
+  color: var(--vc-accent);
+}
+.ft-sub-wire {
+  fill: none;
+  stroke: var(--vc-line);
+  stroke-dasharray: 120;
+}
+.ft-sub-spin {
+  fill: var(--vc-accent);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.ft-sub-done {
+  fill: none;
+  stroke: #7fe0bb;
+  stroke-width: 1.5;
+  opacity: 0;
+}
+.ft-sub-wave[data-wave="1"] {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-sub-wave > g {
+    animation-delay: calc(var(--i) * 0.35s);
+  }
+  .ft-sub-wave[data-wave="1"] {
+    opacity: 1;
+  }
+  .ft-sub-wave[data-wave="1"] > g {
+    animation-delay: calc(7s + var(--i) * 0.35s);
+  }
+  .ft-sub-wave > g > * {
+    opacity: 0;
+  }
+  .ft-sub-wave .ft-sub-wire {
+    animation: ft-sub-wire 8s infinite;
+    animation-delay: inherit;
+  }
+  .ft-sub-wave .ft-sub-child {
+    animation: ft-sub-child 8s infinite;
+    animation-delay: inherit;
+  }
+  .ft-sub-wave .ft-sub-spin {
+    animation: ft-sub-spin 8s infinite;
+    animation-delay: inherit;
+  }
+  .ft-sub-wave .ft-sub-done {
+    animation: ft-sub-done 8s infinite;
+    animation-delay: inherit;
+  }
+  /* one wave lives in the first half of the lap: wire draws, child works,
+     child finishes, everything fades */
+  @keyframes ft-sub-wire {
+    0% {
+      opacity: 0;
+      stroke-dashoffset: 120;
+    }
+    3% {
+      opacity: 1;
+    }
+    9%,
+    42% {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+    46%,
+    100% {
+      opacity: 0;
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes ft-sub-child {
+    0%,
+    7% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    10%,
+    42% {
+      opacity: 1;
+      transform: none;
+    }
+    46%,
+    100% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes ft-sub-spin {
+    0%,
+    10% {
+      opacity: 0;
+    }
+    11%,
+    32% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    21% {
+      transform: scale(0.4);
+    }
+    34%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-sub-done {
+    0%,
+    33% {
+      opacity: 0;
+    }
+    35%,
+    42% {
+      opacity: 1;
+    }
+    46%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- permissions ---------- */
+.ft-perm {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+}
+.ft-perm-req,
+.ft-perm-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+  border: 1px solid var(--vc-line);
+}
+.ft-perm-req {
+  border-color: var(--vc-accent);
+}
+.ft-perm-req > span {
+  font: 11px/1 var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vc-muted);
+}
+.ft-perm-req b {
+  font: 500 14px/1.3 var(--font-mono);
+}
+.ft-perm-row > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ft-perm-row i {
+  font-style: normal;
+  color: var(--vc-accent);
+}
+.ft-perm em {
+  font-style: normal;
+  font-size: 12px;
+  color: #ffb27f;
+}
+.ft-perm em::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+  background: currentColor;
+}
+.ft-perm em[data-verdict="run"],
+.ft-perm em[data-verdict="screen"] {
+  color: #7fe0bb;
+}
+.ft-perm em[data-verdict="block"] {
+  color: var(--vc-accent);
+}
+
+/* ---------- memory ---------- */
+.ft-mem-brain {
+  fill: color-mix(in srgb, var(--vc-accent) 8%, transparent);
+  stroke: var(--vc-accent);
+  stroke-width: 1.2;
+}
+.ft-mem-fold {
+  fill: none;
+  stroke: var(--vc-accent);
+  stroke-dasharray: 3 3;
+  opacity: 0.6;
+}
+.ft-mem-chip rect {
+  fill: var(--vc-panel);
+  stroke: var(--vc-line);
+}
+.ft.ft-mem .ft-mem-chip text {
+  dominant-baseline: central;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.ft-mem-kind {
+  text-transform: uppercase;
+  fill: #a89bff;
+}
+.ft-mem-chip[data-kind="user"] .ft-mem-kind {
+  fill: #7fe0bb;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-mem-chip {
+    animation: ft-float 5s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -1.3s);
+  }
+  @keyframes ft-float {
+    from {
+      translate: 0 -4px;
+    }
+    to {
+      translate: 0 4px;
+    }
+  }
+}
+
+/* ---------- extensions ---------- */
+.ft-ext {
+  position: relative;
+  height: 150px;
+}
+.ft-ext span {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border: 1px solid var(--vc-line);
+  background: var(--vc-panel);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.ft-ext i {
+  width: 10px;
+  height: 10px;
+  background: var(--vc-accent);
+}
+.ft-ext span:nth-child(3n) i {
+  background: #a89bff;
+}
+.ft-ext span:nth-child(3n + 1) i {
+  background: #7fe0bb;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-ext span {
+    animation: ft-float 4s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -0.9s);
+  }
+}
+
+/* ---------- self learning ---------- */
+.ft-learn {
+  display: grid;
+  gap: 10px;
+}
+.ft-learn ol {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.ft-learn li {
+  display: grid;
+  grid-template-columns: 22px 72px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  gap: 6px 10px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  color: var(--vc-muted);
+}
+.ft-learn li::before {
+  counter-increment: step;
+  content: counter(step);
+  font: 11px/1 var(--font-mono);
+  color: var(--vc-muted);
+}
+.ft-learn li b {
+  font: 400 18px/1 var(--font-serif);
+  color: var(--vc-ink);
+}
+.ft-learn li span {
+  font-size: 13px;
+}
+.ft-learn li > :nth-child(3) {
+  grid-column: 3;
+  align-self: center;
+}
+.ft-learn li:first-child {
+  border-color: var(--vc-accent);
+  background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+  color: var(--vc-ink);
+}
+/* progress bar with a verdict tag */
+.ft-learn-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 14px;
+  font: 11px/1 var(--font-mono);
+  color: var(--vc-accent);
+}
+.ft-learn-bar > i {
+  flex: 0 0 120px;
+  height: 4px;
+  background: currentColor;
+  transform-origin: left;
+}
+.ft-learn-bar[data-pass] {
+  color: #7fe0bb;
+}
+/* trace spans, one flagged */
+.ft-learn-trace {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 14px;
+  font: 11px/1 var(--font-mono);
+  color: var(--vc-accent);
+}
+.ft-learn-trace > i {
+  width: 26px;
+  height: 6px;
+  background: var(--vc-line);
+}
+.ft-learn-trace > i[data-cause] {
+  background: currentColor;
+  transform-origin: left;
+}
+/* one-line diff */
+.ft-learn-diff {
+  display: grid;
+  gap: 2px;
+  font: 11px/1.3 var(--font-mono);
+}
+.ft-learn-diff s {
+  color: var(--vc-accent);
+}
+.ft-learn-diff s::before {
+  content: "- ";
+}
+.ft-learn-diff ins {
+  color: #7fe0bb;
+  text-decoration: none;
+}
+.ft-learn-diff ins::before {
+  content: "+ ";
+}
+.ft-learn-result {
+  display: grid;
+  padding: 8px 12px;
+  border-top: 1px solid var(--vc-line);
+  font-size: 13px;
+}
+.ft-learn-result > * {
+  grid-area: 1 / 1;
+}
+.ft-learn-keep {
+  color: #7fe0bb;
+}
+.ft-learn-drop {
+  color: var(--vc-muted);
+  opacity: 0;
+}
+/* static frame: step 1 done and failed */
+.ft-learn li:not(:first-child) > :nth-child(3) {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-learn li,
+  .ft-learn li:first-child {
+    border-color: transparent;
+    background: none;
+    color: var(--vc-muted);
+  }
+  .ft-learn li > :nth-child(3) {
+    opacity: 0;
+  }
+  .ft-learn li > :nth-child(3) > :is(em, ins, s) {
+    opacity: 0;
+  }
+  .ft-learn li[data-step="0"] {
+    animation: ft-learn-li-0 10s infinite;
+  }
+  .ft-learn li[data-step="0"] > :nth-child(3) {
+    animation: ft-learn-viz-0 10s infinite;
+  }
+  .ft-learn li[data-step="0"] > :nth-child(3) > i:first-child,
+  .ft-learn li[data-step="0"] > :nth-child(3) > i[data-cause] {
+    animation: ft-learn-fill-0 10s infinite;
+  }
+  .ft-learn li[data-step="0"] > :nth-child(3) > :is(em, ins, s) {
+    animation: ft-learn-tag-0 10s infinite;
+  }
+  @keyframes ft-learn-li-0 {
+    0%,
+    2% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+    4%,
+    19% {
+      border-color: var(--vc-accent);
+      background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+      color: var(--vc-ink);
+    }
+    21%,
+    100% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+  }
+  @keyframes ft-learn-viz-0 {
+    0%,
+    2% {
+      opacity: 0;
+    }
+    4%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-learn-fill-0 {
+    0%,
+    4% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+    13%,
+    92% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+  }
+  @keyframes ft-learn-tag-0 {
+    0%,
+    13% {
+      opacity: 0;
+    }
+    15%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ft-learn li[data-step="1"] {
+    animation: ft-learn-li-1 10s infinite;
+  }
+  .ft-learn li[data-step="1"] > :nth-child(3) {
+    animation: ft-learn-viz-1 10s infinite;
+  }
+  .ft-learn li[data-step="1"] > :nth-child(3) > i:first-child,
+  .ft-learn li[data-step="1"] > :nth-child(3) > i[data-cause] {
+    animation: ft-learn-fill-1 10s infinite;
+  }
+  .ft-learn li[data-step="1"] > :nth-child(3) > :is(em, ins, s) {
+    animation: ft-learn-tag-1 10s infinite;
+  }
+  @keyframes ft-learn-li-1 {
+    0%,
+    19% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+    21%,
+    36% {
+      border-color: var(--vc-accent);
+      background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+      color: var(--vc-ink);
+    }
+    38%,
+    100% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+  }
+  @keyframes ft-learn-viz-1 {
+    0%,
+    19% {
+      opacity: 0;
+    }
+    21%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-learn-fill-1 {
+    0%,
+    21% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+    30%,
+    92% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+  }
+  @keyframes ft-learn-tag-1 {
+    0%,
+    30% {
+      opacity: 0;
+    }
+    32%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ft-learn li[data-step="2"] {
+    animation: ft-learn-li-2 10s infinite;
+  }
+  .ft-learn li[data-step="2"] > :nth-child(3) {
+    animation: ft-learn-viz-2 10s infinite;
+  }
+  .ft-learn li[data-step="2"] > :nth-child(3) > i:first-child,
+  .ft-learn li[data-step="2"] > :nth-child(3) > i[data-cause] {
+    animation: ft-learn-fill-2 10s infinite;
+  }
+  .ft-learn li[data-step="2"] > :nth-child(3) > :is(em, ins, s) {
+    animation: ft-learn-tag-2 10s infinite;
+  }
+  @keyframes ft-learn-li-2 {
+    0%,
+    36% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+    38%,
+    53% {
+      border-color: var(--vc-accent);
+      background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+      color: var(--vc-ink);
+    }
+    55%,
+    100% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+  }
+  @keyframes ft-learn-viz-2 {
+    0%,
+    36% {
+      opacity: 0;
+    }
+    38%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-learn-fill-2 {
+    0%,
+    38% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+    47%,
+    92% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+  }
+  @keyframes ft-learn-tag-2 {
+    0%,
+    47% {
+      opacity: 0;
+    }
+    49%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ft-learn li[data-step="3"] {
+    animation: ft-learn-li-3 10s infinite;
+  }
+  .ft-learn li[data-step="3"] > :nth-child(3) {
+    animation: ft-learn-viz-3 10s infinite;
+  }
+  .ft-learn li[data-step="3"] > :nth-child(3) > i:first-child,
+  .ft-learn li[data-step="3"] > :nth-child(3) > i[data-cause] {
+    animation: ft-learn-fill-3 10s infinite;
+  }
+  .ft-learn li[data-step="3"] > :nth-child(3) > :is(em, ins, s) {
+    animation: ft-learn-tag-3 10s infinite;
+  }
+  @keyframes ft-learn-li-3 {
+    0%,
+    53% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+    55%,
+    70% {
+      border-color: var(--vc-accent);
+      background: color-mix(in srgb, var(--vc-bg) 60%, transparent);
+      color: var(--vc-ink);
+    }
+    72%,
+    100% {
+      border-color: transparent;
+      background: none;
+      color: var(--vc-muted);
+    }
+  }
+  @keyframes ft-learn-viz-3 {
+    0%,
+    53% {
+      opacity: 0;
+    }
+    55%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-learn-fill-3 {
+    0%,
+    55% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+    64%,
+    92% {
+      scale: 1 1;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      scale: 0 1;
+      opacity: 0.4;
+    }
+  }
+  @keyframes ft-learn-tag-3 {
+    0%,
+    64% {
+      opacity: 0;
+    }
+    66%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  .ft-learn-keep {
+    animation: ft-learn-keep 20s infinite;
+  }
+  .ft-learn-drop {
+    animation: ft-learn-drop 20s infinite;
+  }
+  /* the verdict shows in the last stretch of each lap; kept on odd laps,
+     discarded on even ones */
+  @keyframes ft-learn-keep {
+    0%,
+    37% {
+      opacity: 0;
+    }
+    39%,
+    46% {
+      opacity: 1;
+    }
+    47.5%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-learn-drop {
+    0%,
+    87% {
+      opacity: 0;
+    }
+    89%,
+    96% {
+      opacity: 1;
+    }
+    97.5%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- scheduled workflow ---------- */
+.ft-sched rect {
+  fill: var(--vc-panel);
+  stroke: var(--vc-line);
+}
+.ft-sched text {
+  text-transform: none;
+  letter-spacing: 0.03em;
+  dominant-baseline: central;
+}
+.ft-sched-h {
+  fill: var(--vc-accent);
+}
+.ft-sched-cron,
+.ft-sched-label {
+  fill: var(--vc-muted);
+}
+.ft-sched-ring-bg,
+.ft-sched-ring {
+  fill: none;
+  stroke: var(--vc-line);
+  stroke-width: 3;
+}
+.ft-sched-ring {
+  stroke: var(--vc-accent);
+  stroke-dasharray: 163.4;
+  stroke-dashoffset: 163.4;
+  transform: rotate(-90deg);
+  transform-origin: 78px 118px;
+}
+.ft-sched-wait,
+.ft-sched-fire {
+  text-anchor: middle;
+}
+.ft-sched-fire {
+  fill: var(--vc-accent);
+  opacity: 0;
+}
+.ft-sched-wire,
+.ft-sched-edge {
+  fill: none;
+  stroke: var(--vc-line);
+}
+.ft-sched-wire {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+}
+.ft-sched-node {
+  color: var(--vc-muted);
+  --box: var(--vc-line);
+}
+.ft-sched-node rect {
+  stroke: var(--box);
+}
+.ft-sched-node[data-node="4"] {
+  opacity: 0.6;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ft-sched-ring {
+    animation: ft-sched-ring 8s linear infinite;
+  }
+  .ft-sched-wait {
+    animation: ft-sched-wait 8s infinite;
+  }
+  .ft-sched-fire {
+    animation: ft-sched-fire 8s infinite;
+  }
+  .ft-sched-wire {
+    animation: ft-sched-wire 8s infinite;
+  }
+  .ft-sched-node[data-node="0"] {
+    animation: ft-sched-node-0 8s infinite;
+  }
+  @keyframes ft-sched-node-0 {
+    0%,
+    36% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+    39%,
+    42% {
+      color: var(--vc-ink);
+      --box: var(--vc-accent);
+    }
+    44%,
+    92% {
+      color: var(--vc-ink);
+      --box: #7fe0bb;
+    }
+    95%,
+    100% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+  }
+  .ft-sched-node[data-node="1"] {
+    animation: ft-sched-node-1 8s infinite;
+  }
+  @keyframes ft-sched-node-1 {
+    0%,
+    45% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+    48%,
+    51% {
+      color: var(--vc-ink);
+      --box: var(--vc-accent);
+    }
+    53%,
+    92% {
+      color: var(--vc-ink);
+      --box: #7fe0bb;
+    }
+    95%,
+    100% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+  }
+  .ft-sched-node[data-node="2"] {
+    animation: ft-sched-node-2 8s infinite;
+  }
+  @keyframes ft-sched-node-2 {
+    0%,
+    54% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+    57%,
+    60% {
+      color: var(--vc-ink);
+      --box: var(--vc-accent);
+    }
+    62%,
+    92% {
+      color: var(--vc-ink);
+      --box: #7fe0bb;
+    }
+    95%,
+    100% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+  }
+  .ft-sched-node[data-node="3"] {
+    animation: ft-sched-node-3 8s infinite;
+  }
+  @keyframes ft-sched-node-3 {
+    0%,
+    63% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+    66%,
+    69% {
+      color: var(--vc-ink);
+      --box: var(--vc-accent);
+    }
+    71%,
+    92% {
+      color: var(--vc-ink);
+      --box: #7fe0bb;
+    }
+    95%,
+    100% {
+      color: var(--vc-muted);
+      --box: var(--vc-line);
+    }
+  }
+  /* the ring fills during the first 40% (the wait), fires, then the
+     workflow runs down the column and everything resets near the end */
+  @keyframes ft-sched-ring {
+    0% {
+      stroke-dashoffset: 163.4;
+    }
+    30%,
+    92% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 163.4;
+    }
+  }
+  @keyframes ft-sched-wait {
+    0%,
+    29% {
+      opacity: 1;
+    }
+    31%,
+    92% {
+      opacity: 0;
+    }
+    95%,
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes ft-sched-fire {
+    0%,
+    29% {
+      opacity: 0;
+    }
+    31%,
+    92% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ft-sched-wire {
+    0%,
+    30% {
+      stroke-dashoffset: 120;
+      stroke: var(--vc-line);
+    }
+    35%,
+    92% {
+      stroke-dashoffset: 0;
+      stroke: var(--vc-accent);
+    }
+    95%,
+    100% {
+      stroke-dashoffset: 120;
+      stroke: var(--vc-line);
+    }
+  }
+}
+
+/* paused state, mirrors the site rule */
+[data-motion="paused"] .ft *,
+[data-motion="paused"] .ft-cycle > * {
+  animation-play-state: paused !important;
+}

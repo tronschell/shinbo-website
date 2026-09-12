@@ -1,17 +1,32 @@
 @import "tailwindcss";
 
 @font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Departure Mono";
   src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
   font-display: swap;
 }
 
 :root {
-  --bg: #0e0e10;
-  --surface: #131316;
-  --surface-2: #17171a;
-  --surface-3: #1c1c20;
-  --surface-4: #232327;
+  --bg: #202023;
+  --surface: #252528;
+  --surface-2: #29292d;
+  --surface-3: #303035;
+  --surface-4: #38383e;
 
   --text: #e8e6df;
   --text-2: #e8e6dfad;
@@ -22,12 +37,12 @@
 
   --rose: #ed7a9b;
   --orange: #ff6a3d;
-  --lime: #c3d64b;
-  --teal: #3fd8c0;
+  --lime: #ed7a9b;
+  --teal: #b3b3bc;
   --blue: #6faee6;
   --violet: #ae78f0;
 
-  --accent: var(--orange);
+  --accent: #ff5c94;
   --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
 
   --solid: #e8e6df;
@@ -63,7 +78,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--bg);
+  overflow-x: hidden;
   color: var(--text);
 }
 
@@ -123,7 +138,6 @@ summary:focus-visible {
 h1,
 h2,
 h3,
-.btn,
 .tbl,
 .node,
 th,
@@ -217,82 +231,140 @@ h3 {
   top: 12px;
 }
 
-.rail {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(12px);
-}
-
-.rail-in {
-  height: 52px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-}
-
-.brand img {
-  width: 24px;
-  height: auto;
-}
-
-.rail nav {
-  display: flex;
-  gap: 18px;
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.rail nav a:hover {
-  color: var(--text);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 34px;
-  padding: 0 14px;
-  font-size: 11px;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  border: 1px solid var(--border-strong);
-  color: var(--text);
-  transition: background var(--t);
-}
-
-.btn:hover {
-  background: var(--surface-3);
-}
-
-.btn-solid {
-  border-color: var(--solid);
-  background: var(--solid);
-  color: var(--fg-invert);
-}
-
-.btn-solid:hover {
-  background: var(--solid-hover);
-}
-
 .hero {
   padding-block: clamp(56px, 9vw, 116px) clamp(40px, 6vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 56px);
+  align-items: center;
+}
+
+/* Without this the 1040px window inside would set the column's min-content
+   width and push the whole hero off the page on a phone. */
+.hero-window {
+  min-width: 0;
+}
+
+/* Copy on the left, the window at its real size on the right, running off the
+   edge of the page the way a window that is too big for the screen does. */
+@media (min-width: 1100px) {
+  .hero {
+    grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  /* The window keeps its own scale but takes the page's right margin as well,
+     so it sits flush against the edge of the viewport instead of the text
+     column — a window too wide for the page, pushed off to the right. */
+  .hero-window {
+    overflow: visible;
+  }
+
+  .hero-window .ew-frame {
+    margin-left: auto;
+    width: min(
+      760px,
+      calc(100% + max(var(--gutter), (100vw - var(--shell)) / 2))
+    );
+    box-shadow:
+      -1px 0 0 var(--border-strong),
+      0 24px 80px rgb(0 0 0 / 0.5);
+  }
+
+  /* The headline has a 460px column to live in, not the whole page. */
+  .hero h1 {
+    font-size: clamp(34px, 3.6vw, 54px);
+  }
+}
+
+.heroloop {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 460px;
+  margin-inline: auto;
+}
+
+/* --- the hero window ------------------------------------------------------
+   The window below is Shinbo's own markup (.app-shell, .transcript, .composer,
+   .inspector — see src/ShinboWindow.tsx) rendered against Shinbo's own
+   stylesheets, scoped under .ew by scripts/shinbo-css.mjs into
+   src/shinbo-window.css. Nothing here restyles the app; this block only sizes
+   the window and scales it down. It is laid out at the app's real pixel size
+   and zoomed to fit the column, so it is the app seen small rather than a
+   small drawing of the app. ----------------------------------------------- */
+
+.ew-frame {
+  position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: 1040px 660px;
+  overflow: hidden;
+  width: min(1040px, 100%);
+  aspect-ratio: 1040 / 660;
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+
+.ew {
+  width: 1040px;
+  height: 660px;
+  --sidebar-width: 0px;
+  --inspector-width: 288px;
+  --content-column: 640px;
+  overflow: hidden;
+  background: var(--bg);
+  cursor: default;
+}
+
+/* The window is a picture of the app, not a control surface: the pointer
+   should not suggest the site's own affordances. */
+.ew button,
+.ew input,
+.ew textarea,
+.ew summary {
+  cursor: default;
+}
+
+/* macOS lights, centred on the 46px thread bar the way the real window centres
+   them on its own chrome. */
+.ew-lights {
+  position: absolute;
+  z-index: 5;
+  top: 17px;
+  left: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.ew-lights i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3a3a3f;
+}
+
+.ew-lights i:nth-child(1) {
+  background: #ff5f57;
+}
+
+.ew-lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.ew-lights i:nth-child(3) {
+  background: #28c840;
+}
+
+/* No sidebar in the hero: the content is the app-shell's only column, and the
+   thread bar clears the traffic lights the same way the app does when the
+   sidebar is collapsed — by the width of the window controls. */
+.ew .app-shell {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ew .thread-bar {
+  padding-left: var(--window-controls-end);
 }
 
 .hero h1 {
@@ -330,6 +402,8 @@ h3 {
 
 .track {
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
   border-block: 1px solid var(--border-strong);
   mask-image: linear-gradient(
     90deg,
@@ -370,7 +444,6 @@ h3 {
   opacity: 0.85;
 }
 
-.track:hover .lanes,
 .track:focus-within .lanes {
   animation-play-state: paused;
 }
@@ -389,32 +462,6 @@ h3 {
     overflow-x: auto;
     mask-image: none;
   }
-}
-
-figure.shot {
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-}
-
-figure.shot img {
-  width: 100%;
-  height: auto;
-}
-
-figure.shot figcaption {
-  padding: 10px 14px;
-  border-top: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-figure.shot figcaption b {
-  color: var(--text-2);
-  font-weight: 400;
 }
 
 .cols {
@@ -803,34 +850,6 @@ i.fallback {
   justify-content: center;
 }
 
-footer {
-  border-top: 1px solid var(--border);
-}
-
-.foot {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 20px;
-  padding-block: 28px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: var(--ls-caps);
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.foot nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-}
-
-.foot nav a:hover {
-  color: var(--text);
-}
-
 .note {
   margin-top: 20px;
   padding: 12px 14px;
@@ -842,9 +861,6 @@ footer {
 }
 
 @media (max-width: 900px) {
-  .rail nav {
-    display: none;
-  }
   .head-split,
   .cols-2 {
     grid-template-columns: minmax(0, 1fr);
@@ -854,13 +870,6 @@ footer {
   }
   .tools {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-  .foot {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: start;
-  }
-  .foot nav {
-    justify-content: flex-start;
   }
 }
 
@@ -877,5 +886,104 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+/* per-tile art on the capability cards */
+.tile-art {
+  display: block;
+  content-visibility: auto;
+  contain-intrinsic-size: 320px 108px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.roadmap {
+  border-top: 1px solid var(--border);
+}
+
+.roadmap > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 20px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* The spine, stopping at the first and last chip rather than running past them. */
+.roadmap > li::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed var(--border-strong);
+}
+
+.roadmap > li:first-child::before {
+  top: 30px;
+}
+
+.roadmap > li:last-child::before {
+  bottom: calc(100% - 30px);
+}
+
+.roadmap-n {
+  position: relative;
+  z-index: 1;
+  margin-top: 3px;
+  width: 46px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid color-mix(in srgb, var(--c) 55%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--ls-caps);
+  color: var(--c);
+}
+
+.roadmap-n::after {
+  content: "";
+  position: absolute;
+  left: calc(100% + 1px);
+  width: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+.roadmap h3 {
+  font-size: 17px;
+}
+
+.roadmap p {
+  margin-top: 8px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.roadmap .tag {
+  align-self: start;
+  margin-top: 4px;
+  white-space: nowrap;
+  color: var(--c);
+  border-color: color-mix(in srgb, var(--c) 40%, transparent);
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+}
+
+@media (max-width: 640px) {
+  .roadmap > li {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+  .roadmap .tag {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0;
   }
 }

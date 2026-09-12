@@ -1,0 +1,36 @@
+{
+  "app": "Dither Lab",
+  "exported": "2026-09-12",
+  "method": "Configured and exported with the local dither app Export PNG control. Unmodified exports.",
+  "width": 1600,
+  "height": 1000,
+  "palette": ["#ff5c94", "#ba607f", "#553642", "#29292d"],
+  "pixel": 3,
+  "strength": 1,
+  "scale": 1.6,
+  "warp": 0.45,
+  "octaves": 4,
+  "seed": 12.3,
+  "brightness": 0,
+  "contrast": 1.15,
+  "gamma": 1,
+  "animate": false,
+  "files": {
+    "shinbo-workspace.png": {
+      "field": "blobs",
+      "blobCount": 7,
+      "angle": 0,
+      "technique": "bayer4"
+    },
+    "shinbo-settings.png": {
+      "field": "linear",
+      "angle": 35,
+      "technique": "bayer4"
+    },
+    "shinbo-clouds.png": {
+      "field": "fbm",
+      "angle": 35,
+      "technique": "bluenoise"
+    }
+  }
+}

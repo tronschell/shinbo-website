@@ -1,3 +1,10 @@
 node_modules
 dist
 *.tsbuildinfo
+dist-ssr
+
+.DS_Store
+.claude/
+social/
+docs/audit-2026-09-12/lighthouse/
+.wrangler/

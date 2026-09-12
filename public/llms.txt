@@ -1,0 +1,37 @@
+# Shinbo
+
+> Shinbo (formerly Emma) is a free, open-source meta-harness: a desktop workspace for running agents, inspecting results and handing off output. It runs its own agent and can call installed coding-agent CLIs inside persistent Markdown threads. The website is https://shinbo.app and the source and downloads are maintained at https://github.com/tronschell/shinbo.
+
+## Availability and setup
+
+- Published desktop downloads: macOS on Apple silicon and Windows x64. Windows installers are unsigned. No published Intel Mac, Linux desktop or iPhone download.
+- The app is free under MIT; shinbo-cli derives from the Apache-2.0 vercel-labs/fx project. Model APIs and coding-agent subscriptions are separate services with their own costs and limits.
+- Current desktop onboarding requires a verified OpenRouter API key, including when optional subscriptions are connected. A free-tier key can complete verification.
+- Local OpenAI-compatible inference is supported; selecting a local chat model does not make every tool or secondary model offline.
+- Release assets can retain the former Emma name. Follow the actual assets on the official release page, rather than constructing filenames from the current brand.
+- Development-source capabilities can be newer than the downloadable release. See release notes for the version being installed.
+
+- CLI run tracking lasts while Shinbo is open. Handoffs send successful output, not full conversations or files.
+- Self-improvement is user-led: inspect runs, request a scoped proposal, compare it on a replay bench and decide whether to retain it. No automatic improvement is guaranteed.
+
+## Official sources
+
+- [Home](https://shinbo.app/): Product overview and platform downloads.
+- [Documentation](https://shinbo.app/docs): Setup and capability documentation.
+- [Product reference](https://shinbo.app/llms-full.txt): Product identity, costs, availability and capability boundaries.
+- [Source repository](https://github.com/tronschell/shinbo): Source, license and development documentation.
+- [Latest public release](https://github.com/tronschell/shinbo/releases/latest): Current release notes and actual downloadable assets.
+
+## Guides
+
+- [Harness](https://shinbo.app/docs/harness): Installed coding CLIs, models, run results and output handoffs.
+- [Delegation](https://shinbo.app/docs/delegation): Threads, subagents and follow-up work.
+- [Plan](https://shinbo.app/docs/plan): Dependency plans and parallel execution.
+- [Models](https://shinbo.app/docs/models): Required setup, provider routes and separate service costs.
+- [Free model router](https://shinbo.app/docs/router): Ordered fallback, provider availability and limits.
+- [Control](https://shinbo.app/docs/control): Permissions and computer-use boundaries.
+- [Surfaces](https://shinbo.app/docs/surfaces): Quick Ask, terminal, browser, voice and artifacts.
+- [Knowledge](https://shinbo.app/docs/knowledge): Notes saved to a chosen folder.
+- [Scheduled work](https://shinbo.app/docs/jobs): Scheduled workflow graphs.
+- [Self-improvement](https://shinbo.app/docs/agent): Retained run evidence and controlled repair experiments.
+- [Tools](https://shinbo.app/docs/tools): Native tools, skills and extensions.

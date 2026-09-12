@@ -1,0 +1,104 @@
+# Shinbo — product reference
+
+Canonical website: https://shinbo.app
+Source and releases: https://github.com/tronschell/shinbo
+Facts reviewed: 2026-09-12.
+
+This reference summarizes product identity, setup and documented capabilities. The source checkout may include work newer than the published app. Release notes and actual release assets establish downloadable availability; source documentation describes the implementation it accompanies.
+
+## Identity
+
+Shinbo, formerly Emma, is a free, open-source meta-harness: a desktop workspace for running agents, inspecting results and handing off output. It is maintained in the tronschell/shinbo repository. It runs its own agent, shinbo-cli, and can use installed coding-agent CLIs as tools. The term "meta-harness" describes this combination: a shared workspace around its own agent and other agents' native command-line programs.
+
+The Shinbo application uses the MIT license. The shinbo-cli harness derives from vercel-labs/fx, an Apache-2.0 project. These are distinct license scopes.
+
+Official references:
+- Website: https://shinbo.app/
+- Documentation: https://shinbo.app/docs
+- Repository: https://github.com/tronschell/shinbo
+- Application license: https://github.com/tronschell/shinbo/blob/main/LICENSE
+- Harness upstream: https://github.com/vercel-labs/fx
+- Releases: https://github.com/tronschell/shinbo/releases
+
+## Downloads and compatibility
+
+Published desktop targets are macOS on Apple silicon and Windows x64. Windows installers are unsigned. The source README specifies macOS 12 or later and Windows 10 version 1809 or later. There is no published Intel Mac or Linux desktop build, and no released iPhone app. Windows ARM64 source packaging does not establish a published Windows ARM64 download.
+
+The app was renamed from Emma to Shinbo. Some public releases and installer filenames still use Emma. These are historical names from the same project; the current name is Shinbo. Use the real assets linked from https://github.com/tronschell/shinbo/releases/latest instead of guessing a Shinbo-prefixed filename.
+
+The source tree includes ongoing Rust/GPUI development. That does not mean the public desktop installer has already been replaced by a finished GPUI app. Likewise, phone pairing work in source is not an App Store release.
+
+## Price and prerequisites
+
+Shinbo itself is free and open source, with no Shinbo paid tier or license key. That does not include unlimited model inference or third-party subscriptions.
+
+Current desktop first-run setup requires an OpenRouter API key that passes verification. A free-tier key can pass; connecting an optional provider subscription does not bypass that requirement. Thus, "no Shinbo account" should not be read as "no provider account or API key required."
+
+Hosted model APIs and coding-agent subscriptions have their own fees, access conditions and usage limits. Free model routes are subject to provider availability and limits. Local inference depends on a separately running compatible model server and adequate hardware.
+
+Model setup: https://shinbo.app/docs/models
+Source model documentation: https://github.com/tronschell/shinbo/blob/main/docs/models.md
+
+## Intended use
+
+Shinbo suits people who want to coordinate agent work, inspect runs, keep working records in Markdown and use existing coding-agent command-line tools from one desktop workspace. It is also an open-source project for people who want to modify the agent, tools or interface.
+
+It is not currently a suitable download for someone requiring a released iPhone app, an Intel Mac build, a Linux desktop package, or a guarantee of entirely offline operation from the default setup.
+
+## Agent and CLI coordination
+
+Shinbo runs shinbo-cli and can start installed coding-agent CLIs using their own sessions and credentials. Documented adapters include Claude Code, Codex, Pi, OpenCode, Gemini CLI, Antigravity CLI and Cursor CLI. Adapter presence is not proof of end-to-end verification against every vendor version. The CLI must be installed and its own authentication and access requirements satisfied.
+
+The workspace records threads in Markdown. Runs can receive follow-up instructions; output handoffs can supply successful results from one run to another. Model and thinking selection depend on the target CLI and the metadata or flags it supports. A request for a model does not prove access to that model.
+
+CLI run/session tracking lasts only while Shinbo is open; sessions started in another terminal are not tracked. A handoff carries the latest successful stdout from up to eight sources in the same thread, not files, terminal logs or an entire conversation. Persistent Markdown threads do not establish lossless session migration. Archived threads are deleted after 30 days; important knowledge notes should be saved separately.
+
+Stopping a council cancels its pending model requests and prevents further seats from starting. A task's Stop also cancels its advisor and vision requests. If saving a council answer fails, the answer remains available to save again without rerunning the models.
+
+Guides: https://shinbo.app/docs/harness and https://shinbo.app/docs/delegation
+
+## Planning, tools and surfaces
+
+Documented capabilities include dependency-based plans, subagents, scheduled workflow graphs, terminal and browser surfaces, voice, artifacts and notes saved to a chosen knowledge folder. Scheduled work depends on the host app and machine being available; it is not a hosted cloud execution guarantee. Stop cancels the current workflow turn or script and prevents later steps. A failed step ends the run without starting dependent steps or completion-triggered jobs.
+
+Goals continue a thread across turns with a token allowance and a 40-turn ceiling. Every reported model step on that thread counts toward its allowance. Resume requires allowance left; Continue grants more when tokens or turns run out. An in-flight request can exceed the allowance before its usage arrives. Subagent spend is not included in the parent goal's ledger. An unfinished goal must be updated or cleared before replacement; creating another goal cannot reset its spent allowance.
+
+Code artifacts can supply parts of the interface. This describes a controlled artifact mechanism, not unrestricted modification of every app surface. Native tool permissions and platform support still apply.
+
+Guides:
+- Plans: https://shinbo.app/docs/plan
+- Scheduled work: https://shinbo.app/docs/jobs
+- Surfaces: https://shinbo.app/docs/surfaces
+- Knowledge: https://shinbo.app/docs/knowledge
+- Tools: https://shinbo.app/docs/tools
+- Free model router: https://shinbo.app/docs/router
+
+## Observability and improvement
+
+The app records model, tool and child-run evidence in per-thread traces and exposes retained evidence for inspection. Traces are bounded and can be shortened; this is not an unlimited audit archive or complete visibility into a vendor's internal reasoning. Older traces can lack model or prompt context. Displayed token estimates are not provider invoices.
+
+Self-improvement is user-led: review retained runs, ask for a scoped proposal, compare it on a controlled replay bench and decide whether to retain the change. It does not establish guaranteed autonomous self-healing or a measured improvement for every user or model. Optional context reinjection, pruning, fresh-context and semantic-search experiments are not all enabled by default. Asking a hosted model to analyze runs sends the evidence it reads to that provider.
+
+Guide: https://shinbo.app/docs/agent
+
+## Local models, privacy and permissions
+
+OpenAI-compatible hosted or local endpoints can provide chat inference. A local chat route does not automatically reroute secondary models, web search, voice, catalogs, updates or coding-agent CLIs. Review each service before relying on an offline setup.
+
+If a task's explicitly selected provider has been removed, it requires restoring that provider or selecting another route before retrying.
+
+Private routing is a separate, optional OpenRouter setting for the main agent loop. It requests qualifying no-training, zero-retention endpoints and can fail if none qualify. It does not control every tool, secondary model or provider-account logging setting.
+
+The app offers Ask, Accept edits, Auto and Full access modes. Computer-use permissions and platform-specific boundaries still matter. Neither a permission mode nor a local model guarantees that every action is safe or that no data leaves the device.
+
+References:
+- Permissions: https://shinbo.app/docs/control
+- Source privacy documentation: https://github.com/tronschell/shinbo/blob/main/docs/privacy.md
+
+## Evidence and version boundaries
+
+The official release page is the authority for available installers and release notes. The repository is the authority for source implementation and licenses. Website documentation summarizes product behavior; it is not independent benchmarking or endorsement.
+
+Screenshots that use fixture conversations, synthetic runs or example statistics illustrate the interface. They do not establish live vendor success rates or comparative model performance.
+
+This file is a convenience reference. Its presence does not guarantee search indexing, AI citations or recommendations.

@@ -1,0 +1,1232 @@
+.v-shinbo {
+  --vc-bg: #202023;
+  --vc-panel: #29292d;
+  --vc-ink: #eeeef0;
+  --vc-muted: #bcbcc5;
+  --vc-line: #48484f;
+  --vc-control: #85858f;
+  --vc-accent: #ff5c94;
+  --vc-on-accent: #202023;
+  --accent: var(--vc-accent);
+  --bg: var(--vc-bg);
+  --surface: #252528;
+  --surface-2: var(--vc-panel);
+  --surface-3: #303035;
+  --surface-4: #38383e;
+  --text: var(--vc-ink);
+  --text-2: var(--vc-muted);
+  --text-3: #aaaab5;
+  --border: var(--vc-line);
+  --border-strong: var(--vc-control);
+  --orange: var(--vc-accent);
+  --lime: #ed7a9b;
+  --teal: var(--vc-muted);
+  --blue: #d8bac6;
+  --violet: #ed7a9b;
+  /* Editorial serif for display copy; the sans stays for everything else. */
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  /* Four card washes: the app's dithered plates under a dark scrim so text
+     stays readable. Index order matches data-tint="0..3". */
+  --scrim: linear-gradient(#1c1c1fd9, #1c1c1ff2);
+  --tint-0: var(--scrim), url(/bg/shinbo-clouds.webp) center / cover;
+  --tint-1: var(--scrim), url(/bg/plate-6.webp) center / cover;
+  --tint-2: var(--scrim), url(/bg/plate-3.webp) center / cover;
+  --tint-3: var(--scrim), url(/bg/plate-1.webp) center / cover;
+  --hue-0: #ff5c94;
+  --hue-1: #a89bff;
+  --hue-2: #7fe0bb;
+  --hue-3: #ffb27f;
+  /* Shape + elevation: square everything, warm-black shadows. */
+  --fg-radius: 0;
+  --fg-pill: 0;
+  --fg-shadow: 0 12px 32px -8px #0b0908a6;
+  --fg-shadow-lg: 0 28px 64px -16px #0b0908d9;
+  --fg-gutter: clamp(16px, 2.5vw, 32px);
+  --fg-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --fg-max: 1200px;
+  background: var(--vc-bg);
+  color: var(--vc-ink);
+  font: 15px/1.6 var(--font);
+  scrollbar-color: var(--vc-control) var(--vc-bg);
+  accent-color: var(--vc-accent);
+}
+.v-shinbo ::selection {
+  background: var(--vc-accent);
+  color: var(--vc-on-accent);
+}
+.v-shinbo h1,
+.v-shinbo h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  text-wrap: balance;
+}
+.v-shinbo h3 {
+  text-transform: none;
+  letter-spacing: -0.02em;
+  font-family: var(--font);
+  text-wrap: balance;
+}
+.v-shinbo h1 {
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: 1;
+}
+.v-shinbo h1 em {
+  color: var(--vc-accent);
+  font-style: italic;
+}
+.v-shinbo h2 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.08;
+}
+.v-shinbo h3 {
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 600;
+}
+.v-shinbo p {
+  max-width: 70ch;
+  text-wrap: pretty;
+}
+.v-shinbo a {
+  text-underline-offset: 4px;
+}
+.v-shinbo a:hover {
+  color: var(--vc-accent);
+}
+.v-shinbo :is(a, button, summary, select, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--vc-accent);
+  outline-offset: 4px;
+}
+.v-shinbo :is(section, #features, #questions, #download) {
+  scroll-margin-top: 84px;
+}
+
+/* ---------- eyebrow pill + section head ---------- */
+.v-shinbo .fg-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--vc-line);
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+  background: color-mix(in srgb, var(--vc-panel) 60%, transparent);
+}
+.v-shinbo .fg-section-head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 16px;
+  margin: 0 auto 40px;
+  max-width: 720px;
+}
+.v-shinbo .fg-section-head h2 {
+  margin: 0;
+}
+.v-shinbo .fg-section-head p {
+  margin: 0;
+  font-size: 16px;
+  color: var(--vc-muted);
+  max-width: 56ch;
+}
+
+/* ---------- floating pill header ---------- */
+.v-shinbo .fg-header {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(var(--fg-max), calc(100% - var(--fg-gutter) * 2));
+  min-height: 60px;
+  margin: 12px auto 0;
+  padding: 6px 8px 6px 18px;
+  border: 1px solid color-mix(in srgb, var(--vc-line) 70%, transparent);
+  background: color-mix(in srgb, var(--vc-panel) 82%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: var(--fg-shadow);
+}
+.v-shinbo .fg-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  min-height: 44px;
+}
+.v-shinbo .fg-header nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 13px;
+}
+.v-shinbo .fg-header nav > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--vc-muted);
+  font-weight: 500;
+  transition:
+    background 160ms ease-out,
+    color 160ms ease-out;
+}
+.v-shinbo .fg-header nav > a:hover {
+  background: color-mix(in srgb, var(--vc-ink) 8%, transparent);
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-header nav > a[aria-current] {
+  background: color-mix(in srgb, var(--vc-accent) 16%, transparent);
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-primary {
+  gap: 4px;
+}
+.v-shinbo .fg-primary .fg-button {
+  margin-left: 8px;
+  color: var(--vc-on-accent);
+}
+.v-shinbo .fg-primary .fg-button:hover {
+  color: var(--vc-on-accent);
+}
+
+/* ---------- buttons: pills ---------- */
+.v-shinbo :is(.fg-button, .vc-primary) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  background: var(--vc-accent);
+  color: var(--vc-on-accent);
+  font: 600 14px/1.4 var(--font);
+  transition:
+    background 160ms ease-out,
+    color 160ms ease-out,
+    border-color 160ms ease-out,
+    transform 200ms var(--fg-ease),
+    box-shadow 200ms var(--fg-ease);
+}
+.v-shinbo .fg-header .fg-button {
+  min-height: 40px;
+  padding: 8px 18px;
+  font-size: 13px;
+}
+.v-shinbo .fg-button-lg {
+  min-height: 52px;
+  padding: 12px 26px;
+  font-size: 15px;
+}
+.v-shinbo :is(.fg-button, .vc-primary):hover {
+  color: var(--vc-on-accent);
+  background: #ff91b6;
+  filter: none;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -6px #ff5c9466;
+}
+.v-shinbo :is(.fg-button, .vc-primary):active {
+  background: #ed7a9b;
+  transform: none;
+  box-shadow: none;
+}
+.v-shinbo .fg-button-ghost {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--vc-accent) 55%, var(--vc-line));
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-button-ghost:hover {
+  background: color-mix(in srgb, var(--vc-accent) 12%, transparent);
+  color: var(--vc-ink);
+  box-shadow: none;
+}
+.v-shinbo .fg-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vc-accent);
+}
+.v-shinbo .fg-link::after {
+  content: "→";
+  transition: transform 200ms var(--fg-ease);
+}
+.v-shinbo .fg-link:hover::after {
+  transform: translateX(4px);
+}
+.v-shinbo .fg-link-center {
+  justify-content: center;
+  width: 100%;
+}
+
+/* ---------- layout + section rhythm ---------- */
+.v-shinbo .fg-layout {
+  width: min(var(--fg-max), calc(100% - var(--fg-gutter) * 2));
+  margin: auto;
+}
+.v-shinbo main {
+  min-width: 0;
+  --fg-gap: 24px;
+  --fg-gap-sm: 12px;
+  --fg-section-pad: clamp(56px, 7vw, 96px);
+}
+.v-shinbo .fg-section {
+  padding: var(--fg-section-pad) 0;
+}
+
+/* ---------- hero ---------- */
+.v-shinbo .fg-overview {
+  position: relative;
+  isolation: isolate;
+  padding-top: clamp(24px, 4vw, 48px);
+  --mx: 0.5;
+  --my: 0.35;
+}
+/* The app's dithered clouds behind the hero. It reaches up behind the
+   header so there is no seam, drifts slowly, and leans toward the pointer;
+   ::after is a brighter patch that follows the pointer. */
+.v-shinbo .fg-overview::before,
+.v-shinbo .fg-overview::after {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  height: min(100vh, 820px);
+  background: url(/bg/shinbo-clouds.webp) center top / 120% auto;
+  mask-image: linear-gradient(#000 0, #000 55%, transparent);
+  pointer-events: none;
+  z-index: -1;
+  translate: calc((var(--mx) - 0.5) * -24px) calc((var(--my) - 0.5) * -16px);
+  transition: translate 900ms var(--fg-ease);
+}
+.v-shinbo .fg-overview::before {
+  opacity: 0.24;
+}
+.v-shinbo .fg-overview::after {
+  opacity: 0.4;
+  mask-image:
+    radial-gradient(
+      340px circle at calc(var(--mx) * 100%) calc(var(--my) * 100%),
+      #000,
+      transparent 70%
+    ),
+    linear-gradient(#000 0, #000 55%, transparent);
+  mask-composite: intersect;
+  transition:
+    translate 900ms var(--fg-ease),
+    mask-position 900ms var(--fg-ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v-shinbo .fg-overview::before,
+  .v-shinbo .fg-overview::after {
+    animation: fg-drift 28s ease-in-out infinite alternate;
+  }
+  @keyframes fg-drift {
+    from {
+      background-position: 40% 0;
+    }
+    to {
+      background-position: 60% 30%;
+    }
+  }
+}
+.v-shinbo .fg-intro {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 14px;
+  max-width: 880px;
+  margin: 0 auto clamp(24px, 3vw, 36px);
+}
+.v-shinbo .fg-intro h1 {
+  margin: 0;
+}
+.v-shinbo .fg-button-icon {
+  padding-inline: 16px;
+  border-color: transparent;
+}
+.v-shinbo .fg-button-icon img {
+  display: block;
+}
+.v-shinbo .fg-github {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  color: #fff; /* matches the hard-coded fill in brands/github.svg */
+}
+.v-shinbo .fg-github img {
+  display: block;
+}
+.v-shinbo .fg-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.v-shinbo .fg-hero-mark {
+  position: relative;
+  width: min(100%, 720px);
+  height: clamp(160px, 22vw, 280px);
+  margin: -16px 0;
+}
+.v-shinbo .fg-hero-mark canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.v-shinbo .fg-definition {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+.v-shinbo .fg-definition p {
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--vc-muted);
+  max-width: 54ch;
+}
+.v-shinbo .fg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.v-shinbo .fg-definition small {
+  display: block;
+  margin-top: -6px;
+  font-size: 12px;
+  color: var(--vc-muted);
+}
+.v-shinbo .fg-hero-screen {
+  position: relative;
+}
+.v-shinbo .fg-screen-stage {
+  padding: clamp(12px, 1.8vw, 24px);
+  background: url("/bg/shinbo-workspace.webp") center/cover;
+  box-shadow: var(--fg-shadow-lg);
+}
+.v-shinbo .fg-screen-link {
+  display: block;
+  cursor: zoom-in;
+  transition: transform 240ms var(--fg-ease);
+}
+.v-shinbo .fg-screen-link:hover {
+  transform: translateY(-2px);
+}
+.v-shinbo .fg-screen-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 12px 28px #0b090866;
+  transition: box-shadow 240ms var(--fg-ease);
+}
+.v-shinbo .fg-screen-link:hover img {
+  box-shadow: 0 18px 40px #0b090899;
+}
+.v-shinbo figcaption {
+  font: 12px/1.5 var(--font);
+  color: var(--vc-muted);
+  padding-top: 12px;
+}
+.v-shinbo .fg-hero-screen figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 16px;
+}
+.v-shinbo .fg-hero-screen figcaption a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--vc-accent);
+  text-decoration: underline;
+}
+/* provider carousel (Ticker from shared.tsx): same row style as the CLI list, scrolls left to right */
+.v-shinbo .fg-providers {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vc-line);
+}
+.v-shinbo .fg-providers .label {
+  flex-shrink: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  font: 12px/1.5 var(--font);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--vc-muted);
+}
+.v-shinbo .fg-providers .track {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  contain-intrinsic-size: auto 28px;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 40px,
+    #000 calc(100% - 40px),
+    transparent
+  );
+}
+.v-shinbo .fg-providers .lanes {
+  animation-direction: reverse;
+  animation-duration: 90s;
+}
+.v-shinbo .fg-providers .lanes li {
+  gap: 8px;
+  padding: 4px 14px;
+  font: 12px var(--font);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-providers .lanes li .mark {
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+}
+/* Hero entrance: @starting-style transitions run on first paint (also on the
+   prerendered HTML, before hydration) and are unaffected by the
+   data-motion="paused" animation-play-state rule below. Browsers without
+   @starting-style simply show the content. */
+@media (prefers-reduced-motion: no-preference) {
+  .v-shinbo
+    .fg-overview
+    :is(.fg-intro > .fg-eyebrow, #fg-title, .fg-definition, .fg-hero-screen) {
+    transition:
+      opacity 560ms var(--fg-ease),
+      transform 560ms var(--fg-ease);
+  }
+  .v-shinbo .fg-overview #fg-title {
+    transition-delay: 60ms;
+  }
+  .v-shinbo .fg-overview .fg-definition {
+    transition-delay: 140ms;
+  }
+  .v-shinbo .fg-overview .fg-hero-screen {
+    transition-delay: 260ms;
+  }
+  @starting-style {
+    .v-shinbo
+      .fg-overview
+      :is(.fg-intro > .fg-eyebrow, #fg-title, .fg-definition, .fg-hero-screen) {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}
+.v-shinbo .fg-label {
+  font: 12px/1.5 var(--font);
+  color: var(--vc-muted);
+}
+.v-shinbo .vc-brands {
+  gap: 12px 18px;
+}
+.v-shinbo .vc-brands > span {
+  font-size: 12px;
+}
+.v-shinbo .vc-brands img {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- "How it works" (Explain) card rounding ---------- */
+.v-shinbo .explain {
+  padding: var(--fg-section-pad) 0 0;
+}
+.v-shinbo .explain-card {
+}
+.v-shinbo :is(.explain-controls, .explain-controls button, .explain button) {
+}
+
+/* ---------- permissions: stacked tinted rows in an outlined frame ---------- */
+.v-shinbo .fg-control-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--fg-gap);
+  align-items: start;
+}
+.v-shinbo .fg-modes {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 18px 18px 8px 34px;
+  border: 1px solid var(--vc-line);
+}
+/* connector spine: a vertical rule with one dot per mode, as on the reference */
+.v-shinbo .fg-modes::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 40px;
+  bottom: 64px;
+  border-left: 1px solid var(--vc-line);
+}
+.v-shinbo .fg-mode {
+  position: relative;
+  padding: 16px 18px;
+  background: var(--tint-0);
+  --hue: var(--hue-0);
+}
+.v-shinbo .fg-mode[data-tint="1"] {
+  background: var(--tint-1);
+  --hue: var(--hue-1);
+}
+.v-shinbo .fg-mode[data-tint="2"] {
+  background: var(--tint-2);
+  --hue: var(--hue-2);
+}
+.v-shinbo .fg-mode[data-tint="3"] {
+  background: var(--tint-3);
+  --hue: var(--hue-3);
+}
+.v-shinbo .fg-mode::before {
+  content: "";
+  position: absolute;
+  left: -21px;
+  top: 24px;
+  width: 8px;
+  height: 8px;
+  background: var(--hue);
+  box-shadow: 0 0 0 4px var(--vc-bg);
+}
+.v-shinbo .fg-mode h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 4px;
+  font: 400 24px/1.1 var(--font-serif);
+  letter-spacing: 0;
+}
+.v-shinbo .fg-mode h3 i {
+  font-style: normal;
+  font-size: 15px;
+  color: var(--hue);
+}
+.v-shinbo .fg-mode p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vc-muted);
+}
+.v-shinbo .fg-modes .fg-link {
+  margin-left: 4px;
+}
+.v-shinbo .fg-control-figure {
+  margin: 0;
+  padding: clamp(16px, 2.5vw, 28px);
+  background: var(--tint-1);
+}
+.v-shinbo .fg-control-figure .ft-perm {
+  font-size: 15px;
+}
+.v-shinbo .fg-control-figure .ft-perm-req b {
+  font-size: 16px;
+}
+.v-shinbo .fg-control-figure .ft-perm em {
+  font-size: 14px;
+}
+.v-shinbo .fg-control-figure figcaption {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--vc-muted);
+}
+
+/* ---------- self learning: copy + loop diagram in one tinted card ---------- */
+.v-shinbo .fg-learning-section {
+  padding-top: 0;
+}
+.v-shinbo .fg-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--fg-gap) clamp(24px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(24px, 3.5vw, 44px);
+  background: var(--tint-1);
+}
+.v-shinbo .fg-evidence-copy {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+}
+.v-shinbo .fg-evidence-copy h2 {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 40px);
+}
+.v-shinbo .fg-evidence-copy p {
+  margin: 0;
+  color: var(--vc-muted);
+  font-size: 15px;
+}
+.v-shinbo .fg-evidence-figure {
+  padding: clamp(12px, 2vw, 24px);
+  background: color-mix(in srgb, var(--vc-bg) 70%, transparent);
+}
+.v-shinbo .fg-evidence-figure .ft-learn {
+  font-size: 15px;
+}
+.v-shinbo .fg-evidence-figure .ft-learn li b {
+  font-size: 22px;
+}
+.v-shinbo .fg-evidence-figure .ft-learn li span,
+.v-shinbo .fg-evidence-figure .ft-learn-result {
+  font-size: 15px;
+}
+
+/* ---------- workflows ---------- */
+.v-shinbo .fg-schedule {
+  max-width: 720px;
+  margin: 0 auto var(--fg-gap-sm);
+  padding: clamp(16px, 3vw, 32px);
+  background: var(--tint-2);
+}
+.v-shinbo .fg-schedule figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--vc-muted);
+}
+
+/* ---------- features: tinted bento with bleeding screenshots ---------- */
+.v-shinbo .vc-features h2 {
+  margin: 0 0 32px;
+  font: 400 clamp(32px, 4vw, 52px) / 1.08 var(--font-serif);
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+.v-shinbo .vc-feature-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 0;
+  border-top: 0;
+}
+.v-shinbo .vc-feature-grid > a {
+  position: relative;
+  grid-column: span 2;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 0;
+  min-height: 300px;
+  padding: 28px 28px 0;
+  border: 0;
+  border-left: 0;
+  background: var(--tint-0);
+  overflow: hidden;
+  transition:
+    transform 260ms var(--fg-ease),
+    box-shadow 260ms var(--fg-ease),
+    opacity 500ms ease-out;
+}
+/* Bento rhythm across the ten cards: 2 wide, 3 narrow, 2 wide, 3 narrow. */
+.v-shinbo
+  .vc-feature-grid
+  > a:is(:nth-child(1), :nth-child(2), :nth-child(6), :nth-child(7)) {
+  grid-column: span 3;
+  min-height: 360px;
+}
+.v-shinbo .vc-feature-grid > a[data-tint="1"] {
+  background: var(--tint-1);
+}
+.v-shinbo .vc-feature-grid > a[data-tint="2"] {
+  background: var(--tint-2);
+}
+.v-shinbo .vc-feature-grid > a[data-tint="3"] {
+  background: var(--tint-3);
+}
+.v-shinbo .vc-feature-grid > a:hover {
+  background: var(--tint-0);
+  border-color: transparent;
+  transform: translateY(-4px);
+  box-shadow: var(--fg-shadow);
+}
+.v-shinbo .vc-feature-grid > a[data-tint="1"]:hover {
+  background: var(--tint-1);
+}
+.v-shinbo .vc-feature-grid > a[data-tint="2"]:hover {
+  background: var(--tint-2);
+}
+.v-shinbo .vc-feature-grid > a[data-tint="3"]:hover {
+  background: var(--tint-3);
+}
+.v-shinbo .vc-feature-grid > a:hover h3 {
+  text-decoration: none;
+}
+.v-shinbo .vc-features h3 {
+  margin: 0 40px 6px 0;
+  font: 400 26px/1.1 var(--font-serif);
+  letter-spacing: 0;
+  color: var(--vc-ink);
+}
+.v-shinbo .vc-features p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vc-muted);
+  max-width: 40ch;
+}
+.v-shinbo .vc-feature-go {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--vc-line);
+  background: color-mix(in srgb, var(--vc-bg) 55%, transparent);
+  color: var(--vc-accent);
+  font-size: 16px;
+  transition:
+    background 200ms ease-out,
+    transform 260ms var(--fg-ease);
+}
+.v-shinbo .vc-feature-grid > a:hover .vc-feature-go {
+  background: var(--vc-accent);
+  color: var(--vc-on-accent);
+  transform: rotate(-45deg);
+}
+/* Animated art fills the bottom of each tile; the workspace tile keeps a
+   screenshot that slides off the bottom edge. */
+.v-shinbo .vc-feature-art {
+  display: grid;
+  align-content: center;
+  width: 100%;
+  margin-top: 20px;
+  padding-bottom: 24px;
+}
+.v-shinbo .vc-feature-art .ft-sched text {
+  font-size: 9.5px;
+}
+.v-shinbo .vc-feature-art:has(.vc-feature-shot) {
+  justify-items: center;
+  align-content: end;
+  padding-bottom: 0;
+}
+.v-shinbo .vc-feature-art .tile-art {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  contain-intrinsic-size: auto;
+}
+.v-shinbo .vc-feature-shot {
+  align-self: end;
+  justify-self: center;
+  width: 88%;
+  height: auto;
+  margin-top: 22px;
+  box-shadow: 0 -8px 28px -8px #0b0908a6;
+  transition: transform 320ms var(--fg-ease);
+}
+.v-shinbo
+  .vc-feature-grid
+  > a:is(:nth-child(1), :nth-child(2), :nth-child(6), :nth-child(7))
+  .vc-feature-shot {
+  width: 80%;
+}
+.v-shinbo .vc-feature-grid > a:hover .vc-feature-shot {
+  transform: translateY(-6px);
+}
+
+/* ---------- download ---------- */
+.v-shinbo :is(.vc-download, .vc-questions) h2 {
+  margin: 0 0 20px;
+  font: 400 clamp(32px, 4vw, 52px) / 1.08 var(--font-serif);
+  letter-spacing: -0.01em;
+}
+.v-shinbo .vc-download {
+  padding: clamp(24px, 3.5vw, 44px);
+  border: 1px solid var(--vc-line);
+  background: var(--vc-panel);
+}
+.v-shinbo .vc-download select {
+  border-color: var(--vc-control);
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 15px;
+}
+.v-shinbo .vc-download .vc-fine {
+  font-size: 13px;
+  margin-top: 12px;
+}
+.v-shinbo .vc-download-side .vc-fine {
+  margin-top: 8px;
+}
+.v-shinbo .vc-download-grid {
+  gap: var(--fg-gap);
+}
+.v-shinbo .vc-download-result {
+  padding: var(--fg-gap-sm) var(--fg-gap-sm) var(--fg-gap-sm) 0;
+}
+.v-shinbo .vc-download-result h3 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+.v-shinbo .vc-download-result p {
+  margin: 0;
+}
+.v-shinbo .vc-download-side {
+  padding: 18px;
+  border: 1px solid var(--vc-line);
+  background: var(--vc-bg);
+}
+.v-shinbo .vc-download-side label {
+  margin-bottom: 6px;
+  font-weight: 550;
+}
+.v-shinbo .vc-download-links-title {
+  margin: var(--fg-gap-sm) 0 2px;
+  font-weight: 550;
+  color: var(--vc-ink);
+}
+.v-shinbo .vc-download-links a {
+  gap: 10px;
+  min-height: 40px;
+  padding: 6px 0;
+  color: var(--vc-ink);
+  text-decoration: none;
+}
+.v-shinbo .vc-download-links a:hover {
+  color: var(--vc-accent);
+}
+.v-shinbo .vc-download-links svg {
+  flex: none;
+}
+.v-shinbo .vc-primary {
+  margin: var(--fg-gap-sm) 0;
+}
+.v-shinbo .vc-download p a {
+  text-decoration: underline;
+  padding-block: 10px; /* inline: enlarges the hit area without moving text */
+}
+.v-shinbo .vc-release-note {
+  border-block: 0;
+  border-top: 1px solid var(--vc-line);
+  padding: 8px 0 0;
+  margin: 0;
+  font-size: 12px;
+  color: var(--vc-muted);
+}
+.v-shinbo .vc-download-foot {
+  margin-top: var(--fg-gap-sm);
+  padding-top: var(--fg-gap-sm);
+}
+
+/* ---------- questions ---------- */
+.v-shinbo .vc-questions {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.v-shinbo .vc-questions h2 {
+  text-align: center;
+}
+.v-shinbo .vc-questions details {
+  padding: 0 22px;
+  border: 1px solid var(--vc-line);
+  margin-bottom: 10px;
+  background: var(--surface);
+  transition: background 200ms ease-out;
+}
+.v-shinbo .vc-questions details[open] {
+  background: var(--vc-panel);
+}
+.v-shinbo .vc-questions summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fg-gap-sm);
+  padding: 16px 0;
+  min-height: 56px;
+  font-size: 16px;
+  font-weight: 550;
+  list-style: none;
+}
+.v-shinbo .vc-questions summary::-webkit-details-marker {
+  display: none;
+}
+.v-shinbo .vc-questions summary::after {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin: 0 6px 4px 0;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 240ms ease-out;
+}
+.v-shinbo .vc-questions details[open] summary::after {
+  transform: rotate(-135deg);
+  margin-bottom: -4px;
+}
+.v-shinbo .vc-questions summary:hover {
+  color: var(--vc-accent);
+}
+.v-shinbo .vc-questions details p {
+  padding: 0 0 18px;
+  font-size: 15px;
+}
+
+/* ---------- closing CTA band with outlined rings ---------- */
+.v-shinbo .fg-cta {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: clamp(36px, 5vw, 56px) 24px;
+  margin-top: var(--fg-gap);
+  background: var(--tint-0);
+  overflow: hidden;
+  isolation: isolate;
+}
+.v-shinbo .fg-cta h2 {
+  margin: 0;
+  max-width: 24ch;
+  font-size: clamp(26px, 3vw, 36px);
+}
+/* ---------- two-tone footer ---------- */
+.v-shinbo .fg-footer {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.4fr) minmax(0, 2fr);
+  margin: var(--fg-gap) 0 24px;
+  border: 1px solid var(--vc-line);
+  overflow: hidden;
+  background: var(--vc-panel);
+}
+.v-shinbo .fg-footer-brand {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 16px;
+  background: var(--tint-1);
+  color: var(--vc-accent);
+}
+.v-shinbo .fg-footer-brand svg {
+  width: clamp(72px, 9vw, 112px);
+  height: auto;
+}
+.v-shinbo .fg-footer-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 10px 24px;
+  padding: 16px 20px;
+  font-size: 13px;
+}
+.v-shinbo .fg-footer-cols nav {
+  display: grid;
+  gap: 0 16px;
+  align-content: start;
+}
+.v-shinbo .fg-footer-cols nav a {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+}
+.v-shinbo .fg-footer-cols nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  color: var(--vc-ink);
+}
+.v-shinbo .fg-footer-guides {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+.v-shinbo .fg-footer-guides .fg-footer-h {
+  grid-column: 1 / -1;
+}
+.v-shinbo .fg-footer-h {
+  font: 12px/1.5 var(--font);
+  color: var(--vc-muted);
+  margin-bottom: 4px;
+}
+.v-shinbo .fg-footer-fine {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 12px;
+  color: var(--vc-muted);
+}
+.v-shinbo .fg-skip {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  transform: translateY(-160%);
+  padding: 12px;
+  background: var(--vc-accent);
+  color: var(--vc-on-accent);
+  z-index: 100;
+}
+.v-shinbo .fg-skip:focus {
+  transform: none;
+}
+.v-shinbo[data-motion="paused"] *,
+.v-shinbo[data-motion="paused"] *::before,
+.v-shinbo[data-motion="paused"] *::after {
+  animation-play-state: paused !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* FAQ open/close: chevron rotates above; content height animates where supported */
+  .v-shinbo .vc-questions details {
+    interpolate-size: allow-keywords;
+  }
+  .v-shinbo .vc-questions details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 300ms ease-out,
+      content-visibility 300ms allow-discrete;
+  }
+  .v-shinbo .vc-questions details[open]::details-content {
+    height: auto;
+  }
+  .v-shinbo .vc-questions details[open] p {
+    animation: shinbo-fade 320ms ease-out;
+  }
+  @keyframes shinbo-fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1040px) {
+  .v-shinbo .fg-header .fg-sections {
+    display: none;
+  }
+}
+@media (max-width: 880px) {
+  .v-shinbo .fg-control-grid,
+  .v-shinbo .fg-evidence {
+    grid-template-columns: 1fr;
+  }
+  .v-shinbo .vc-feature-grid > a,
+  .v-shinbo
+    .vc-feature-grid
+    > a:is(:nth-child(1), :nth-child(2), :nth-child(6), :nth-child(7)) {
+    grid-column: span 3;
+    min-height: 320px;
+  }
+  .v-shinbo .fg-footer {
+    grid-template-columns: 1fr;
+  }
+  .v-shinbo .fg-footer-brand {
+    min-height: 160px;
+  }
+}
+@media (max-width: 680px) {
+  .v-shinbo .fg-header {
+    top: 8px;
+    margin-top: 8px;
+    min-height: 56px;
+    padding: 4px 6px 4px 14px;
+    gap: 8px;
+  }
+  .v-shinbo .fg-header .fg-brand {
+    font-size: 20px;
+    gap: 6px;
+  }
+  .v-shinbo .fg-primary > a:nth-child(2) {
+    display: none;
+  }
+  .v-shinbo .fg-header .fg-button {
+    font-size: 12px;
+    padding-inline: 12px;
+  }
+  .v-shinbo main {
+    --fg-section-pad: 40px;
+  }
+  .v-shinbo h1 {
+    font-size: clamp(40px, 11vw, 56px);
+  }
+  .v-shinbo .fg-intro {
+    gap: 16px;
+  }
+  .v-shinbo .fg-providers {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .v-shinbo .fg-modes {
+    padding: 14px 12px 6px 28px;
+  }
+  .v-shinbo .fg-modes::before {
+    left: 13px;
+  }
+  .v-shinbo .fg-mode::before {
+    left: -19px;
+  }
+  .v-shinbo .vc-feature-grid > a,
+  .v-shinbo
+    .vc-feature-grid
+    > a:is(:nth-child(1), :nth-child(2), :nth-child(6), :nth-child(7)) {
+    grid-column: 1 / -1;
+    min-height: 280px;
+    padding: 22px 22px 0;
+  }
+  .v-shinbo .vc-questions details {
+    padding: 0 16px;
+  }
+  .v-shinbo .fg-cta {
+    padding: 56px 20px;
+  }
+  .v-shinbo .fg-footer-cols {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 380px) {
+  .v-shinbo .fg-header {
+    flex-wrap: wrap;
+  }
+  .v-shinbo .fg-header nav {
+    flex: 1;
+    justify-content: flex-end;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v-shinbo *,
+  .v-shinbo *::before,
+  .v-shinbo *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (forced-colors: active) {
+  .v-shinbo :is(.fg-button, .vc-primary, .fg-screen-link) {
+    border: 1px solid ButtonText;
+  }
+}
+
+.v-shinbo .fg-hero-mark-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.v-shinbo .fg-hero-mark[data-rendered="true"] .fg-hero-mark-fallback {
+  visibility: hidden;
+}
+.v-shinbo .fg-intro h1 {
+  font-size: clamp(40px, 6vw, 72px);
+}

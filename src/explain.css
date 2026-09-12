@@ -1,0 +1,554 @@
+.explain {
+  --ex-pink: var(--vc-accent, #ff5c94);
+  --ex-soft: #ed7a9b;
+  --ex-bg: var(--vc-bg, #202023);
+  --ex-panel: var(--vc-panel, #29292d);
+  --ex-line: var(--vc-line, #49494f);
+  --ex-muted: var(--vc-muted, #b5b5bc);
+  color: #eeeef0;
+  margin: 47px 0;
+  scroll-margin-top: 60px;
+}
+.v-shinbo .explain {
+  margin: 0;
+}
+.explain-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.explain-heading h2 {
+  margin: 0 0 4px;
+  font-size: clamp(26px, 4vw, 38px);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+.explain-controls {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 3px;
+  border-radius: 0;
+  background: var(--ex-panel);
+}
+.explain button {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: #eeeef0;
+  border: 0;
+  background: #35353b;
+  border-radius: 0;
+  padding: 7px 11px;
+  cursor: pointer;
+  min-height: 32px;
+  transition:
+    color 200ms ease-out,
+    background 200ms ease-out;
+}
+.explain button:hover {
+  background: #45454c;
+}
+.explain-controls button {
+  background: transparent;
+  color: var(--ex-muted);
+}
+.explain-controls button:hover {
+  background: #35353b;
+  color: #eeeef0;
+}
+.explain-controls button:first-child {
+  background: var(--ex-pink);
+  color: #1b1418;
+  min-width: 78px;
+}
+.explain-controls button:first-child:hover {
+  background: var(--ex-soft);
+}
+.explain button:focus-visible,
+.explain input:focus-visible,
+.explain-graph-scroll:focus-visible {
+  outline: 2px solid var(--ex-pink);
+  outline-offset: 2px;
+}
+.explain-disclaimer {
+  font-size: 12px;
+  color: var(--ex-muted);
+  margin: 8px 0 16px;
+}
+.explain-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+.explain-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ex-line);
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--ex-bg);
+}
+.explain-card-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  padding: 12px 16px 10px;
+}
+.explain-card-heading h3 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.explain-card-heading p {
+  color: var(--ex-muted);
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.explain-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  min-height: 36px;
+  padding: 4px 16px;
+  border-block: 1px solid #3b3b41;
+  background: var(--ex-panel);
+}
+.explain-toolbar button {
+  padding: 5px 9px;
+  min-height: 28px;
+}
+.explain-readout,
+.explain-time {
+  font: 11px/1.5 var(--font-mono, monospace);
+  color: #d5d5da;
+}
+.explain-toggle {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
+  min-height: 28px;
+}
+.explain-toggle input {
+  accent-color: var(--ex-pink);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.explain-graph-scroll {
+  overflow-x: auto;
+  padding: 12px 16px;
+}
+.explain-plan {
+  width: 100%;
+  min-width: 606px;
+  max-width: 680px;
+  margin: 0 auto;
+  display: block;
+}
+.explain-edge {
+  fill: none;
+  stroke: var(--ex-line);
+  stroke-width: 1;
+}
+.explain-edge-running {
+  stroke: var(--ex-pink);
+  stroke-dasharray: 3 4;
+}
+.explain-edge-blocked {
+  stroke: var(--ex-soft);
+  stroke-dasharray: 2 4;
+}
+.explain-node rect {
+  fill: var(--ex-panel);
+  stroke: var(--ex-line);
+  stroke-width: 1;
+}
+.explain-node-title {
+  fill: #eeeef0;
+  font: 500 13px var(--font, sans-serif);
+}
+.explain-node-state {
+  fill: var(--ex-muted);
+  font: 11px var(--font-mono, monospace);
+}
+.explain-node-waiting text {
+  opacity: 0.6;
+}
+.explain-node-waiting rect {
+  stroke-dasharray: 2 3;
+}
+.explain-node-running rect {
+  fill: #3d2a33;
+  stroke: var(--ex-pink);
+}
+.explain-node-running .explain-node-state {
+  fill: var(--ex-pink);
+}
+.explain-node-done rect {
+  stroke: #85858f;
+}
+.explain-node-blocked rect {
+  stroke: var(--ex-soft);
+  stroke-dasharray: 4 3;
+}
+.explain-node-blocked .explain-node-state {
+  fill: var(--ex-soft);
+}
+.explain-caption {
+  border-top: 1px solid #3b3b41;
+  color: var(--ex-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: auto 0 0;
+  padding: 8px 16px;
+}
+.explain-context-demo {
+  padding: 12px 16px;
+}
+.explain-context-count {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.explain-context-count > strong {
+  color: #eeeef0;
+  font: 36px/1 var(--font-mono, monospace);
+  letter-spacing: -0.04em;
+}
+.explain-context-count > strong span {
+  color: var(--ex-muted);
+  font-size: 18px;
+  letter-spacing: 0;
+  margin-left: 2px;
+}
+.explain-context-count > span {
+  color: var(--ex-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.explain-context-count b {
+  color: var(--ex-soft);
+  font-weight: 500;
+}
+.explain-context-bar {
+  display: flex;
+  height: 24px;
+  background: #35353b;
+  border-radius: 0;
+  overflow: hidden;
+}
+.explain-segment {
+  flex-shrink: 0;
+  height: 100%;
+}
+.explain-segment-instructions {
+  background: #c5c5ce;
+}
+.explain-segment-messages {
+  background: #85858f;
+}
+.explain-segment-history {
+  background: var(--ex-soft);
+}
+.explain-segment-summary {
+  background: var(--ex-pink);
+}
+.explain-context-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ex-muted);
+  font: 11px/1.5 var(--font-mono, monospace);
+  margin: 6px 0 12px;
+}
+.explain-segments {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 20px;
+}
+.explain-segments > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.explain-segments dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #c9c9d0;
+}
+.explain-segments dd {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+}
+.explain-segments i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+}
+.explain-summary {
+  margin-top: 12px;
+  border: 1px solid var(--ex-line);
+  border-radius: 0;
+  background: var(--ex-panel);
+  padding: 8px 10px;
+}
+.explain-summary > span {
+  color: var(--ex-soft);
+  font-size: 12px;
+}
+.explain-summary p {
+  color: #c9c9d0;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+.explain-waterfall {
+  padding: 10px 10px 12px;
+}
+.explain-axis {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 40px 4px 172px;
+  font: 11px/1.5 var(--font-mono, monospace);
+  color: var(--ex-muted);
+}
+.explain .explain-span-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 28px;
+  width: 100%;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  min-height: 28px;
+  text-align: left;
+  font-weight: 400;
+}
+.explain .explain-span-row:hover {
+  background: #2c2c31;
+}
+.explain .explain-span-row[aria-pressed="true"] {
+  border-color: var(--ex-pink);
+  background: #342a31;
+}
+.explain-span-label {
+  color: #d4d4db;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.explain-span-duration {
+  font: 11px var(--font-mono, monospace);
+  color: var(--ex-muted);
+  text-align: right;
+}
+.explain-span-track {
+  height: 18px;
+  position: relative;
+  background: repeating-linear-gradient(
+    to right,
+    #4a4a523d 0 1px,
+    transparent 1px calc(100% / 3)
+  );
+  border-right: 1px solid #4a4a523d;
+}
+.explain-span-bar {
+  position: absolute;
+  height: 12px;
+  top: 3px;
+  background: #50505a;
+  border: 1px solid #7e7e88;
+  border-radius: 0;
+  overflow: hidden;
+}
+.explain-span-progress {
+  display: block;
+  height: 100%;
+  background: #bbbcc5;
+}
+.explain-span-model .explain-span-bar {
+  border-color: var(--ex-pink);
+  background: #4c303d;
+}
+.explain-span-model .explain-span-progress {
+  background: var(--ex-pink);
+}
+.explain-span-agent .explain-span-bar {
+  border-color: var(--ex-soft);
+  background: #4f3541;
+}
+.explain-span-agent .explain-span-progress {
+  background: var(--ex-soft);
+}
+.explain-span-cli .explain-span-bar {
+  border-style: dashed;
+}
+.explain-span-detail {
+  margin: 10px 6px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--ex-line);
+  border-radius: 0;
+  background: var(--ex-panel);
+  min-height: 64px;
+}
+.explain-span-detail > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.explain-span-detail strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ex-soft);
+}
+.explain-span-detail > div > span {
+  font: 11px/1.6 var(--font-mono, monospace);
+  color: var(--ex-muted);
+}
+.explain-span-detail p {
+  color: #c9c9d0;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .explain[data-playing="true"] .explain-edge-running {
+    animation: explain-flow 1.3s linear infinite;
+  }
+  .explain[data-playing="true"] .explain-node-running rect {
+    animation: explain-pulse 1.3s ease-in-out infinite;
+  }
+  .explain[data-playing="true"] .explain-span-progress {
+    transition: width 1.1s linear;
+  }
+  .explain-segment {
+    transition: width 0.4s ease-in-out;
+  }
+  /* Step state changes cross-fade instead of snapping. */
+  .explain-node rect,
+  .explain-node text,
+  .explain-edge {
+    transition:
+      fill 300ms var(--fg-ease, ease-out),
+      stroke 300ms var(--fg-ease, ease-out),
+      opacity 300ms var(--fg-ease, ease-out);
+  }
+  .explain .explain-span-row {
+    transition:
+      background 200ms ease-out,
+      border-color 200ms ease-out;
+  }
+  @keyframes explain-flow {
+    to {
+      stroke-dashoffset: -14;
+    }
+  }
+  @keyframes explain-pulse {
+    50% {
+      stroke-opacity: 0.4;
+    }
+  }
+}
+@media (min-width: 760px) {
+  .explain-grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+  .explain-card-plan {
+    grid-column: 1 / -1;
+  }
+  .explain-card-context .explain-segments {
+    grid-template-columns: 1fr;
+  }
+  .explain-card-timeline .explain-span-detail > div {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+@media (max-width: 640px) {
+  .explain {
+    margin: 32px 0;
+  }
+  .explain-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .explain-card-heading,
+  .explain-toolbar,
+  .explain-context-demo,
+  .explain-caption {
+    padding-inline: 12px;
+  }
+  .explain-toolbar {
+    flex-wrap: wrap;
+  }
+  .explain-graph-scroll {
+    padding: 10px 12px;
+  }
+  .explain-segments {
+    grid-template-columns: 1fr;
+  }
+  .explain-waterfall {
+    padding: 10px 6px;
+  }
+  .explain .explain-span-row {
+    grid-template-columns: 120px 1fr 24px;
+    gap: 5px;
+  }
+  .explain-span-label {
+    white-space: normal;
+    line-height: 1.3;
+  }
+  .explain-axis {
+    margin-left: 131px;
+    margin-right: 35px;
+  }
+  .explain-span-detail > div {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+@media (forced-colors: active) {
+  .explain-node rect {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+  .explain-edge {
+    stroke: CanvasText;
+  }
+  .explain-node text {
+    fill: CanvasText;
+  }
+  .explain-segment {
+    border: 1px solid CanvasText;
+  }
+  .explain-span-bar {
+    background: Canvas;
+    border-color: CanvasText;
+  }
+  .explain-span-progress {
+    background: Highlight;
+  }
+  .explain-controls button:first-child {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

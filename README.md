@@ -1,64 +1,64 @@
-# Emma website
+# Shinbo website
 
-Public landing page for Emma. The site is self-contained in this directory: it
-has its own `package-lock.json` and is not part of any root workspace, so run
-every command from `website/`.
+Public website for [Shinbo](https://shinbo.app), a desktop workspace for its own
+agent and installed coding-agent CLIs. Source and installers for the application
+live in [tronschell/shinbo](https://github.com/tronschell/shinbo).
 
-React 19, Tailwind 4, and TypeScript on Vite 8. It is a single page:
-`src/main.tsx` mounts `src/App.tsx` into `index.html`. `src/index.css` holds the
-Tailwind import — used for its reset only, there are no utility classes — and
-the whole stylesheet.
+## Develop and verify
 
-## Design
-
-The page is drawn from the app's own tokens, copied from
-[`desktop/src/styles/tokens.css`](../desktop/src/styles/tokens.css): the same
-paper and ink steps, the same six categorical hues with orange leading, square
-corners, 1px rules instead of filled cards, Departure Mono for anything on the
-grid and Inter for prose. See [`docs/design-system.md`](../docs/design-system.md).
-
-Copy is checked against `docs/` and the source it cites; the numbers on the page
-(tool counts, ceilings, model ids, CLI flags) come from there rather than from
-marketing.
-
-## Assets
-
-`public/` is copied verbatim into the build.
-
-|                    |                                                                                                                                                                                               |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `public/shots/`    | Real app screenshots, taken from [`desktop/screenshots/`](../desktop/screenshots)                                                                                                             |
-| `public/brands/`   | Vendor marks for the CLIs Emma drives and the agents she imports from, from [`desktop/assets/brands/`](../desktop/assets/brands) — terms in [`docs/icon-sources.md`](../docs/icon-sources.md) |
-| `public/fonts/`    | Departure Mono, OFL 1.1 — see [`docs/credits.md`](../docs/credits.md)                                                                                                                         |
-| `public/emma.webp` | The mark                                                                                                                                                                                      |
-
-Re-take a screenshot in the app, drop it into `desktop/screenshots/`, then copy
-it over the one in `public/shots/`. Nothing generates them.
-
-## Development
-
-Requires Node.js 20.19+ or 22.13+ (Vite 8 wants 20.19+ or 22.12+, ESLint 10
-wants 20.19+, 22.13+, or 24+). There is no `engines` field enforcing this.
+Requires Node.js 24 and Python 3. This repository is self-contained.
 
 ```sh
-npm install
+npm ci
 npm run dev
+npm run check
+npm run preview -- --port 4187
 ```
 
-## Checks
+`check` runs formatting, ESLint, TypeScript, the production build, and regression
+checks for routes, metadata, images, downloads, animation state and design previews.
+The preview serves the production build. Unknown routes return HTTP 404.
 
-```sh
-npm run format:check   # or: npm run format, to rewrite
-npm run lint
-npm run typecheck
-npm run build
-```
+## Build and delivery
 
-`npm run check` runs `format:check`, `lint`, and `build`; `build` runs `tsc -b`
-first, so it covers `typecheck`.
+React 19, TypeScript and Vite. `src/App.tsx` loads the requested page before
+hydration; ordinary links load complete documents. `scripts/prerender.mjs` writes
+static HTML and route-specific CSS links for the homepage, all guides, the design
+previews and the not-found page. It also generates `sitemap.xml`.
 
-## Output
+The build writes `dist/`. It includes both clean-URL HTML files and directory
+indexes; client routing accepts either form. Canonical URLs use `https://shinbo.app`.
+Design previews at `/variations` are marked `noindex, follow` and excluded from the
+sitemap. The generated `404.html` lets Cloudflare serve a useful missing-page
+response instead of treating every unknown path as the homepage.
 
-`npm run build` writes the static bundle to `dist/`, which is gitignored. The
-repository contains no CI workflow or host configuration for this site, so
-deployment is done outside of it.
+Cloudflare Pages uses the GitHub integration for `tronschell/shinbo-website`:
+production branch `main`, build command `npm run check`, output `dist`, Node 24.
+GitHub Actions also runs the same checks for pull requests and pushes to `main`.
+See [deployment details](docs/deployment.md) for domain setup and verification.
+
+## Images and motion
+
+Original app screenshots and their provenance remain in `public/shots/manifest.json`.
+They were captured September 12, 2026 from an isolated development profile. Examples
+are labelled; screenshots do not imply a live run, benchmark, or release-level test.
+
+WebP delivery variants are committed. To regenerate them after refreshing source
+PNGs, run `python3 scripts/optimize-images.py` in an environment with Pillow and WebP
+support. Pillow is not required for ordinary builds. Dithered backgrounds are
+encoded losslessly; screenshots have responsive delivery sizes. Full-size originals
+remain available from screenshot links.
+
+Instrument Serif and Departure Mono are served locally with their licenses in
+`public/fonts/`. The Three.js logo progressively enhances desktop browsers with
+hover/fine-pointer input. Mobile and reduced-motion visitors keep the static mark.
+The desktop renderer pauses offscreen, in hidden tabs and when animations are paused.
+
+## Product claims
+
+Keep visible copy, FAQs, metadata and `public/llms*.txt` consistent. The application
+is free; model providers charge separately, and setup requires a verified OpenRouter
+key. Download links in `src/downloads.ts` point to verified v0.7.1 assets, which still
+use the former Emma name. Current development guides may describe features newer
+than that release; they disclose this boundary. Search rankings, AI citations and
+activation require measurement after publication.

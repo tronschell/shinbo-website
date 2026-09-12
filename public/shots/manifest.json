@@ -1,0 +1,96 @@
+{
+  "captured": "2026-09-12",
+  "source": "Current local Shinbo Electron source; freshly built renderer, isolated example profile. Images may show work newer than v0.7.1. No live model runs or performance claims.",
+  "files": {
+    "workspace-thread.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "902e908d804ec592b9d907695af7890a62770f24548f955bc9a71e02706fb761"
+    },
+    "onboarding-connect.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "37f509f60e766d3e174f5e2dd790ddbee39054add9d316b570f6e5674a9f430a"
+    },
+    "model-picker.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "30bd6247ea54b3c3954796775534ee0541fc6bb43ff19035024d846f627a9d44"
+    },
+    "plan-subagents.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "cbeab2a500030c319629ab73823bc90825a72975deeeccc27e4981b77624d4c3"
+    },
+    "scheduled-jobs.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "d97bcfbe3701cd54d237b048d7f0f5ff1d7eb3a9e2f121863253d9a9fa660183"
+    },
+    "scheduled-graph.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "1825cd016c400acbc96f001a0f0d882e696b1b1bcfe696d81b0148f83c9334e6"
+    },
+    "self-improvement-models.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "1ed0e9e332a33138f91b8c332ac43188c588c53f887b460bd22cffa511326205"
+    },
+    "archive.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "f3c786cb8247a6540789c12eae82abe1112408c0c464f1bfa9f4dcf960add4ad"
+    },
+    "agent-dashboard.png": {
+      "width": 2760,
+      "height": 1720,
+      "sha256": "ad5b078975acebf3d29fdc6226858fb7bc3fa6c27baf187c9abf32efec7635cb"
+    },
+    "agent-import.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "1797b0231664facacb8317b7d0a72f2b29fe2afb4db85f5707f337ece29e42ea"
+    },
+    "knowledge-base.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "e16ac80db542bd5be3106f17decd0b623095a9fa274ff65612b644a955d55909"
+    },
+    "settings-context-bar.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "5047df2fca8d2fff18b06bfd7fa73a69a1c276b07d53ca01b3354b95a1cc7eb4"
+    },
+    "settings-quick-actions.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "6fc228239586f528e7ca8409e2cb78c103b61209242c310785cacc1378b4c2a9"
+    },
+    "settings-models.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "529b770b1cc081a60667048acaa46bf3fd5a9c165836588260731071fdf34c96"
+    },
+    "settings-permissions.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "2386819c83d216074718cf51eca2c765cf55e4a0cba353418cbdfaa2cfcd0b0a"
+    },
+    "settings-mobile.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "02497c203136d92daa343306bb9f2aaa4890b68b1b6281bc3dcd0cd18293c1e7"
+    },
+    "settings-tools.png": {
+      "width": 2880,
+      "height": 1800,
+      "sha256": "0a8b042b9e61129021e03b5a7a72d039d4536d68a54824f5309b9a446a18bdf1"
+    },
+    "notch-island.png": {
+      "width": 1240,
+      "height": 512,
+      "sha256": "1e735a2919926c186cc29405d30df6e69284aa9d4486240f6e6a1de87ce0e744"
+    }
+  }
+}

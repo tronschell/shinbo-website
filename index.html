@@ -3,12 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shinbo — AI agent workspace for Mac and Windows</title>
     <meta
       name="description"
-      content="Emma is a macOS agent workspace and a harness for other harnesses: her own Zig agent loop, plus Claude Code, Codex, Pi, OpenCode and Cursor taking turns inside one Markdown thread."
+      content="Shinbo is a free, open-source meta-harness for your coding agents. Run agent CLIs, inspect results and hand off output in one workspace on Mac and Windows."
     />
-    <meta name="theme-color" content="#0e0e10" />
-    <link rel="icon" href="/emma.webp" />
+    <link rel="canonical" href="https://shinbo.app/" />
+    <link
+      rel="alternate"
+      type="text/markdown"
+      href="https://shinbo.app/llms.txt"
+      title="Reference for agents"
+    />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1"
+    />
+    <meta name="theme-color" content="#202023" />
+    <meta name="color-scheme" content="dark" />
+
+    <link rel="icon" href="/shinbo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link
       rel="preload"
       href="/fonts/DepartureMono-Regular.woff2"
@@ -16,7 +31,102 @@
       type="font/woff2"
       crossorigin
     />
-    <title>Emma — A harness for every harness</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shinbo" />
+    <meta property="og:url" content="https://shinbo.app/" />
+    <meta
+      property="og:title"
+      content="Shinbo — AI agent workspace for Mac and Windows"
+    />
+    <meta
+      property="og:description"
+      content="Shinbo is a free, open-source meta-harness for your coding agents. Run agent CLIs, inspect results and hand off output in one workspace on Mac and Windows."
+    />
+    <meta
+      property="og:image"
+      content="https://shinbo.app/shots/workspace-thread.png"
+    />
+    <meta property="og:image:width" content="2760" />
+    <meta property="og:image:height" content="1720" />
+    <meta
+      property="og:image:alt"
+      content="Shinbo's workspace: threads and projects on the left, the turn in the middle, the inspector on the right"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Shinbo — AI agent workspace for Mac and Windows"
+    />
+    <meta
+      name="twitter:description"
+      content="Shinbo is a free, open-source meta-harness for your coding agents. Run agent CLIs, inspect results and hand off output in one workspace on Mac and Windows."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shinbo.app/shots/workspace-thread.png"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://shinbo.app/#app",
+            "name": "Shinbo",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": [
+              "macOS 12 or later (Apple silicon)",
+              "Windows 10 version 1809 or later (x64)"
+            ],
+            "applicationSubCategory": "AI agent workspace",
+            "softwareRequirements": "Verified OpenRouter API key required during onboarding, including when connecting subscriptions. Model providers may charge separately. Windows installer is unsigned.",
+            "processorRequirements": "Apple silicon (arm64) for macOS; x64 for Windows",
+            "installUrl": "https://github.com/tronschell/shinbo/releases/latest",
+            "sameAs": ["https://github.com/tronschell/shinbo"],
+            "url": "https://shinbo.app/",
+            "downloadUrl": "https://github.com/tronschell/shinbo/releases/latest",
+            "image": "https://shinbo.app/shots/workspace-thread.png",
+            "screenshot": "https://shinbo.app/shots/workspace-thread.png",
+            "description": "Shinbo is a free, open-source meta-harness for your coding agents. Run agent CLIs, inspect results and hand off output in one workspace on Mac and Windows.",
+            "license": "https://opensource.org/license/mit",
+            "isAccessibleForFree": true,
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "description": "The Shinbo app is free. Model API usage and third-party subscriptions may cost extra."
+            },
+            "publisher": {
+              "@id": "https://shinbo.app/#org"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://shinbo.app/#org",
+            "name": "Shinbo",
+            "url": "https://shinbo.app/",
+            "logo": "https://shinbo.app/shinbo.svg",
+            "alternateName": "The Shinbo project",
+            "sameAs": ["https://github.com/tronschell/shinbo"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://shinbo.app/#site",
+            "name": "Shinbo",
+            "url": "https://shinbo.app/",
+            "inLanguage": "en",
+            "publisher": {
+              "@id": "https://shinbo.app/#org"
+            },
+            "about": {
+              "@id": "https://shinbo.app/#app"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

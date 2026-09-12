@@ -1,0 +1,438 @@
+/* Docs pages inside .v-shinbo: layout, type scale and the retokened body
+   classes that src/docs/*.tsx use (region, band, kv, tbl, cards, shot…).
+   Every value here is a token from shinbo-site.css; home is untouched. */
+
+/* ---------- layout: sticky TOC + body ---------- */
+.v-shinbo .docs {
+  --doc-tint: var(--tint-0);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  padding: clamp(24px, 4vw, 48px) 0 var(--fg-section-pad);
+}
+.v-shinbo .docs[data-tint="1"] {
+  --doc-tint: var(--tint-1);
+}
+.v-shinbo .docs[data-tint="2"] {
+  --doc-tint: var(--tint-2);
+}
+.v-shinbo .docs[data-tint="3"] {
+  --doc-tint: var(--tint-3);
+}
+/* The home hero's cloud wash, quieter, behind the top of the page. */
+.v-shinbo .docs::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  height: min(100vh, 820px);
+  background: url(/bg/shinbo-clouds.webp) center top / 120% auto;
+  mask-image: linear-gradient(#000 0, #000 55%, transparent);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: -1;
+}
+.v-shinbo .docs-toc {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 2px;
+  font-size: 13px;
+}
+.v-shinbo .docs-toc .fg-eyebrow {
+  justify-self: start;
+  margin-bottom: 10px;
+}
+.v-shinbo .docs-toc a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--vc-muted);
+  font-weight: 500;
+  transition:
+    background 160ms ease-out,
+    color 160ms ease-out;
+}
+.v-shinbo .docs-toc a:hover {
+  background: color-mix(in srgb, var(--vc-ink) 8%, transparent);
+  color: var(--vc-ink);
+}
+.v-shinbo .docs-toc a[aria-current="page"] {
+  background: color-mix(in srgb, var(--vc-accent) 16%, transparent);
+  color: var(--vc-ink);
+}
+.v-shinbo .docs-body {
+  min-width: 0;
+}
+.v-shinbo .docs-body > * + * {
+  margin-top: 32px;
+}
+.v-shinbo .docs-body > .head {
+  margin-bottom: 0;
+}
+.v-shinbo .docs-body > .head:not(:first-child) {
+  margin-top: 56px;
+}
+.v-shinbo .docs-body > .tbl-wrap + p {
+  margin-top: 16px;
+}
+.v-shinbo .doc-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--vc-muted);
+}
+.v-shinbo .doc-breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--vc-accent);
+  text-decoration: underline;
+}
+.v-shinbo .docs-body > .doc-breadcrumb + .fg-eyebrow {
+  margin-top: 20px;
+}
+.v-shinbo .docs-body > h1 {
+  margin-top: 16px;
+  max-width: 18ch;
+  font-size: clamp(36px, 4.4vw, 56px);
+  line-height: 1.05;
+}
+.v-shinbo .docs-body > .lede {
+  margin-top: 16px;
+}
+.v-shinbo .docs-body > .lede + * {
+  margin-top: 48px;
+}
+
+/* ---------- type scale ---------- */
+.v-shinbo .docs h2 {
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.1;
+}
+.v-shinbo .docs .lede {
+  max-width: 56ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .copy {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs :is(.lede, .copy) b {
+  font-weight: 600;
+  color: var(--vc-ink);
+}
+.v-shinbo .docs ol.copy {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.v-shinbo .docs .head-split {
+  align-items: start;
+}
+.v-shinbo .docs .copy > li + li {
+  margin-top: 6px;
+}
+.v-shinbo .docs :is(.cols, .cols-2) > div > * + * {
+  margin-top: 12px;
+}
+.v-shinbo .docs :is(.cols, .cols-2) > div > :is(.region, .rows, .chips, .kv) {
+  margin-top: 20px;
+}
+.v-shinbo .docs-body :is(p, li, td, dd) a {
+  color: var(--vc-accent);
+  text-decoration: underline;
+}
+.v-shinbo .docs .muted {
+  color: var(--text-3);
+}
+/* Band heads and card labels wear the home eyebrow pill. */
+.v-shinbo .docs .label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--vc-line);
+  background: color-mix(in srgb, var(--vc-panel) 60%, transparent);
+  font: 11px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+}
+
+/* ---------- tinted containers ---------- */
+.v-shinbo .docs .region {
+  border: 1px solid var(--vc-line);
+  background: var(--doc-tint);
+}
+.v-shinbo .docs .region > .band {
+  padding: 16px 18px;
+}
+.v-shinbo .docs .region > .band + .band {
+  border-top: 1px solid color-mix(in srgb, var(--vc-line) 60%, transparent);
+}
+.v-shinbo .docs .kv {
+  gap: 10px 16px;
+  font: 13px/1.5 var(--font-mono);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.v-shinbo .docs .kv dt {
+  font: 12px/1.5 var(--font);
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .kv dd {
+  color: var(--vc-ink);
+}
+/* The "Limits" box. */
+.v-shinbo .docs .kv.region {
+  padding: 16px 18px;
+  background: var(--tint-2);
+}
+.v-shinbo .docs .cards {
+  gap: 16px;
+  border: 0;
+  background: transparent;
+}
+.v-shinbo .docs .cards > article {
+  padding: 24px;
+  background: var(--tint-0);
+}
+.v-shinbo .docs .cards > article:nth-child(4n + 2) {
+  background: var(--tint-1);
+}
+.v-shinbo .docs .cards > article:nth-child(4n + 3) {
+  background: var(--tint-2);
+}
+.v-shinbo .docs .cards > article:nth-child(4n + 4) {
+  background: var(--tint-3);
+}
+.v-shinbo .docs .cards > article > .label {
+  margin-bottom: 14px;
+}
+.v-shinbo .docs .cards > article > h3 {
+  font: 400 22px/1.15 var(--font-serif);
+  letter-spacing: 0;
+}
+.v-shinbo .docs .cards > article > p {
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .note {
+  border-left: 2px solid var(--vc-accent);
+  background: var(--tint-3);
+  font-size: 14px;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .code {
+  border: 1px solid var(--vc-line);
+  background: var(--vc-bg);
+  font-size: 13px;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .chain {
+  font-size: 13px;
+  color: var(--vc-muted);
+}
+
+/* ---------- tables, rows, tools, marks ---------- */
+.v-shinbo .docs .tbl-wrap {
+  border: 1px solid var(--vc-line);
+  background: var(--tint-1);
+}
+.v-shinbo .docs .tbl {
+  font: 13px/1.5 var(--font-mono);
+}
+.v-shinbo .docs .tbl th {
+  font: 12px/1.5 var(--font);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--vc-muted);
+  border-bottom: 1px solid var(--vc-line);
+}
+.v-shinbo .docs .tbl td {
+  border-top: 1px solid color-mix(in srgb, var(--vc-line) 60%, transparent);
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .tbl tr td:first-child {
+  font: 500 13px/1.5 var(--font);
+  color: var(--vc-ink);
+}
+.v-shinbo .docs .tbl td b {
+  color: var(--vc-ink);
+}
+.v-shinbo .docs .rows,
+.v-shinbo .docs .rows > div {
+  border-color: var(--vc-line);
+}
+.v-shinbo .docs .rows > div > span {
+  font: 500 13px/1.5 var(--font);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--vc-ink);
+}
+.v-shinbo .docs .rows > div > p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs .tools {
+  border: 1px solid var(--vc-line);
+  background: var(--vc-line);
+}
+.v-shinbo .docs .tools > div {
+  background: var(--vc-bg);
+  font-size: 13px;
+}
+.v-shinbo .docs .marks {
+  border-color: var(--vc-line);
+}
+.v-shinbo .docs .marks span {
+  font: 12px/1.5 var(--font);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--vc-muted);
+}
+
+/* ---------- screenshots (Shot in shared.tsx): the home hero stage ---------- */
+.v-shinbo .docs figure.shot {
+  --pad: clamp(14px, 3vw, 36px);
+  position: relative;
+  padding: var(--pad);
+  background: var(--doc-tint);
+  box-shadow: var(--fg-shadow-lg);
+}
+.v-shinbo .docs figure.shot .shot-win {
+  display: block;
+  cursor: zoom-in;
+  box-shadow: 0 12px 28px #0b090866;
+  transition: transform 240ms var(--fg-ease);
+}
+.v-shinbo .docs figure.shot .shot-win:hover {
+  transform: translateY(-2px);
+}
+.v-shinbo .docs figure.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.v-shinbo .docs figure.shot figcaption {
+  margin: var(--pad) calc(var(--pad) * -1) calc(var(--pad) * -1);
+  padding: 10px var(--pad);
+  border-top: 1px solid var(--vc-line);
+  background: color-mix(in srgb, var(--vc-bg) 70%, transparent);
+}
+.v-shinbo .docs figure.shot figcaption b {
+  font-weight: 500;
+  color: var(--vc-ink);
+}
+.v-shinbo .docs .shot-provenance {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+/* ---------- index grid + prev/next tiles ---------- */
+.v-shinbo .docs .vc-features {
+  margin-top: 40px;
+}
+/* Eleven guides: two wide tiles, then rows of three. */
+.v-shinbo .docs .vc-feature-grid > a:is(:nth-child(6), :nth-child(7)) {
+  grid-column: span 2;
+  min-height: 300px;
+}
+.v-shinbo
+  .docs
+  .vc-feature-grid
+  > a:is(:nth-child(6), :nth-child(7))
+  .vc-feature-shot {
+  width: 88%;
+}
+.v-shinbo .docs-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 56px;
+}
+.v-shinbo .docs-nav > a {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: start;
+  padding: 24px 68px 24px 24px;
+  background: var(--tint-1);
+  color: var(--vc-ink);
+  transition:
+    transform 260ms var(--fg-ease),
+    box-shadow 260ms var(--fg-ease);
+}
+.v-shinbo .docs-nav > a:last-child {
+  background: var(--tint-2);
+}
+.v-shinbo .docs-nav > a:hover {
+  color: var(--vc-ink);
+  transform: translateY(-4px);
+  box-shadow: var(--fg-shadow);
+}
+.v-shinbo .docs-nav h3 {
+  margin-top: 4px;
+  font: 400 22px/1.15 var(--font-serif);
+  letter-spacing: 0;
+}
+.v-shinbo .docs-nav p {
+  font-size: 14px;
+  color: var(--vc-muted);
+}
+.v-shinbo .docs-nav > a:hover .vc-feature-go {
+  background: var(--vc-accent);
+  color: var(--vc-on-accent);
+  transform: rotate(-45deg);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1040px) {
+  .v-shinbo .docs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* The TOC becomes a horizontal strip under the header. */
+  .v-shinbo .docs-toc {
+    position: static;
+    display: flex;
+    gap: 2px;
+    margin: 0 calc(var(--fg-gutter) * -1);
+    padding: 0 var(--fg-gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .v-shinbo .docs-toc .fg-eyebrow {
+    display: none;
+  }
+  .v-shinbo .docs-toc a {
+    flex: none;
+  }
+}
+@media (max-width: 880px) {
+  .v-shinbo .docs :is(.head-split, .cols-2, .cards) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 680px) {
+  .v-shinbo .docs-body > h1 {
+    font-size: clamp(32px, 9vw, 40px);
+  }
+  .v-shinbo .docs h2 {
+    font-size: 26px;
+  }
+  .v-shinbo .docs-nav {
+    grid-template-columns: 1fr;
+  }
+}

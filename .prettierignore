@@ -1,2 +1,7 @@
 dist
 package-lock.json
+
+dist-ssr
+social
+.claude
+docs/audit-2026-09-12
