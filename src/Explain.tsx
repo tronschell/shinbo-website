@@ -413,7 +413,7 @@ export default function Explain({
                   className={`explain-span-row explain-span-${span.kind}`}
                   aria-pressed={selected === index}
                   onClick={() => setSelected(index)}
-                  aria-label={`${span.name} ${span.end - span.start}s, starts at ${span.start}s`}
+                  aria-description={`Starts at ${span.start}s`}
                 >
                   <span className="explain-span-label">{span.name}</span>
                   <span className="explain-span-track">

@@ -32,3 +32,16 @@ into a GitHub workflow; the native integration manages access.
 The historical audit used `shinbo.sh`, an unregistered placeholder at the time.
 It is not the launch domain. Live deployment receipts will be recorded after the
 initial Git-connected build and custom-domain verification finish.
+
+## Launch receipts — September 12, 2026
+
+- Pages project: `shinbo-website` (`shinbo-website.pages.dev`).
+- Initial Git source commit: `722bdba840a422204768edb152af26c064290ba0`.
+- GitHub push check: [34708073486](https://github.com/tronschell/shinbo-website/actions/runs/34708073486), successful.
+- Initial Cloudflare deployment: `372c5c93-0ffc-430d-9bcc-457bc905622a`, successful at 17:25:16 UTC.
+- Native GitHub source has automatic production deployments enabled for `main`.
+- The Pages custom-domain flow created the apex CNAME to `shinbo-website.pages.dev`; domain verification is active. Certificate issuance and live routing are verified separately using the procedure above.
+
+The follow-up accessibility fix provides a push-event check of this connection:
+match its GitHub commit to the new native Pages deployment, rather than manually
+starting another build.
