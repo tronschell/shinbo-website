@@ -58,7 +58,6 @@ The desktop renderer pauses offscreen, in hidden tabs and when animations are pa
 
 Keep visible copy, FAQs, metadata and `public/llms*.txt` consistent. The application
 is free; model providers charge separately, and setup requires a verified OpenRouter
-key. Download links in `src/downloads.ts` point to verified v0.7.1 assets, which still
-use the former Emma name. Current development guides may describe features newer
+key. Download links in `src/downloads.ts` point to verified Shinbo v0.8.1 assets. Current development guides may describe features newer
 than that release; they disclose this boundary. Search rankings, AI citations and
 activation require measurement after publication.

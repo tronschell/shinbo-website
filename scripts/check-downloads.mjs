@@ -22,8 +22,8 @@ for (const [hints, expected] of [
   [{ platform: "Linux x86_64" }, "linux"],
 ])
   assert.equal(detectPlatform(hints).platform, expected);
-assert.match(platforms.mac.href, /Emma-v0\.7\.1-darwin-arm64\.dmg$/);
-assert.match(platforms.windows.href, /Emma-v0\.7\.1-win32-x64-Setup\.exe$/);
+assert.match(platforms.mac.href, /Shinbo-v0\.8\.1-darwin-arm64\.dmg$/);
+assert.match(platforms.windows.href, /Shinbo-v0\.8\.1-win32-x64-Setup\.exe$/);
 for (const key of [
   "unknown",
   "intel",

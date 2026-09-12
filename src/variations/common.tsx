@@ -109,8 +109,7 @@ export function DownloadGuide({
             </li>
           </ul>
           <p className="vc-release-note">
-            v0.7.1 files use the former name, Emma.{" "}
-            <a href={RELEASE}>Release notes &amp; checksums</a>
+            Shinbo v0.8.1. <a href={RELEASE}>Release notes &amp; checksums</a>
           </p>
         </div>
       </div>

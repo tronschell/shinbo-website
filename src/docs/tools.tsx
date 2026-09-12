@@ -147,8 +147,8 @@ $ `}
         <div className="band">
           <p className="copy">
             Outside the app the harness asks on the terminal instead of over
-            Shinbo's permission channel. The v0.7.1 release still ships the
-            binary under its old name, <b>emma-cli</b>, inside the app bundle.
+            Shinbo's permission channel. The app bundle includes the
+            <b>shinbo-cli</b> binary.
           </p>
         </div>
       </div>
