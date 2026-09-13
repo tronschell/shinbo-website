@@ -2,7 +2,7 @@
 
 Canonical website: https://shinbo.app
 Source and releases: https://github.com/tronschell/shinbo
-Facts reviewed: 2026-09-12.
+Facts reviewed: 2026-09-13.
 
 This reference summarizes product identity, setup and documented capabilities. The source checkout may include work newer than the published app. Release notes and actual release assets establish downloadable availability; source documentation describes the implementation it accompanies.
 
@@ -65,7 +65,9 @@ Documented capabilities include dependency-based plans, subagents, scheduled wor
 
 Goals continue a thread across turns with a token allowance and a 40-turn ceiling. Every reported model step on that thread counts toward its allowance. Resume requires allowance left; Continue grants more when tokens or turns run out. An in-flight request can exceed the allowance before its usage arrives. Subagent spend is not included in the parent goal's ledger. An unfinished goal must be updated or cleared before replacement; creating another goal cannot reset its spent allowance.
 
-Task lists show nested subtasks as a connected tree in the expanded conversation task bar and full plan view. Changes and Git open in a resizable pane beside the conversation; Changes collapses unchanged lines into rows that expand by click, Enter or Space.
+Task lists show nested subtasks as a connected tree in the expanded conversation task bar and full plan view. Changes and Git open in a resizable pane beside the conversation; Changes collapses unchanged lines into rows that expand by click, Enter or Space. Git remembers resized changed-file and history section heights.
+
+Browser new tabs list local listening ports for opening localhost pages. The address bar opens URLs or searches Google. Right-click menus support links, images, selected text, editing and navigation. View options expands, pops out or docks the browser. Packaged builds include agent-browser; browser automation does not require a separate agent-browser installation.
 
 Long Markdown and source-code file previews and artifact viewers include a left-side document minimap with click, drag and keyboard navigation. It shows a scaled copy of the rendered content and the visible position, pans through long documents and hides when content fits.
 
@@ -96,6 +98,8 @@ If a task's explicitly selected provider has been removed, it requires restoring
 Private routing is a separate, optional OpenRouter setting for the main agent loop. It requests qualifying no-training, zero-retention endpoints and can fail if none qualify. It does not control every tool, secondary model or provider-account logging setting.
 
 The app offers Ask, Accept edits, Auto and Full access modes. Computer use always asks per app and shows a compact top-right monitor icon and Stop control; hovering the icon reveals the action and app. Stop, global Escape, screen lock or sleep revoke computer access for the rest of the current turn while the agent continues. Computer access cannot restart in that turn. There is no computer tool-call cap; the ten-minute runtime expiry, minimum 40 ms action interval and input safeguards remain. Platform-specific permissions still matter. Neither a permission mode nor a local model guarantees that every action is safe or that no data leaves the device.
+
+On macOS, if Accessibility appears enabled but Shinbo reports it missing, Settings → Permissions → Accessibility → Settings resets the stale grant when the app is not trusted, then prompts again. Grant access and relaunch Shinbo.
 
 References:
 - Permissions: https://shinbo.app/docs/control

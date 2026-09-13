@@ -136,17 +136,23 @@ const doc: Doc = {
             Opening either collapses Context; closing it restores the previous
             Context state. In Changes, unchanged lines collapse into expandable
             rows so edits are visible first. Click a row, or focus it and press
-            Enter or Space, to show or hide its context.
+            Enter or Space, to show or hide its context. Git also lets you
+            resize its changed-file list and history sections; their heights are
+            saved.
           </p>
           <h3>Terminal, browser, voice</h3>
           <p className="copy">
             The terminal opens up to <b>eight</b> login shells in the thread's
             folder; select output to turn it into a context chip. The browser is
             one Chromium session per thread with its own cookies, docked or
-            floating as a picture-in-picture. Voice is off until you enable it.
-            Recording stays local and transcription runs through
-            Speech.framework on macOS, SAPI on Windows, or llama.cpp on
-            loopback.
+            floating as a picture-in-picture. Type an address or a phrase to
+            search Google. New tabs list local listening ports you can open as
+            localhost pages. Right-click for link, image, text and navigation
+            actions; View options expands, pops out or docks the browser.
+            Packaged builds include agent-browser, so browser automation needs
+            no separate install. Voice is off until you enable it. Recording
+            stays local and transcription runs through Speech.framework on
+            macOS, SAPI on Windows, or llama.cpp on loopback.
           </p>
         </div>
       </div>
