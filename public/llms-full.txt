@@ -24,7 +24,7 @@ Official references:
 
 Published desktop targets are macOS on Apple silicon and Windows x64. Windows installers are unsigned. The source README specifies macOS 12 or later and Windows 10 version 1809 or later. There is no published Intel Mac or Linux desktop build, and no released iPhone app. Windows ARM64 source packaging does not establish a published Windows ARM64 download.
 
-The current desktop release is Shinbo v0.8.1: https://github.com/tronschell/shinbo/releases/tag/v0.8.1. Its installers are Shinbo-v0.8.1-darwin-arm64.dmg and Shinbo-v0.8.1-win32-x64-Setup.exe. The app was renamed from Emma to Shinbo; older releases can retain the former name.
+The current desktop release is Shinbo v0.8.2: https://github.com/tronschell/shinbo/releases/tag/v0.8.2. Its installers are Shinbo-v0.8.2-darwin-arm64.dmg and Shinbo-v0.8.2-win32-x64-Setup.exe. The app was renamed from Emma to Shinbo; older releases can retain the former name.
 
 The source tree includes ongoing Rust/GPUI development. That does not mean the public desktop installer has already been replaced by a finished GPUI app. Likewise, phone pairing work in source is not an App Store release.
 

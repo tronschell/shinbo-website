@@ -8,7 +8,7 @@
 - The app is free under MIT; shinbo-cli derives from the Apache-2.0 vercel-labs/fx project. Model APIs and coding-agent subscriptions are separate services with their own costs and limits.
 - Current desktop onboarding requires a verified OpenRouter API key, including when optional subscriptions are connected. A free-tier key can complete verification.
 - Local OpenAI-compatible inference is supported; selecting a local chat model does not make every tool or secondary model offline.
-- Current desktop release: Shinbo v0.8.1, with Shinbo-prefixed installers. Follow the verified downloads on https://github.com/tronschell/shinbo/releases/tag/v0.8.1. Older releases can retain the former Emma name.
+- Current desktop release: Shinbo v0.8.2, with Shinbo-prefixed installers. Follow the verified downloads on https://github.com/tronschell/shinbo/releases/tag/v0.8.2. Older releases can retain the former Emma name.
 - Development-source capabilities can be newer than the downloadable release. See release notes for the version being installed.
 
 - CLI run tracking lasts while Shinbo is open. Handoffs send successful output, not full conversations or files.
