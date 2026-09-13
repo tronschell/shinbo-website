@@ -74,8 +74,8 @@ function DocPage({ slug }: { slug: string }) {
       <p className="lede">{doc.blurb}</p>
       <p className="copy doc-version">
         These guides describe the current development source. The published
-        v0.8.1 release can differ;{" "}
-        <a href="https://github.com/tronschell/shinbo/releases/tag/v0.8.1">
+        v0.8.2 release can differ;{" "}
+        <a href="https://github.com/tronschell/shinbo/releases/tag/v0.8.2">
           check release notes
         </a>{" "}
         before following a workflow.

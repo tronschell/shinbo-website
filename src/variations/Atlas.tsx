@@ -31,7 +31,7 @@ export default function Atlas() {
         <section className="at-hero at-wrap" aria-labelledby="at-title">
           <div className="at-hero-top">
             <p className="at-label">A desktop workspace for your AI agents</p>
-            <span className="at-label">Free &amp; open source / v0.8.1</span>
+            <span className="at-label">Free &amp; open source / v0.8.2</span>
           </div>
           <div className="at-hero-copy">
             <h1 id="at-title">
