@@ -182,7 +182,10 @@ const doc: Doc = {
             access. Each row reads Granted, Not granted, Check in settings or
             Not required; expand it for what uses it, or click <b>Settings</b>{" "}
             to open the system pane. All are optional, and the set differs
-            between macOS and Windows.
+            between macOS and Windows. If macOS shows Accessibility enabled but
+            Shinbo still reports it missing, use that row’s Settings button to
+            reset the stale grant and grant access again. Relaunch Shinbo after
+            granting access.
           </p>
           <Shot
             src="/shots/settings-permissions.png"

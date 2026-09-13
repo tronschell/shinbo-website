@@ -24,7 +24,8 @@ against the app's source, not its docs. Repo:
   working-tree diff, history, discard, a raw git escape hatch, ahead/behind, and
   a commit message a small model writes from the diff. Sidebar PR badges
   show the folder or worktree branch's GitHub PR state when an authenticated
-  GitHub CLI is available; hover for the branch and merge attention.
+  GitHub CLI is available; hover for the branch and merge attention. Changed-file
+  and history sections resize independently and remember their heights.
 - **Missing:** staging, unstaging, push and pull are in the phone bridge only.
   No hunk-level staging anywhere. Conflicts are detected, not resolvable. A
   thread is not bound to the branch it started on.
@@ -88,6 +89,10 @@ against the app's source, not its docs. Repo:
   widen controls. The thread Changes view shows changed lines first. Unchanged lines
   above, below and between edits collapse into expandable … rows; click a row
   or focus it and press Enter or Space to reveal or hide its context.
+- **Have:** browser new tabs list local listening ports; the address bar opens
+  URLs or searches Google. Right-click menus cover links, images, selection,
+  editing and navigation. View options expands, pops out or docks the browser.
+  Packaged builds include agent-browser without a separate installation.
 - **Have:** task lists show nested subtasks as a connected tree in both the
   expanded conversation task bar and the full plan view, keeping parent and
   child status visible together.
@@ -104,7 +109,9 @@ against the app's source, not its docs. Repo:
   cursor orbs, swipe commands and placement; Keybinds holds shortcuts. Smaller
   settings pages tuck optional controls and explanations into expandable sections.
   Permissions shows an explicit status and macOS Settings button per row, with
-  task explanations on expansion and Open Tools at the foot.
+  task explanations on expansion and Open Tools at the foot. The Accessibility
+  Settings action resets a stale macOS grant when Shinbo is not trusted, then
+  prompts for access again.
 - **Have:** Context bar settings lead with a preview and grouped add/remove
   controls. Appearance pairs font controls with a live preview. Its Tab color
   defaults to white (`#ffffff`) and controls the selected conversation tab underline
