@@ -26,24 +26,13 @@ const railLinks: [string, string][] = [
   ["#download", "Download"],
 ];
 
-/* Eyebrow pill + centered serif heading + optional lede: the section
-   header pattern used everywhere below the hero. */
-function SectionHead({
-  eyebrow,
-  title,
-  id,
-  children,
-}: {
-  eyebrow: string;
-  title: React.ReactNode;
-  id: string;
-  children?: React.ReactNode;
-}) {
+/* Centered eyebrow pill as the section heading (Permissions, Workflows). */
+function SectionHead({ eyebrow, id }: { eyebrow: string; id: string }) {
   return (
     <div className="fg-section-head" data-reveal="">
-      <span className="fg-eyebrow">{eyebrow}</span>
-      <h2 id={id}>{title}</h2>
-      {children}
+      <h2 className="fg-eyebrow" id={id}>
+        {eyebrow}
+      </h2>
     </div>
   );
 }
@@ -110,8 +99,6 @@ export default function ShinboSite() {
                 </div>
                 <small className="fg-install-requirement">
                   Free &amp; open source · Mac &amp; Windows.
-                  <br />
-                  Setup needs an OpenRouter key; model services may cost extra.
                 </small>
                 <a className="fg-link" href="/docs/models#first-task">
                   Start your first task
@@ -129,7 +116,7 @@ export default function ShinboSite() {
                     src="/shots/workspace-thread-960.webp"
                     srcSet="/shots/workspace-thread-480.webp 480w, /shots/workspace-thread-960.webp 960w, /shots/workspace-thread-1440.webp 1440w, /shots/workspace-thread.webp 2760w"
                     sizes="(max-width: 760px) calc(100vw - 64px), (max-width: 1280px) 85vw, 1120px"
-                    alt="Shinbo workspace showing projects, a Markdown conversation, and the context inspector"
+                    alt="Shinbo workspace running a release thread: tool steps, two subagents, a Codex CLI run, and the plan graph in the context bar"
                     width="2760"
                     height="1720"
                     fetchPriority="high"
@@ -154,16 +141,7 @@ export default function ShinboSite() {
             id="fg-control"
             aria-labelledby="fg-control-title"
           >
-            <SectionHead
-              eyebrow="Permissions"
-              id="fg-control-title"
-              title="Four modes. Apps always ask."
-            >
-              <p>
-                Ask, Accept edits, Auto or Full access. Access to other apps
-                always needs approval.
-              </p>
-            </SectionHead>
+            <SectionHead eyebrow="Permissions" id="fg-control-title" />
             <div className="fg-control-grid">
               <div className="fg-modes" data-reveal="">
                 {modes.map(([glyph, name, copy], i) => (
@@ -194,10 +172,10 @@ export default function ShinboSite() {
             id="fg-learning"
             aria-labelledby="fg-learning-title"
           >
+            <SectionHead eyebrow="Self learning" id="fg-learning-title" />
             <div className="fg-evidence" data-reveal="">
               <div className="fg-evidence-copy">
-                <span className="fg-eyebrow">Self learning</span>
-                <h2 id="fg-learning-title">Learn from a failed run.</h2>
+                <h3>Learn from a failed run.</h3>
                 <p>
                   Inspect the evidence, ask Shinbo for a scoped change, and
                   compare it on a replay before deciding to keep it.
@@ -217,16 +195,7 @@ export default function ShinboSite() {
             id="fg-workflow"
             aria-labelledby="fg-workflow-title"
           >
-            <SectionHead
-              eyebrow="Scheduled workflows"
-              id="fg-workflow-title"
-              title="On a schedule, a workflow runs."
-            >
-              <p>
-                On a cron schedule Shinbo runs a chain of agents, scripts and
-                conditions. It must be open and the computer awake.
-              </p>
-            </SectionHead>
+            <SectionHead eyebrow="Workflows" id="fg-workflow-title" />
             <figure className="fg-schedule" data-reveal="">
               <ScheduledRun />
               <figcaption>
@@ -240,7 +209,10 @@ export default function ShinboSite() {
           </section>
 
           <div className="fg-section fg-directory">
-            <FeatureDirectory tiles={featureTiles} />
+            <FeatureDirectory
+              tiles={featureTiles}
+              title={<span className="fg-eyebrow">Features</span>}
+            />
           </div>
 
           <div className="fg-section fg-download-section">

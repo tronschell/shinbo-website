@@ -46,9 +46,9 @@ for (const text of [
 ])
   assert.ok(html.includes(text), `SSR omitted ${text}`);
 assert.equal((html.match(/<h2\b/g) || []).length, 1);
-assert.equal((html.match(/<h3\b/g) || []).length, 3);
-assert.equal((html.match(/<button\b/g) || []).length, 11);
-assert.equal((html.match(/type="button"/g) || []).length, 11);
+assert.equal((html.match(/<h3\b/g) || []).length, 4);
+assert.equal((html.match(/<button\b/g) || []).length, 12);
+assert.equal((html.match(/type="button"/g) || []).length, 12);
 assert.match(html, /role="group" aria-label="Animation controls"/);
 assert.match(html, /type="checkbox"/);
 
@@ -138,7 +138,7 @@ try {
   assert.equal(states[3], true);
   assert.match(
     renderToStaticMarkup(render()),
-    /4 Review together: blocked; 5 Return the result: blocked/,
+    /3 Write tests: failed; 4 Update docs: done; 5 Review together: waiting; 6 Preview the docs: ready; 7 Return the result: waiting/,
   );
   nodes = descendants(render());
   nodes
@@ -170,5 +170,5 @@ try {
   delete globalThis.__explainHookCheck;
 }
 console.log(
-  "Explain checks passed: dependency states, blocked branches, context totals, span bounds, SSR, reduced motion and controls.",
+  "Explain checks passed: dependency states, failed branches, context totals, span bounds, SSR, reduced motion and controls.",
 );

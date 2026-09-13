@@ -139,7 +139,7 @@ export const modes = [
   [
     "⬗",
     "Auto",
-    "Everything runs on its own except ten prohibited actions, like deleting outside what you named or sending your data elsewhere. Anything that matches stops and asks you.",
+    "Everything runs on its own except ten prohibited actions, like deleting outside what you named or sending your data elsewhere. Anything that matches stops and asks you. The screening prompt and the model that runs it are both yours to change.",
   ],
   [
     "⬥",

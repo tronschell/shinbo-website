@@ -124,15 +124,6 @@
   margin: 0 auto 40px;
   max-width: 720px;
 }
-.v-shinbo .fg-section-head h2 {
-  margin: 0;
-}
-.v-shinbo .fg-section-head p {
-  margin: 0;
-  font-size: 16px;
-  color: var(--vc-muted);
-  max-width: 56ch;
-}
 
 /* ---------- floating pill header ---------- */
 .v-shinbo .fg-header {
@@ -279,7 +270,7 @@
   min-width: 0;
   --fg-gap: 24px;
   --fg-gap-sm: 12px;
-  --fg-section-pad: clamp(56px, 7vw, 96px);
+  --fg-section-pad: clamp(28px, 3.5vw, 48px);
 }
 .v-shinbo .fg-section {
   padding: var(--fg-section-pad) 0;
@@ -656,9 +647,6 @@
 }
 
 /* ---------- self learning: copy + loop diagram in one tinted card ---------- */
-.v-shinbo .fg-learning-section {
-  padding-top: 0;
-}
 .v-shinbo .fg-evidence {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
@@ -672,9 +660,10 @@
   justify-items: start;
   gap: 14px;
 }
-.v-shinbo .fg-evidence-copy h2 {
+.v-shinbo .fg-evidence-copy h3 {
   margin: 0;
-  font-size: clamp(28px, 3vw, 40px);
+  font: 400 clamp(28px, 3vw, 40px) / 1.1 var(--font-serif);
+  letter-spacing: -0.01em;
 }
 .v-shinbo .fg-evidence-copy p {
   margin: 0;
@@ -713,9 +702,7 @@
 /* ---------- features: tinted bento with bleeding screenshots ---------- */
 .v-shinbo .vc-features h2 {
   margin: 0 0 32px;
-  font: 400 clamp(32px, 4vw, 52px) / 1.08 var(--font-serif);
   text-align: center;
-  letter-spacing: -0.01em;
 }
 .v-shinbo .vc-feature-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -1176,7 +1163,7 @@
     padding-inline: 12px;
   }
   .v-shinbo main {
-    --fg-section-pad: 40px;
+    --fg-section-pad: 24px;
   }
   .v-shinbo h1 {
     font-size: clamp(40px, 11vw, 56px);

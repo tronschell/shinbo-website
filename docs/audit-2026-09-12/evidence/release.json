@@ -1,0 +1,51 @@
+{
+  "tag_name": "v0.7.1",
+  "name": "v0.7.1",
+  "published_at": "2026-09-06T17:53:52Z",
+  "html_url": "https://github.com/tronschell/shinbo/releases/tag/v0.7.1",
+  "target_commitish": "5a544de6e43d192b8ccf9e025756dd7fee36d83b",
+  "retrieved_at": "2026-09-12T16:46:53.138514+00:00",
+  "source": "https://api.github.com/repos/tronschell/shinbo/releases/latest",
+  "assets": [
+    {
+      "name": "Emma-0.7.1-full.nupkg",
+      "size": 137502627,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-0.7.1-full.nupkg"
+    },
+    {
+      "name": "Emma-v0.7.1-darwin-arm64.dmg",
+      "size": 125612787,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-darwin-arm64.dmg"
+    },
+    {
+      "name": "Emma-v0.7.1-darwin-arm64.dmg.sha256",
+      "size": 95,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-darwin-arm64.dmg.sha256"
+    },
+    {
+      "name": "Emma-v0.7.1-darwin-arm64.zip",
+      "size": 116502821,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-darwin-arm64.zip"
+    },
+    {
+      "name": "Emma-v0.7.1-darwin-arm64.zip.sha256",
+      "size": 95,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-darwin-arm64.zip.sha256"
+    },
+    {
+      "name": "Emma-v0.7.1-win32-x64-Setup.exe",
+      "size": 138324992,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-win32-x64-Setup.exe"
+    },
+    {
+      "name": "Emma-v0.7.1-windows-x64.sha256",
+      "size": 261,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/Emma-v0.7.1-windows-x64.sha256"
+    },
+    {
+      "name": "RELEASES",
+      "size": 75,
+      "browser_download_url": "https://github.com/tronschell/shinbo/releases/download/v0.7.1/RELEASES"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
    [data-motion="paused"] and collapses to its first frame under
    prefers-reduced-motion. */
 import type { CSSProperties, ReactNode } from "react";
-import { brands, chain, clis, modes } from "../shared";
+import { brands, clis, modes } from "../shared";
 import Plan from "./Plan";
 import "./features.css";
 
@@ -62,36 +62,60 @@ export function AgentClis() {
   );
 }
 
+// Seven entries so Cycle's ft-cycle-7 keyframes line up.
+const headline: [ns: string, model: string][] = [
+  ["openai", "gpt-6-astra"],
+  ["anthropic", "claude-fable-5.1"],
+  ["anthropic", "claude-opus-5"],
+  ["moonshotai", "kimi-k3"],
+  ["z-ai", "glm-5.3"],
+  ["meta-llama", "meta-muse-1.3"],
+  ["thinkingmachines", "inkling"],
+];
+
+// Every model provider with a logo, for the scrolling strip.
+const strip = Object.values(brands)
+  .slice(0, Object.keys(brands).indexOf("ollama"))
+  .flatMap(([file]) => (file ? [file] : []));
+
 export function Models() {
-  // One model per provider from the fallback chain, so logos don't repeat.
-  const seen = new Set<string>();
-  const items = chain.flatMap((id) => {
-    const [ns, rest] = id.split("/");
-    const brand = brands[ns];
-    if (!brand?.[0] || seen.has(ns)) return [];
-    seen.add(ns);
-    return [[brand, rest.replace(/:free$/, "")] as const];
-  });
   return (
     <div className="ft ft-models" aria-hidden="true">
       <Cycle
-        items={items.map(([[file, label], model]) => (
+        items={headline.map(([ns, model]) => (
           <>
-            <img src={`/brands/${file}`} alt="" width="40" height="40" />
+            <img
+              src={`/brands/${brands[ns][0]}`}
+              alt=""
+              width="40"
+              height="40"
+            />
             <b>{model}</b>
-            <span>{label}</span>
+            <span>{brands[ns][1]}</span>
           </>
         ))}
       />
+      <div className="ft-strip">
+        <div>
+          {[...strip, ...strip].map((file, i) => (
+            <img
+              key={i}
+              src={`/brands/${file}`}
+              alt=""
+              width="20"
+              height="20"
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
 const waves: [label: string, x: number][][] = [
   [
-    ["read docs", 58],
-    ["write tests", 160],
-    ["check types", 262],
+    ["read docs", 104],
+    ["check types", 216],
   ],
   [
     ["fix lint", 104],
@@ -245,25 +269,29 @@ export function Memory() {
   );
 }
 
-const extensions: [label: string, logo: string | null, x: number, y: number][] =
-  [
-    ["GitHub", "github.svg", 4, 4],
-    ["Skill", null, 56, 10],
-    ["MCP server", null, 24, 34],
-    ["Widget", null, 70, 40],
-    ["Obsidian", "obsidian.svg", 6, 64],
-    ["Plugin", null, 44, 68],
-    ["OpenRouter", "openrouter.svg", 62, 84],
-  ];
+const extensions: [label: string, logo: string | null][] = [
+  ["GitHub", "github.svg"],
+  ["Skill", null],
+  ["Linear", "linear.svg"],
+  ["MCP server", null],
+  ["Notion", "notion.svg"],
+  ["Figma", "figma.png"],
+  ["Obsidian", "obsidian.svg"],
+  ["Widget", null],
+  ["Slack", "slack.png"],
+  ["Plugin", null],
+  ["Vercel", "vercel.png"],
+  ["Stripe", "stripe.png"],
+  ["OpenRouter", "openrouter.svg"],
+  ["Sentry", "sentry.svg"],
+  ["Supabase", "supabase.png"],
+];
 
 export function Extensions() {
   return (
     <div className="ft ft-ext" aria-hidden="true">
-      {extensions.map(([label, logo, x, y], i) => (
-        <span
-          key={label}
-          style={{ "--i": i, left: `${x}%`, top: `${y}%` } as CSSProperties}
-        >
+      {extensions.map(([label, logo], i) => (
+        <span key={label} style={{ "--i": i } as CSSProperties}>
           {logo ? (
             <img src={`/brands/${logo}`} alt="" width="16" height="16" />
           ) : (

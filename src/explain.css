@@ -5,6 +5,7 @@
   --ex-panel: var(--vc-panel, #29292d);
   --ex-line: var(--vc-line, #49494f);
   --ex-muted: var(--vc-muted, #b5b5bc);
+  --ex-done: #7fe0bb;
   color: #eeeef0;
   margin: 47px 0;
   scroll-margin-top: 60px;
@@ -69,8 +70,7 @@
   background: var(--ex-soft);
 }
 .explain button:focus-visible,
-.explain input:focus-visible,
-.explain-graph-scroll:focus-visible {
+.explain input:focus-visible {
   outline: 2px solid var(--ex-pink);
   outline-offset: 2px;
 }
@@ -145,65 +145,341 @@
   height: 14px;
   margin: 0;
 }
-.explain-graph-scroll {
-  overflow-x: auto;
-  padding: 12px 16px;
+/* Plan rail, ported from the app: graph + key on the left, active step's tasks on the right. */
+.explain-rail {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 14px 16px;
+  font-family: var(--font-mono, monospace);
 }
-.explain-plan {
+.explain-plan-map {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+.plan-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+}
+.plan-head strong {
+  color: #eeeef0;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.plan-head em {
+  color: var(--ex-muted);
+  font-size: 11px;
+  font-style: normal;
+}
+.plan-graph {
+  position: relative;
+  margin: 4px 0 8px;
+}
+.plan-edges {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  min-width: 606px;
-  max-width: 680px;
-  margin: 0 auto;
-  display: block;
+  height: 100%;
+  overflow: visible;
 }
-.explain-edge {
-  fill: none;
+.plan-edges line {
   stroke: var(--ex-line);
   stroke-width: 1;
 }
-.explain-edge-running {
+.plan-edges line.lit {
+  stroke: color-mix(in srgb, var(--ex-pink) 65%, transparent);
+}
+.plan-band {
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+}
+.plan-node {
+  position: absolute;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  color: var(--ex-muted);
+  border: 1px solid var(--ex-line);
+  background: var(--ex-bg);
+  font-size: 11px;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+}
+.plan-node.active {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-pink) 22%, transparent);
+}
+.plan-node[data-status="done"] {
+  color: var(--ex-bg);
+  border-color: var(--ex-done);
+  background: var(--ex-done);
+}
+.plan-node[data-status="running"] {
+  color: var(--ex-bg);
+  border-color: var(--ex-pink);
+  background: var(--ex-pink);
+}
+.plan-node[data-status="failed"] {
+  color: #eeeef0;
+  border-color: #c9484f;
+  background: #c9484f;
+}
+.plan-node[data-status="ready"] {
+  color: #eeeef0;
+  border-color: var(--ex-muted);
+}
+.plan-node[data-status="waiting"] {
+  border-style: dashed;
+}
+.plan-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--ex-muted);
+  font-size: 11px;
+  line-height: 1;
+}
+.plan-key span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.plan-key i {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--ex-line);
+}
+.plan-key [data-status="done"] i {
+  border-color: var(--ex-done);
+  background: var(--ex-done);
+}
+.plan-key [data-status="running"] i {
+  border-color: var(--ex-pink);
+  background: var(--ex-pink);
+}
+.plan-key [data-status="failed"] i {
+  border-color: #c9484f;
+  background: #c9484f;
+}
+.plan-key [data-status="ready"] i {
+  border-color: var(--ex-muted);
+}
+.plan-key [data-status="waiting"] i {
+  border-style: dashed;
+}
+.plan-tasks {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  padding-left: 20px;
+  border-left: 1px solid #3b3b41;
+}
+.plan-step-title {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+  color: #eeeef0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.plan-step-title b {
+  color: var(--ex-muted);
+  font-weight: 400;
+}
+.plan-live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ex-pink);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.plan-live i {
+  width: 7px;
+  height: 7px;
+  background: var(--ex-pink);
+}
+.plan-result {
+  margin: 0;
+  color: #c9c9d0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.plan-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.plan-list li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0;
+  color: #eeeef0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.plan-list li i {
+  font-style: normal;
+  color: var(--ex-muted);
+}
+.plan-list li.done {
+  color: var(--ex-muted);
+  text-decoration: line-through;
+}
+.plan-list li.done i {
+  color: var(--ex-done);
+}
+/* Council table, ported from the app: seats on a ring, chords from the speaker to whoever it names. */
+.explain-readout.live {
+  color: var(--ex-pink);
+}
+/* Fixed heights: the animation must never move what sits under the cursor. Overflow scrolls instead. */
+.explain-council {
+  height: 420px;
+}
+.council-floor {
+  min-height: 0;
+  overflow-y: auto;
+}
+.plan-tasks {
+  min-height: 120px;
+}
+.council-ring {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: 320px;
+  width: 100%;
+  align-self: center;
+}
+.council-chords {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.council-chords line {
   stroke: var(--ex-pink);
-  stroke-dasharray: 3 4;
-}
-.explain-edge-blocked {
-  stroke: var(--ex-soft);
-  stroke-dasharray: 2 4;
-}
-.explain-node rect {
-  fill: var(--ex-panel);
-  stroke: var(--ex-line);
   stroke-width: 1;
-}
-.explain-node-title {
-  fill: #eeeef0;
-  font: 500 13px var(--font, sans-serif);
-}
-.explain-node-state {
-  fill: var(--ex-muted);
-  font: 11px var(--font-mono, monospace);
-}
-.explain-node-waiting text {
   opacity: 0.6;
 }
-.explain-node-waiting rect {
-  stroke-dasharray: 2 3;
+.council-seat {
+  position: absolute;
+  display: grid;
+  gap: 3px;
+  width: 33%;
+  padding: 8px;
+  border: 1px solid var(--ex-line);
+  background: var(--ex-panel);
+  text-align: center;
+  transform: translate(-50%, -50%);
 }
-.explain-node-running rect {
-  fill: #3d2a33;
-  stroke: var(--ex-pink);
+.council-seat b {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  color: #eeeef0;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.3;
 }
-.explain-node-running .explain-node-state {
-  fill: var(--ex-pink);
+.council-seat em {
+  color: var(--ex-muted);
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
-.explain-node-done rect {
-  stroke: #85858f;
+.council-seat small {
+  color: var(--ex-muted);
+  font-size: 10px;
+  line-height: 1.3;
 }
-.explain-node-blocked rect {
-  stroke: var(--ex-soft);
-  stroke-dasharray: 4 3;
+.council-seat.floor {
+  border-color: var(--ex-pink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ex-pink) 22%, transparent);
 }
-.explain-node-blocked .explain-node-state {
-  fill: var(--ex-soft);
+.council-seat.floor small,
+.council-seat.heard {
+  color: #eeeef0;
+}
+.council-seat.heard {
+  border-color: color-mix(in srgb, var(--ex-pink) 60%, var(--ex-line));
+}
+.council-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  padding: 4px 0;
+  color: var(--ex-muted);
+  background: var(
+    --ex-bg
+  ); /* covers the chords so the floor line stays legible */
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+.council-floor .plan-step-title {
+  grid-template-columns: minmax(0, 1fr);
+}
+.council-floor {
+  gap: 8px;
+}
+.council-line {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  margin: 0;
+  color: var(--ex-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.council-line b {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #c9c9d0;
+  font-weight: 400;
+}
+.council-line.latest,
+.council-line.latest b {
+  color: #eeeef0;
+}
+.council-line.latest b {
+  color: var(--ex-pink);
+}
+.council-verdict {
+  display: grid;
+  gap: 4px;
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border: 1px solid var(--ex-line);
+  background: var(--ex-panel);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.council-verdict b {
+  color: var(--ex-soft);
+  font-weight: 500;
+}
+.council-verdict span {
+  color: #c9c9d0;
 }
 .explain-caption {
   border-top: 1px solid #3b3b41;
@@ -429,11 +705,9 @@
   margin: 4px 0 0;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .explain[data-playing="true"] .explain-edge-running {
-    animation: explain-flow 1.3s linear infinite;
-  }
-  .explain[data-playing="true"] .explain-node-running rect {
-    animation: explain-pulse 1.3s ease-in-out infinite;
+  .explain[data-playing="true"] .plan-node[data-status="running"],
+  .explain[data-playing="true"] .plan-live i {
+    animation: plan-waiting 1.4s ease-in-out infinite;
   }
   .explain[data-playing="true"] .explain-span-progress {
     transition: width 1.1s linear;
@@ -441,10 +715,25 @@
   .explain-segment {
     transition: width 0.4s ease-in-out;
   }
+  .council-seat,
+  .council-chords line {
+    transition:
+      border-color 300ms var(--fg-ease, ease-out),
+      box-shadow 300ms var(--fg-ease, ease-out),
+      color 300ms var(--fg-ease, ease-out);
+  }
+  .explain[data-playing="true"] .council-seat.floor {
+    animation: council-floor 1.4s ease-in-out infinite;
+  }
+  @keyframes council-floor {
+    50% {
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--ex-pink) 12%, transparent);
+    }
+  }
   /* Step state changes cross-fade instead of snapping. */
-  .explain-node rect,
-  .explain-node text,
-  .explain-edge {
+  .plan-node,
+  .plan-band,
+  .plan-edges line {
     transition:
       fill 300ms var(--fg-ease, ease-out),
       stroke 300ms var(--fg-ease, ease-out),
@@ -455,23 +744,24 @@
       background 200ms ease-out,
       border-color 200ms ease-out;
   }
-  @keyframes explain-flow {
-    to {
-      stroke-dashoffset: -14;
-    }
-  }
-  @keyframes explain-pulse {
+  @keyframes plan-waiting {
     50% {
-      stroke-opacity: 0.4;
+      opacity: 0.3;
     }
   }
 }
 @media (min-width: 760px) {
+  /* 20 tracks so row one can split 11/9 and row two 9/11: no shared seam down the middle. */
   .explain-grid {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: repeat(20, minmax(0, 1fr));
   }
-  .explain-card-plan {
-    grid-column: 1 / -1;
+  .explain-card-council,
+  .explain-card-timeline {
+    grid-column: span 11;
+  }
+  .explain-card-plan,
+  .explain-card-context {
+    grid-column: span 9;
   }
   .explain-card-context .explain-segments {
     grid-template-columns: 1fr;
@@ -479,6 +769,33 @@
   .explain-card-timeline .explain-span-detail > div {
     flex-direction: column;
     gap: 2px;
+  }
+}
+@media (min-width: 1100px) {
+  .explain-card-plan .explain-rail {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+  .explain-council {
+    grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+/* Narrow phones and the two-column band where each card is half-width: stack the rail. */
+@media (max-width: 640px), (min-width: 760px) and (max-width: 1099px) {
+  .explain-rail {
+    grid-template-columns: 1fr;
+  }
+  .explain-council {
+    height: auto;
+  }
+  .council-floor {
+    height: 240px;
+  }
+  .plan-tasks {
+    padding-left: 0;
+    padding-top: 10px;
+    border-left: 0;
+    border-top: 1px solid #3b3b41;
   }
 }
 @media (max-width: 640px) {
@@ -499,7 +816,7 @@
   .explain-toolbar {
     flex-wrap: wrap;
   }
-  .explain-graph-scroll {
+  .explain-rail {
     padding: 10px 12px;
   }
   .explain-segments {
@@ -526,15 +843,23 @@
   }
 }
 @media (forced-colors: active) {
-  .explain-node rect {
-    fill: Canvas;
-    stroke: CanvasText;
+  .council-seat {
+    background: Canvas;
+    border-color: CanvasText;
   }
-  .explain-edge {
-    stroke: CanvasText;
+  .council-seat.floor {
+    border-color: Highlight;
   }
-  .explain-node text {
-    fill: CanvasText;
+  .council-chords line {
+    stroke: Highlight;
+  }
+  .plan-node {
+    background: Canvas;
+    color: CanvasText;
+    border-color: CanvasText;
+  }
+  .plan-edges line {
+    stroke: CanvasText;
   }
   .explain-segment {
     border: 1px solid CanvasText;

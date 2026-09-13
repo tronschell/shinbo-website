@@ -1,0 +1,15 @@
+{
+  "recorded_at": "2026-09-12T16:46:53.138514+00:00",
+  "git_head": "4164dcb2ef6ca29d5e982a55550092401fec01f5",
+  "scope": "Existing uncommitted working tree, not the clean git HEAD. Audit adds reports only.",
+  "sha256": {
+    "index.html": "925053a8e8698d49c75f2bf5cd8b11e7032ed8e17e44d0e3b797f700981c8e8f",
+    "src/App.tsx": "6d5bc66bb590e070643af9e8ed0d07efdfceab49c8c1691f557727e3832294c6",
+    "src/ShinboSite.tsx": "a1d4204428ee940231c6b62fce48b54ffeee604cb10c974ec04eaa219b6a0844",
+    "src/product-content.ts": "332381aea9f95234265284d0168fcd8d9dc93a1980b82fb686888b9e0844b29b",
+    "src/downloads.ts": "4ea438b72a44c7ebbf4c4b32ed6bb0f39b7ce0b7ac0213c8b138f3ce1efd4e4f",
+    "src/docs/agent.tsx": "d103747154a8de8bb8f720718a845922452219bd3585a3d359090e286c8595d3",
+    "scripts/prerender.mjs": "62a12d165883edd6794dafedd82eb5a9af6a9498432de3ae5c2a1bb4127c512c",
+    "package-lock.json": "a0f45d63b07beb5ceb770a9149a671ce9650e256611f574094b349e348eb8c0c"
+  }
+}

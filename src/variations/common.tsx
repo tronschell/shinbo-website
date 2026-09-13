@@ -135,7 +135,11 @@ const features: [string, string, string][] = [
     "Run Claude Code, Codex and other CLIs in one thread.",
   ],
   ["delegation", "Subagents", "Delegate work; inspect progress and results."],
-  ["plan", "Plans", "Run independent steps in parallel."],
+  [
+    "plan",
+    "Plans",
+    "Steps run in parallel or in sequence; each waits only on the steps it depends on.",
+  ],
   ["models", "Models", "APIs, subscriptions, Ollama, LM Studio and llama.cpp."],
   ["control", "Permissions", "Control edits, commands and app access."],
   [

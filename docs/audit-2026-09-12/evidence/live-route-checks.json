@@ -1,0 +1,184 @@
+{
+  "origin": "https://shinbo.app",
+  "dns_override": "104.21.29.40",
+  "tls_validation": true,
+  "checks": [
+    {
+      "path": "/docs/agent",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/agent",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/control",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/control",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/delegation",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/delegation",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/harness",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/harness",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/jobs",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/jobs",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/knowledge",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/knowledge",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/models",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/models",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/plan",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/plan",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/router",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/router",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/surfaces",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/surfaces",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs/tools",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/tools",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "final_url": "https://shinbo.app/",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/1",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/1",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/2",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/2",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/3",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/3",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/4",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/4",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/5",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/5",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations/6",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations/6",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/variations",
+      "status": 200,
+      "final_url": "https://shinbo.app/variations",
+      "matches_build_markup": true
+    },
+    {
+      "path": "/docs.html",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs"
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/"
+    },
+    {
+      "path": "/docs/index.html",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/"
+    },
+    {
+      "path": "/docs/harness.html",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/harness"
+    },
+    {
+      "path": "/docs/harness/",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/harness/"
+    },
+    {
+      "path": "/docs/harness/index.html",
+      "status": 200,
+      "final_url": "https://shinbo.app/docs/harness/"
+    },
+    {
+      "path": "/index.html",
+      "status": 200,
+      "final_url": "https://shinbo.app/"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200
+    },
+    {
+      "path": "/llms.txt",
+      "status": 200
+    },
+    {
+      "path": "/llms-full.txt",
+      "status": 200
+    },
+    {
+      "path": "unknown route",
+      "status": 404,
+      "useful_404": true
+    }
+  ],
+  "asset_immutable": true
+}
