@@ -109,7 +109,7 @@ export function DownloadGuide({
             </li>
           </ul>
           <p className="vc-release-note">
-            Shinbo v0.8.2. <a href={RELEASE}>Release notes &amp; checksums</a>
+            Shinbo v0.9.2. <a href={RELEASE}>Release notes &amp; checksums</a>
           </p>
         </div>
       </div>

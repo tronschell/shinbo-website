@@ -109,7 +109,8 @@ const doc: Doc = {
             The <b>artifact</b> tool writes a file the conversation can keep:
             markdown, code, html, app, svg, mermaid or react. HTML pages render
             under their own CSP. A code artifact that names a surface is mounted
-            as a real module inside Shinbo's interface.
+            as a real module inside Shinbo's interface; in Ask and Accept edits
+            modes, Shinbo shows the whole module and asks before mounting it.
           </p>
           <p className="copy">
             Long Markdown and source-code previews have a minimap on the left
@@ -130,7 +131,15 @@ const doc: Doc = {
           </p>
         </div>
         <div className="stack">
-          <h3>Review changes</h3>
+          <h3>Files and changes</h3>
+          <p className="copy">
+            <b>Files</b> opens a folder tree for any folder the thread has been
+            granted. Files open in tabs: text edits save with a conflict check
+            against the disk, and images, Markdown and CSV/TSV tables preview in
+            place. Each save is recorded as a thread change. A file path in a
+            reply or an edit step opens the pane at the named line, and a text
+            selection can be picked into the composer as context.
+          </p>
           <p className="copy">
             Changes and Git open in a resizable pane beside the conversation.
             Opening either collapses Context; closing it restores the previous
