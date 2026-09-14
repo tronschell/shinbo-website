@@ -2,7 +2,7 @@
 
 Canonical website: https://shinbo.app
 Source and releases: https://github.com/tronschell/shinbo
-Facts reviewed: 2026-09-13.
+Facts reviewed: 2026-09-14.
 
 This reference summarizes product identity, setup and documented capabilities. The source checkout may include work newer than the published app. Release notes and actual release assets establish downloadable availability; source documentation describes the implementation it accompanies.
 
@@ -24,7 +24,7 @@ Official references:
 
 Published desktop targets are macOS on Apple silicon and Windows x64. Windows installers are unsigned. The source README specifies macOS 12 or later and Windows 10 version 1809 or later. There is no published Intel Mac or Linux desktop build, and no released iPhone app. Windows ARM64 source packaging does not establish a published Windows ARM64 download.
 
-The current desktop release is Shinbo v0.8.2: https://github.com/tronschell/shinbo/releases/tag/v0.8.2. Its installers are Shinbo-v0.8.2-darwin-arm64.dmg and Shinbo-v0.8.2-win32-x64-Setup.exe. The app was renamed from Emma to Shinbo; older releases can retain the former name.
+The current desktop release is Shinbo v0.9.2: https://github.com/tronschell/shinbo/releases/tag/v0.9.2. Its installers are Shinbo-v0.9.2-darwin-arm64.dmg and Shinbo-v0.9.2-win32-x64-Setup.exe; the ZIP asset supports automatic updates. Check for Updates and Install and relaunch report through the in-app bottom-right notice with step-by-step install progress, and the notice names the newest release. The app was renamed from Emma to Shinbo; older releases can retain the former name.
 
 The source tree includes ongoing Rust/GPUI development. That does not mean the public desktop installer has already been replaced by a finished GPUI app. Likewise, phone pairing work in source is not an App Store release.
 
@@ -98,6 +98,8 @@ If a task's explicitly selected provider has been removed, it requires restoring
 Private routing is a separate, optional OpenRouter setting for the main agent loop. It requests qualifying no-training, zero-retention endpoints and can fail if none qualify. It does not control every tool, secondary model or provider-account logging setting.
 
 The app offers Ask, Accept edits, Auto and Full access modes. Computer use always asks per app and shows a compact top-right monitor icon and Stop control; hovering the icon reveals the action and app. Stop, global Escape, screen lock or sleep revoke computer access for the rest of the current turn while the agent continues. Computer access cannot restart in that turn. There is no computer tool-call cap; the ten-minute runtime expiry, minimum 40 ms action interval and input safeguards remain. Platform-specific permissions still matter. Neither a permission mode nor a local model guarantees that every action is safe or that no data leaves the device.
+
+Model-authored artifact and component modules ask for permission in Ask and Accept edits modes before they are mounted; the whole module is shown for review. Approved shell commands, terminals, CLI runs, background jobs and workflow scripts do not inherit stored provider or vision API keys from the app environment. Packaged builds do not open a local Chrome DevTools debugging port unless SHINBO_REMOTE_DEBUG=1 is set.
 
 On macOS, if Accessibility appears enabled but Shinbo reports it missing, Settings → Permissions → Accessibility → Settings resets the stale grant when the app is not trusted, then prompts again. Grant access and relaunch Shinbo.
 

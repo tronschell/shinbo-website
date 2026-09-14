@@ -89,6 +89,16 @@ against the app's source, not its docs. Repo:
   widen controls. The thread Changes view shows changed lines first. Unchanged lines
   above, below and between edits collapse into expandable … rows; click a row
   or focus it and press Enter or Space to reveal or hide its context.
+- **Have:** a Files pane in the inspector: a folder tree for any granted
+  folder, files open in tabs, text edits save with a conflict check, images,
+  Markdown and CSV/TSV preview, and saves are recorded as thread changes. File
+  paths in replies and edit steps open the pane at the named line; a text
+  selection can be picked into the composer as context.
+- **Have:** Check for Updates and Install and relaunch run through the
+  bottom-right notice: a spinner while checking, then an installer that names
+  each step with a progress bar and percentage before relaunching. The notice
+  always names the newest release; on macOS one click chains through a staged
+  older download into the newest version.
 - **Have:** browser new tabs list local listening ports; the address bar opens
   URLs or searches Google. Right-click menus cover links, images, selection,
   editing and navigation. View options expands, pops out or docks the browser.
