@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 export const RELEASE =
-  "https://github.com/tronschell/shinbo/releases/tag/v0.9.2";
-const ASSETS = "https://github.com/tronschell/shinbo/releases/download/v0.9.2/";
+  "https://github.com/tronschell/shinbo/releases/tag/v0.9.4";
+const ASSETS = "https://github.com/tronschell/shinbo/releases/download/v0.9.4/";
 export const platforms = {
   unknown: {
     label: "Choose your system",
@@ -18,7 +18,7 @@ export const platforms = {
     label: "Mac · Apple silicon",
     title: "Download for Mac",
     requirement: "macOS 12 or later · Apple M-series chip",
-    href: ASSETS + "Shinbo-v0.9.2-darwin-arm64.dmg",
+    href: ASSETS + "Shinbo-v0.9.4-darwin-arm64.dmg",
     action: "Download for Mac",
     steps:
       "Open the DMG, drag the app into Applications, then launch it from Applications. Open About This Mac from the Apple menu and check that Chip says Apple M1 or later before installing.",
@@ -28,7 +28,7 @@ export const platforms = {
     label: "Windows · x64",
     title: "Download for Windows",
     requirement: "Windows 10 version 1809 or later · x64",
-    href: ASSETS + "Shinbo-v0.9.2-win32-x64-Setup.exe",
+    href: ASSETS + "Shinbo-v0.9.4-win32-x64-Setup.exe",
     action: "Download for Windows",
     steps:
       "Run Setup.exe to install for your user. This Windows build is unsigned; release notes include checksums.",

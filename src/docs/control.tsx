@@ -183,9 +183,13 @@ const doc: Doc = {
             Not required; expand it for what uses it, or click <b>Settings</b>{" "}
             to open the system pane. All are optional, and the set differs
             between macOS and Windows. If macOS shows Accessibility enabled but
-            Shinbo still reports it missing, use that row’s Settings button to
-            reset the stale grant and grant access again. Relaunch Shinbo after
-            granting access.
+            every action is refused, the grant belongs to an earlier build;
+            Shinbo clears such stale Accessibility, Microphone and Screen
+            Recording rows at startup so macOS asks again, and the computer tool
+            raises the Accessibility prompt itself the first time it is refused.
+            Turn Shinbo on and retry; no relaunch is needed, and Quick Ask
+            restarts on its own. If an old build copy opens instead of the
+            installed Shinbo, it says so and offers to open the installed copy.
           </p>
           <Shot
             src="/shots/settings-permissions.png"
