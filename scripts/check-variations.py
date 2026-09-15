@@ -33,8 +33,8 @@ for number in range(1, 7):
             assert target.exists() or (target / "index.html").exists(), (path, "missing route", link)
     for slug in ["harness", "delegation", "plan", "models", "control", "surfaces", "knowledge", "jobs", "agent", "tools"]:
         assert f"/docs/{slug}" in links, (path, "missing feature", slug)
-    assert any(link.endswith("Shinbo-v0.9.2-darwin-arm64.dmg") for link in links), (path, "verified Mac download")
-    assert any(link.endswith("Shinbo-v0.9.2-win32-x64-Setup.exe") for link in links), (path, "verified Windows download")
+    assert any(link.endswith("Shinbo-v0.9.4-darwin-arm64.dmg") for link in links), (path, "verified Mac download")
+    assert any(link.endswith("Shinbo-v0.9.4-win32-x64-Setup.exe") for link in links), (path, "verified Windows download")
     options = [a.get("value") for tag, a in page.tags if tag == "option"]
     assert any(tag == "option" and a.get("value") == "unknown" and "selected" in a for tag, a in page.tags), (path, "SSR starts without guessing OS")
     assert set(["unknown", "mac", "windows", "windowsArm", "windows32", "intel", "linux", "mobile"]).issubset(options), (path, "platform choices")
